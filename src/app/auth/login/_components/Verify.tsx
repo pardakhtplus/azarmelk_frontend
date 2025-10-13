@@ -1,0 +1,110 @@
+"use client";
+
+import Input from "@/components/modules/inputs/Input";
+import NotificationModal from "@/components/modules/NotificationModal";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import FormCard from "../../_components/FormCard";
+import ResendCode from "./ResendCode";
+import useAuthMutation from "@/services/mutations/client/auth/useAuthMutation";
+import { setCookie } from "@/lib/server-utils";
+import { updateTokenCache } from "@/services/axios-client";
+
+const formSchema = z.object({
+  code: z.string({ message: "کد را وارد کنید!" }),
+});
+
+export default function Verify({
+  phoneNumber,
+  setPhoneNumber,
+  setIsVerified,
+  isExisted,
+  setToken,
+}: {
+  phoneNumber: string;
+  setPhoneNumber: (phoneNumber: string) => void;
+  setIsVerified: (isVerified: boolean) => void;
+  isExisted: boolean;
+  setToken: (token: string) => void;
+}) {
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {},
+  });
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const { login, sendOtp } = useAuthMutation();
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!values.code) return;
+
+    const res = await login.mutateAsync({
+      phoneNumber: phoneNumber,
+      code: values.code,
+    });
+
+    if (res) {
+      setIsSuccess(true);
+      if (isExisted) {
+        await setCookie("accessToken", res.accessToken);
+        await setCookie("refreshToken", res.refreshToken);
+        updateTokenCache(res.accessToken);
+        router.push("/");
+      } else {
+        setIsVerified(true);
+        setToken(res.token);
+      }
+    }
+  }
+
+  const onResend = async () => {
+    await sendOtp.mutateAsync({ phoneNumber: phoneNumber, sendOTP: true });
+  };
+
+  return (
+    <FormCard
+      onSubmit={handleSubmit(onSubmit)}
+      isLoading={login.isPending || isSuccess}
+      buttonText="ورود"
+      onBack={() => setPhoneNumber("")}
+      title="تایید شماره موبایل"
+      caption="برای ادامه، کد تأیید که به شماره موبایل یا شما ارسال شده رو وارد کنید.">
+      <div className="py-14 sm:py-14">
+        <p className="font-medium">
+          کد تایید ارسال شده به شماره “
+          <NotificationModal
+            title="تغییر شماره موبایل"
+            description="آیا میخواهید شماره موبایل خود را تغییر دهید؟"
+            onSubmit={async () => {
+              setPhoneNumber("");
+
+              return true;
+            }}
+            actionName="تغییر"
+            actionClassName="bg-primary"
+            className="text-primary-blue">
+            {phoneNumber}
+          </NotificationModal>
+          ” را وارد کنید.
+        </p>
+        <Input
+          register={register}
+          name="code"
+          error={errors.code}
+          placeholder=""
+          containerClassName="mb-2 mt-2"
+        />
+        <ResendCode onClick={onResend} />
+      </div>
+    </FormCard>
+  );
+}

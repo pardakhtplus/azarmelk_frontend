@@ -1,0 +1,101 @@
+"use client";
+
+import Input from "@/components/modules/inputs/Input";
+import NotificationModal from "@/components/modules/NotificationModal";
+import useAuthMutation from "@/services/mutations/client/auth/useAuthMutation";
+import useEditUserInfo from "@/services/mutations/client/auth/useEditUserInfo";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import FormCard from "../../_components/FormCard";
+import ResendCode from "./ResendCode";
+
+const formSchema = z.object({
+  code: z.string({ message: "کد را وارد کنید!" }),
+});
+
+export default function Verify({
+  phoneNumber,
+  setPhoneNumber,
+}: {
+  phoneNumber: string;
+  setPhoneNumber: (phoneNumber: string) => void;
+}) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {},
+  });
+  const [isSuccess, setIsSuccess] = useState(false);
+  const { editProfile } = useEditUserInfo();
+  const { sendOtp } = useAuthMutation();
+  const router = useRouter();
+
+  const queryClient = useQueryClient();
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!values.code) return;
+
+    const res = await editProfile.mutateAsync({
+      phoneNumber: phoneNumber,
+      code: values.code,
+    });
+
+    if (res) {
+      setIsSuccess(true);
+      router.push("/dashboard");
+
+      queryClient.invalidateQueries({
+        queryKey: ["userInfo"],
+      });
+    } else setPhoneNumber("");
+  }
+
+  const onResend = async () => {
+    await sendOtp.mutateAsync({ phoneNumber: phoneNumber, sendOTP: true });
+  };
+
+  return (
+    <FormCard
+      onSubmit={handleSubmit(onSubmit)}
+      isLoading={sendOtp.isPending || isSuccess}
+      buttonText="ورود"
+      onBack={() => setPhoneNumber("")}
+      title="تایید شماره موبایل"
+      caption="برای تغییر شماره موبایل جدید، کد تأیید که به شماره موبایل یا شما ارسال شده رو وارد کنید.">
+      <div className="py-14 sm:py-14">
+        <p className="font-medium">
+          کد تایید ارسال شده به شماره “
+          <NotificationModal
+            title="تغییر شماره موبایل"
+            description="آیا میخواهید شماره موبایل خود را تغییر دهید؟"
+            onSubmit={async () => {
+              setPhoneNumber("");
+
+              return true;
+            }}
+            actionName="تغییر"
+            actionClassName="bg-primary"
+            className="text-primary-blue">
+            {phoneNumber}
+          </NotificationModal>
+          ” را وارد کنید.
+        </p>
+        <Input
+          register={register}
+          name="code"
+          error={errors.code}
+          placeholder=""
+          containerClassName="mb-2 mt-2"
+        />
+        <ResendCode onClick={onResend} />
+      </div>
+    </FormCard>
+  );
+}

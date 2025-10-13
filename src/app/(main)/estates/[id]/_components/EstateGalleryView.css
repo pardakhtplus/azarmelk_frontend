@@ -1,0 +1,61 @@
+.mySwiper {
+  width: 100%;
+  padding-bottom: 30px !important;
+  overflow: visible !important;
+}
+
+.mySwiper .swiper-button-next,
+.mySwiper .swiper-button-prev {
+  color: #3b82f6; /* primary-blue color */
+  font-size: 16px;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.mySwiper .swiper-button-next:after,
+.mySwiper .swiper-button-prev:after {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.mySwiper .swiper-pagination {
+  bottom: 7px !important;
+}
+
+.mySwiper .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background-color: #3b82f6; /* primary-blue color */
+  opacity: 0.5;
+}
+
+.mySwiper .swiper-pagination-bullet-active {
+  opacity: 1;
+  background-color: #3b82f6; /* primary-blue color */
+  width: 10px;
+  height: 10px;
+}
+
+/* RTL support */
+.mySwiper.swiper-rtl .swiper-button-prev {
+  left: auto;
+  right: 10px;
+}
+
+.mySwiper.swiper-rtl .swiper-button-next {
+  right: auto;
+  left: 10px;
+}
+
+/* Coverflow effect enhancements */
+.mySwiper .swiper-slide {
+  transition: transform 0.3s ease;
+  border-radius: 12px;
+}
+
+.mySwiper .swiper-slide-active {
+  z-index: 1;
+}
