@@ -64,14 +64,14 @@ export async function middleware(req: NextRequest) {
       return NextResponse.next();
     }
 
-    // console.log(token, process.env.REFRESH_TOKEN_PRIVATE_KEY, "| token");
+    console.log(token, process.env.REFRESH_TOKEN_PRIVATE_KEY, "| token");
 
     const payload = await verify(
       token,
       process.env.REFRESH_TOKEN_PRIVATE_KEY || "",
     );
 
-    // console.log(payload, "| payload");
+    console.log(payload, "| payload");
 
     if (req.nextUrl.pathname.startsWith("/auth/login")) {
       return NextResponse.redirect(new URL("/", req.url));
