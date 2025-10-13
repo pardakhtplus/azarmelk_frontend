@@ -102,8 +102,8 @@ export async function middleware(req: NextRequest) {
 
     return NextResponse.next();
   } catch {
-    req.cookies.delete("refreshToken");
-    req.cookies.delete("accessToken");
+    await req.cookies.delete("refreshToken");
+    await req.cookies.delete("accessToken");
 
     if (
       req.nextUrl.pathname.startsWith("/dashboard") ||

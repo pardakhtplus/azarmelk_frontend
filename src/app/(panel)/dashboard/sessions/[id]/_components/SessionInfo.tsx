@@ -288,7 +288,7 @@ export default function SessionInfo({ session }: SessionInfoProps) {
               همراه خود بیاورند؟
             </label>
             <p className="mt-2 text-gray-700">
-              {session?.qThree ? "بله" : "خیر"}
+              {session?.qThree === "true" ? "بله" : "خیر"}
             </p>
           </div>
           <div>
@@ -297,7 +297,7 @@ export default function SessionInfo({ session }: SessionInfoProps) {
               را همراه بیاورند؟
             </label>
             <p className="mt-2 text-gray-700">
-              {session?.qFour ? "بله" : "خیر"}
+              {session?.qFour === "true" ? "بله" : "خیر"}
             </p>
           </div>
         </div>

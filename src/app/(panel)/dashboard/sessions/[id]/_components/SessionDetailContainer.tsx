@@ -63,7 +63,12 @@ export default function SessionDetailContainer() {
             creatorId={sessionData.creator?.id}
           />
           <SessionCreator creator={sessionData.creator} />
-          {canManageSession && <SessionCommentsTabs sessionId={id as string} />}
+          {canManageSession && (
+            <SessionCommentsTabs
+              sessionId={id as string}
+              sessionTitle={sessionData.title}
+            />
+          )}
         </>
       )}
       {isOpenEditModal && sessionData && (

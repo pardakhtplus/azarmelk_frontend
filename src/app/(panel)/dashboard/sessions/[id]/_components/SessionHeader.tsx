@@ -31,7 +31,6 @@ export default function SessionHeader({
   showApprove,
   showReject,
   showCancel,
-  showEdit,
   children,
   session,
   canManageSession,
@@ -183,17 +182,17 @@ export default function SessionHeader({
             <span className="hidden md:block">لغو جلسه</span>
           </NotificationModal>
         )}
-        {showEdit &&
-          (canManageSession ||
-            session.creator.id === userInfo?.data?.data.id) && (
-            <Button
-              variant="blue"
-              onClick={onEdit}
-              className="flex items-center gap-x-1 !px-7 max-md:!size-11 max-md:!px-0">
-              <span className="hidden md:block">ویرایش</span>
-              <IPenToSquare className="size-4 md:size-5" />
-            </Button>
-          )}
+        {(canManageSession ||
+          (session.creator.id === userInfo?.data?.data.id &&
+            session.status === SESSION_STATUS.PENDING)) && (
+          <Button
+            variant="blue"
+            onClick={onEdit}
+            className="flex items-center gap-x-1 !px-7 max-md:!size-11 max-md:!px-0">
+            <span className="hidden md:block">ویرایش</span>
+            <IPenToSquare className="size-4 md:size-5" />
+          </Button>
+        )}
         {children}
       </div>
     </PanelBodyHeader>

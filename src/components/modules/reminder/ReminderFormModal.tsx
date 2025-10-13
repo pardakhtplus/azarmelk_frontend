@@ -1,23 +1,24 @@
+import BorderedButton from "@/components/modules/buttons/BorderedButton";
+import Button from "@/components/modules/buttons/Button";
+import BorderedInput from "@/components/modules/inputs/BorderedInput";
+import TextArea from "@/components/modules/inputs/TextArea";
+import Modal from "@/components/modules/Modal";
+import { formatDateForTehranDisplay } from "@/lib/timezone-utils";
+import { cn } from "@/lib/utils";
+import useMutateReminder from "@/services/mutations/admin/reminder/useMutateReminder";
 import {
-  REMINDER_TYPE,
   REMINDER_STATUS,
+  REMINDER_TYPE,
   type TReminder,
 } from "@/types/admin/estate/reminder.types";
-import { BellIcon, CheckIcon, MessageSquareIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import Modal from "@/components/modules/Modal";
+import { BellIcon, CheckIcon, MessageSquareIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import TextArea from "@/components/modules/inputs/TextArea";
-import BorderedInput from "@/components/modules/inputs/BorderedInput";
-import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
-import CalendarModal from "./calendar/CalendarModal";
-import Button from "@/components/modules/buttons/Button";
-import BorderedButton from "@/components/modules/buttons/BorderedButton";
-import useMutateReminder from "@/services/mutations/admin/reminder/useMutateReminder";
-import { formatDateForTehranDisplay } from "@/lib/timezone-utils";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import CalendarModal from "../calendar/CalendarModal";
+import { REMINDER_CONTENT } from "./sectionUtils";
 
 const reminderFormSchema = z.object({
   reminderDate: z.string().min(1, { message: "تاریخ یادآوری الزامی است" }),
@@ -35,17 +36,19 @@ interface ReminderFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit?: (reminder: TReminder) => void;
-  estateId: string;
-  estateTitle: string;
+  contentId: string;
+  contentTitle: string;
   editingReminder?: TReminder | null;
+  contentType: REMINDER_CONTENT;
 }
 
 export default function ReminderFormModal({
   isOpen,
   onClose,
   onSubmit,
-  estateId,
-  estateTitle: _estateTitle,
+  contentId,
+  contentTitle: _estateTitle,
+  contentType,
   editingReminder = null,
 }: ReminderFormModalProps) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -115,7 +118,9 @@ export default function ReminderFormModal({
         // Create new reminder
         const result = await createReminder.mutateAsync({
           ...data,
-          estateId,
+          ...(contentType === REMINDER_CONTENT.ESTATE
+            ? { estateId: contentId }
+            : { mettingId: contentId }),
         });
 
         if (result) {
@@ -124,7 +129,9 @@ export default function ReminderFormModal({
             const newReminder: TReminder = {
               id: result.id || Date.now().toString(),
               ...data,
-              estateId,
+              ...(contentType === REMINDER_CONTENT.ESTATE
+                ? { estateId: contentId }
+                : { mettingId: contentId }),
               userId: "", // Will be set by backend
               status: REMINDER_STATUS.PENDING,
               estate: {} as any,
@@ -170,12 +177,12 @@ export default function ReminderFormModal({
         header: "!py-4",
       }}
       onCloseModal={handleClose}
-      onClickOutside={handleClose}>
+      onClickOutside={handleClose}
+      onSubmit={onFormSubmit}
+      handleSubmit={handleSubmit}>
       <div className="relative h-full">
         {/* Form */}
-        <form
-          onSubmit={handleSubmit(onFormSubmit)}
-          className="space-y-6 overflow-y-auto p-6">
+        <div className="space-y-6 overflow-y-auto p-6">
           {/* Title */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700">
@@ -383,7 +390,7 @@ export default function ReminderFormModal({
               <p className="mt-1 text-sm text-red-500">{errors.type.message}</p>
             )}
           </div>
-        </form>
+        </div>
         {/* Submit Buttons */}
         <div className="mt-4 flex items-center justify-end gap-x-4 border-t border-primary-border px-6 pb-4 pt-4">
           <BorderedButton type="button" onClick={handleClose}>

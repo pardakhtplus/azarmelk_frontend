@@ -1,39 +1,42 @@
+import Button from "@/components/modules/buttons/Button";
+import Loader from "@/components/modules/Loader";
+import Modal from "@/components/modules/Modal";
+import NotificationModal from "@/components/modules/NotificationModal";
+import { formatDateForTehranDisplay } from "@/lib/timezone-utils";
+import { cn } from "@/lib/utils";
+import useMutateReminder from "@/services/mutations/admin/reminder/useMutateReminder";
+import { useReminderList } from "@/services/queries/admin/reminder/useReminderList";
 import {
   REMINDER_TYPE,
   type TReminder,
 } from "@/types/admin/estate/reminder.types";
-import { cn } from "@/lib/utils";
 import {
   BellIcon,
   CalendarIcon,
+  EditIcon,
   MessageSquareIcon,
   PlusIcon,
-  EditIcon,
   TrashIcon,
 } from "lucide-react";
 import { useState } from "react";
-import ReminderFormModal from "./ReminderFormModal";
-import Modal from "@/components/modules/Modal";
 import { createPortal } from "react-dom";
-import Button from "@/components/modules/buttons/Button";
-import { useReminderList } from "@/services/queries/admin/reminder/useReminderList";
-import useMutateReminder from "@/services/mutations/admin/reminder/useMutateReminder";
-import { formatDateForTehranDisplay } from "@/lib/timezone-utils";
-import Loader from "@/components/modules/Loader";
-import NotificationModal from "@/components/modules/NotificationModal";
+import ReminderFormModal from "./ReminderFormModal";
+import { REMINDER_CONTENT } from "./sectionUtils";
 
 interface ReminderListModalProps {
   isOpen: boolean;
   onClose: () => void;
-  estateId: string;
-  estateTitle: string;
+  contentId: string;
+  contentTitle: string;
+  contentType: REMINDER_CONTENT;
 }
 
 export default function ReminderListModal({
   isOpen,
   onClose,
-  estateId,
-  estateTitle,
+  contentId,
+  contentTitle,
+  contentType,
 }: ReminderListModalProps) {
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [editingReminder, setEditingReminder] = useState<TReminder | null>(
@@ -42,8 +45,12 @@ export default function ReminderListModal({
 
   // Fetch reminders from API
   const { reminderList } = useReminderList({
-    enabled: isOpen && !!estateId,
-    params: { estateId },
+    enabled: isOpen && !!contentId,
+    params: {
+      estateId: contentType === REMINDER_CONTENT.ESTATE ? contentId : undefined,
+      mettingId:
+        contentType === REMINDER_CONTENT.MEETING ? contentId : undefined,
+    },
   });
 
   const { deleteReminder } = useMutateReminder();
@@ -237,9 +244,10 @@ export default function ReminderListModal({
         isOpen={isFormModalOpen}
         onClose={handleCloseFormModal}
         onSubmit={handleAddReminder}
-        estateId={estateId}
-        estateTitle={estateTitle}
+        contentId={contentId}
+        contentTitle={contentTitle}
         editingReminder={editingReminder}
+        contentType={contentType}
       />
     </>
   );

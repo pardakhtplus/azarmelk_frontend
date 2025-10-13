@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { SESSION_STATUS } from "@/types/admin/session/enum";
 import {
   BanIcon,
+  BellIcon,
   CheckIcon,
   ClockIcon,
   MoreVertical,
@@ -23,6 +24,8 @@ import SessionLogModal from "./SessionLogModal";
 import { IClockRotateLeft, INote } from "@/components/Icons";
 import Link from "next/link";
 import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
+import ReminderListModal from "@/components/modules/reminder/ReminderListModal";
+import { REMINDER_CONTENT } from "@/components/modules/reminder/sectionUtils";
 
 // Extended session type to include custom properties
 type ExtendedSession = TSession & {
@@ -50,6 +53,7 @@ export default function SessionItem({
   const { editSessionStatus } = useEditSessionStatus();
   const { userInfo } = useUserInfo();
   const queryClient = useQueryClient();
+  const [isRemindersOpen, setIsRemindersOpen] = useState(false);
 
   // Check if this is an empty slot or has a session
   const hasSession = !!session.status;
@@ -170,6 +174,14 @@ export default function SessionItem({
               )}>
               {canManageSession ? (
                 <>
+                  <button
+                    className="flex w-full items-center gap-x-2 rounded-md px-3 py-2 text-right text-sm transition-colors hover:bg-gray-100"
+                    onClick={() => {
+                      setIsRemindersOpen(true);
+                    }}>
+                    <BellIcon className="size-[18px]" />
+                    <span>یادآورها</span>
+                  </button>
                   <button
                     className="flex w-full items-center gap-x-2 rounded-md px-3 py-2 text-right text-sm transition-colors hover:bg-gray-100"
                     onClick={() => setIsOpenNoteListModal(true)}>
@@ -429,6 +441,16 @@ export default function SessionItem({
           onClose={() => setIsOpenLogModal(false)}
           sessionTitle={session.title}
           sessionId={session.id}
+        />
+      )}
+
+      {isRemindersOpen && (
+        <ReminderListModal
+          isOpen={isRemindersOpen}
+          onClose={() => setIsRemindersOpen(false)}
+          contentTitle={session.title}
+          contentId={session.id}
+          contentType={REMINDER_CONTENT.MEETING}
         />
       )}
     </>

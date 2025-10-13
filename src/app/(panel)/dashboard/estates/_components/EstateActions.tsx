@@ -34,8 +34,9 @@ import AddToLandingModal from "./AddToLandingModal";
 import CompletionStatusModal from "./CompletionStatusModal";
 import EstateLogModal from "./EstateLogModal";
 import EstateNoteListModal from "./EstateNoteListModal";
-import ReminderListModal from "./ReminderListModal";
+import ReminderListModal from "@/components/modules/reminder/ReminderListModal";
 import StatusNotificationModal from "./StatusNotificationModal";
+import { REMINDER_CONTENT } from "@/components/modules/reminder/sectionUtils";
 
 export default function EstateActions({
   estate,
@@ -698,8 +699,9 @@ export default function EstateActions({
           <ReminderListModal
             isOpen={isRemindersOpen}
             onClose={() => setIsRemindersOpen(false)}
-            estateId={estate.id}
-            estateTitle={title || ""}
+            contentId={estate.id}
+            contentTitle={title || ""}
+            contentType={REMINDER_CONTENT.ESTATE}
           />
         </>
       )}

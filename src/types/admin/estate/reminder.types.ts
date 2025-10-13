@@ -18,12 +18,11 @@ export interface TReminder {
   description: string;
   message: string; // Message to be sent via SMS or notification
   type: REMINDER_TYPE[]; // Array of SMS and/or NOTIFICATION
-  estateId: string;
+  estateId?: string;
   mettingId?: string | null;
   userId: string;
   status: REMINDER_STATUS;
-  estate: TEstate;
-  metting?: any | null;
+  estate?: TEstate;
   createdAt: string;
   updatedAt?: string;
 }
@@ -34,7 +33,7 @@ export interface TCreateReminder {
   description: string;
   message: string;
   type: REMINDER_TYPE[];
-  estateId: string;
+  estateId?: string;
   mettingId?: string;
 }
 
@@ -62,6 +61,7 @@ export interface TGetReminderResponse {
 
 export interface TReminderListParams {
   estateId?: string;
+  mettingId?: string;
   page?: number;
   limit?: number;
 }

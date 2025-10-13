@@ -5,15 +5,21 @@ import { useSessionNoteList } from "@/services/queries/admin/session/note/useSes
 import { useSessionLogList } from "@/services/queries/admin/session/useSessionlogList";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import SessionReminders from "./SessionReminders";
+import { REMINDER_CONTENT } from "@/components/modules/reminder/sectionUtils";
 
 interface SessionCommentsTabsProps {
   sessionId: string;
+  sessionTitle: string;
 }
 
 export default function SessionCommentsTabs({
   sessionId,
+  sessionTitle,
 }: SessionCommentsTabsProps) {
-  const [activeTab, setActiveTab] = useState<"notes" | "logs">("notes");
+  const [activeTab, setActiveTab] = useState<"notes" | "logs" | "reminders">(
+    "notes",
+  );
   const [newNote, setNewNote] = useState("");
   const { sessionNoteList } = useSessionNoteList({ id: sessionId });
   const { sessionLogList } = useSessionLogList(sessionId);
@@ -56,6 +62,16 @@ export default function SessionCommentsTabs({
           )}
           onClick={() => setActiveTab("logs")}>
           تاریخچه تغییرات
+        </button>
+        <button
+          className={cn(
+            "border-b-2 px-4 py-2 text-sm font-medium transition-all",
+            activeTab === "reminders"
+              ? "border-primary text-primary"
+              : "border-transparent text-gray-500 hover:text-primary",
+          )}
+          onClick={() => setActiveTab("reminders")}>
+          یادآورها
         </button>
       </div>
       <div>
@@ -175,6 +191,13 @@ export default function SessionCommentsTabs({
               </div>
             )}
           </>
+        )}
+        {activeTab === "reminders" && (
+          <SessionReminders
+            contentId={sessionId}
+            contentTitle={sessionTitle}
+            contentType={REMINDER_CONTENT.MEETING}
+          />
         )}
       </div>
     </div>
