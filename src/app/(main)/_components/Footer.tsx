@@ -2,6 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaInstagram } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
+import {
+  address,
+  instagram,
+  phoneNumbers,
+  telegram,
+} from "../../../../data/footer";
 
 export default function Footer() {
   return (
@@ -15,17 +21,15 @@ export default function Footer() {
         />
 
         <p className="mt-8 text-center text-sm font-normal">
-          شماره تماس: ۰۴۱۳۳۶۹۷۶۷ - ۰۹۱۴۲۰۵۴۴
+          شماره تماس: {phoneNumbers.join(" - ")}
         </p>
-        <p className="mt-4 text-center text-sm font-normal">
-          آدرس: ولیعصر ، فلکه بارنج ، نبش کوچه خورشید
-        </p>
+        <p className="mt-4 text-center text-sm font-normal">آدرس: {address}</p>
 
         {/* Social Links */}
         <div className="mt-[30px] flex flex-row gap-2.5">
           {[
             {
-              href: "#",
+              href: telegram,
               icon: (
                 <FaTelegramPlane
                   size={18}
@@ -35,7 +39,7 @@ export default function Footer() {
               label: "Telegram",
             },
             {
-              href: "#",
+              href: instagram,
               icon: (
                 <FaInstagram
                   size={18}

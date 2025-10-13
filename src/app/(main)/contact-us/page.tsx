@@ -4,26 +4,33 @@ import {
   ILocationBlue,
   IPhone,
 } from "@/components/Icons";
+import {
+  address,
+  emails,
+  iframe,
+  phoneNumbers,
+  times,
+} from "../../../../data/contact-us";
 
 const contactItems = [
   {
     icon: <ILocationBlue />,
-    text: "تبریز، دانشگاه تبریز، مرکز نوآوری و شکوفایی، واحد ۸",
+    text: address,
     className: "border-b md:border-l xl:border-b-0",
   },
   {
     icon: <IPhone className="text-primary-blue" />,
-    text: "021-66716554",
+    text: phoneNumbers.join(" - "),
     className: "border-b xl:border-b-0 xl:border-l",
   },
   {
     icon: <IClockBlue />,
-    text: "24 ساعته در دسترس هستیم",
+    text: times,
     className: "border-b md:border-b-0 md:border-l xl:border-l",
   },
   {
     icon: <IEnvelopeBlue />,
-    text: "Info@tazminplus.com",
+    text: emails.join(" - "),
     className: "",
   },
 ];
@@ -53,16 +60,10 @@ export default function ContactUs() {
 
           {/* map */}
 
-          <div className="mt-2.5 h-[373px] w-full overflow-hidden rounded-15">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2672.867990190754!2d46.32815075210465!3d38.05785916239376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1753871221164!5m2!1sen!2s"
-              width="600"
-              height="450"
-              className="border:0; h-full w-full"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
+          <div
+            className="mt-2.5 h-[373px] w-full overflow-hidden rounded-15"
+            dangerouslySetInnerHTML={{ __html: iframe }}
+          />
         </div>
       </div>
     </section>
