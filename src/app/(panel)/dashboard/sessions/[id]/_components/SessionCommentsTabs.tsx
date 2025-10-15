@@ -11,11 +11,15 @@ import { REMINDER_CONTENT } from "@/components/modules/reminder/sectionUtils";
 interface SessionCommentsTabsProps {
   sessionId: string;
   sessionTitle: string;
+  canManageSession: boolean;
+  canCreateSession: boolean;
 }
 
 export default function SessionCommentsTabs({
   sessionId,
   sessionTitle,
+  canManageSession,
+  canCreateSession,
 }: SessionCommentsTabsProps) {
   const [activeTab, setActiveTab] = useState<"notes" | "logs" | "reminders">(
     "notes",
@@ -53,16 +57,18 @@ export default function SessionCommentsTabs({
           onClick={() => setActiveTab("notes")}>
           یادداشت‌ها
         </button>
-        <button
-          className={cn(
-            "border-b-2 px-4 py-2 text-sm font-medium transition-all",
-            activeTab === "logs"
-              ? "border-primary text-primary"
-              : "border-transparent text-gray-500 hover:text-primary",
-          )}
-          onClick={() => setActiveTab("logs")}>
-          تاریخچه تغییرات
-        </button>
+        {canManageSession ? (
+          <button
+            className={cn(
+              "border-b-2 px-4 py-2 text-sm font-medium transition-all",
+              activeTab === "logs"
+                ? "border-primary text-primary"
+                : "border-transparent text-gray-500 hover:text-primary",
+            )}
+            onClick={() => setActiveTab("logs")}>
+            تاریخچه تغییرات
+          </button>
+        ) : null}
         <button
           className={cn(
             "border-b-2 px-4 py-2 text-sm font-medium transition-all",
@@ -114,28 +120,30 @@ export default function SessionCommentsTabs({
               </div>
             )}
             {/* Add new note */}
-            <div className="mt-8 border-t pt-4">
-              <p className="mb-2 text-sm font-medium">افزودن یادداشت جدید</p>
-              <div className="flex flex-col gap-2">
-                <textarea
-                  name="newNote"
-                  placeholder="یادداشت خود را بنویسید..."
-                  value={newNote}
-                  onChange={(e) => setNewNote(e.target.value)}
-                  className="w-full resize-none rounded-lg border border-gray-300 p-3 text-sm focus:border-black/50 focus:outline-none"
-                  rows={3}
-                />
-                <div className="flex justify-end">
-                  <Button
-                    onClick={handleAddNote}
-                    disabled={!newNote.trim()}
-                    isLoading={mutateSessionNote.isPending}
-                    className="whitespace-nowrap">
-                    افزودن یادداشت
-                  </Button>
+            {canCreateSession ? (
+              <div className="mt-8 border-t pt-4">
+                <p className="mb-2 text-sm font-medium">افزودن یادداشت جدید</p>
+                <div className="flex flex-col gap-2">
+                  <textarea
+                    name="newNote"
+                    placeholder="یادداشت خود را بنویسید..."
+                    value={newNote}
+                    onChange={(e) => setNewNote(e.target.value)}
+                    className="w-full resize-none rounded-lg border border-gray-300 p-3 text-sm focus:border-black/50 focus:outline-none"
+                    rows={3}
+                  />
+                  <div className="flex justify-end">
+                    <Button
+                      onClick={handleAddNote}
+                      disabled={!newNote.trim()}
+                      isLoading={mutateSessionNote.isPending}
+                      className="whitespace-nowrap">
+                      افزودن یادداشت
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : null}
           </>
         )}
         {activeTab === "logs" && (

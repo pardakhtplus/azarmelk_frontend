@@ -12,7 +12,7 @@ import {
   type TReminder,
 } from "@/types/admin/estate/reminder.types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { BellIcon, CheckIcon, MessageSquareIcon } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
@@ -21,10 +21,18 @@ import CalendarModal from "../calendar/CalendarModal";
 import { REMINDER_CONTENT } from "./sectionUtils";
 
 const reminderFormSchema = z.object({
-  reminderDate: z.string().min(1, { message: "تاریخ یادآوری الزامی است" }),
-  title: z.string().min(1, { message: "عنوان الزامی است" }),
-  description: z.string().min(1, { message: "توضیحات الزامی است" }),
-  message: z.string().min(1, { message: "پیام الزامی است" }),
+  reminderDate: z
+    .string({ message: "تاریخ یادآوری الزامی است" })
+    .min(1, { message: "تاریخ یادآوری الزامی است" }),
+  date: z
+    .string({ message: "تاریخ ارسال یادآور الزامی است" })
+    .min(1, { message: "تاریخ ارسال یادآور الزامی است" }),
+  title: z
+    .string({ message: "عنوان الزامی است" })
+    .min(1, { message: "عنوان الزامی است" }),
+  description: z
+    .string({ message: "توضیحات الزامی است" })
+    .min(1, { message: "توضیحات الزامی است" }),
   type: z
     .array(z.nativeEnum(REMINDER_TYPE))
     .min(1, { message: "حداقل یک نوع یادآوری را انتخاب کنید" }),
@@ -51,7 +59,8 @@ export default function ReminderFormModal({
   contentType,
   editingReminder = null,
 }: ReminderFormModalProps) {
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isReminderDateOpen, setIsReminderDateOpen] = useState(false);
+  const [isDateOpen, setIsDateOpen] = useState(false);
   const { createReminder, editReminder } = useMutateReminder();
 
   const {
@@ -65,9 +74,9 @@ export default function ReminderFormModal({
     resolver: zodResolver(reminderFormSchema),
     defaultValues: {
       reminderDate: "",
+      date: "",
       title: "",
       description: "",
-      message: "",
       type: [REMINDER_TYPE.NOTIFICATION],
     },
   });
@@ -77,7 +86,6 @@ export default function ReminderFormModal({
     if (editingReminder) {
       setValue("title", editingReminder.title);
       setValue("description", editingReminder.description);
-      setValue("message", editingReminder.message);
       setValue("type", editingReminder.type);
       // Keep the reminder date as UTC for internal handling
       // The display formatting will handle the Tehran timezone conversion
@@ -87,7 +95,6 @@ export default function ReminderFormModal({
         reminderDate: "",
         title: "",
         description: "",
-        message: "",
         type: [REMINDER_TYPE.NOTIFICATION],
       });
     }
@@ -149,16 +156,27 @@ export default function ReminderFormModal({
 
   const handleClose = () => {
     reset();
-    setIsCalendarOpen(false);
+    setIsReminderDateOpen(false);
     onClose();
+  };
+
+  const handleReminderDateSelect = (
+    selectedDate: string,
+    _endDate?: string,
+  ) => {
+    console.log("Selected date from calendar (UTC):", selectedDate);
+    // The selectedDate is in UTC format from calendar
+    // We need to store it as UTC for backend, but display it correctly
+    setValue("reminderDate", selectedDate);
+    setIsReminderDateOpen(false);
   };
 
   const handleDateSelect = (selectedDate: string, _endDate?: string) => {
     console.log("Selected date from calendar (UTC):", selectedDate);
     // The selectedDate is in UTC format from calendar
     // We need to store it as UTC for backend, but display it correctly
-    setValue("reminderDate", selectedDate);
-    setIsCalendarOpen(false);
+    setValue("date", selectedDate);
+    setIsDateOpen(false);
   };
 
   const formatDateForDisplay = (dateString: string) => {
@@ -214,11 +232,92 @@ export default function ReminderFormModal({
           {/* Reminder Date */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700">
-              تاریخ یادآوری
+              تاریخ رویداد
             </label>
             <button
               type="button"
-              onClick={() => setIsCalendarOpen(true)}
+              onClick={() => setIsDateOpen(true)}
+              className={cn(
+                "group relative w-full rounded-xl border-2 bg-white px-4 py-3 text-right transition-all duration-200 hover:border-blue-300 hover:bg-blue-50/50 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20",
+                errors.date
+                  ? "border-red-300 hover:border-red-400"
+                  : watch("date")
+                    ? "border-blue-200"
+                    : "border-gray-200",
+              )}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={cn(
+                      "flex size-10 items-center justify-center rounded-lg transition-colors",
+                      watch("date")
+                        ? "bg-blue-100 text-blue-600"
+                        : "bg-gray-100 text-gray-400",
+                    )}>
+                    <svg
+                      className="size-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20">
+                      <path
+                        fillRule="evenodd"
+                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div className="text-right">
+                    {watch("date") ? (
+                      <>
+                        <div className="text-sm font-semibold text-gray-900">
+                          {formatDateForDisplay(watch("date"))}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          تاریخ و ساعت رویداد
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="text-sm font-medium text-gray-500">
+                          انتخاب تاریخ رویداد
+                        </div>
+                        <div className="text-xs text-gray-400">
+                          روی این دکمه کلیک کنید
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+                <div
+                  className={cn(
+                    "transition-transform duration-200 group-hover:scale-110",
+                    watch("date") ? "text-blue-500" : "text-gray-400",
+                  )}>
+                  <CalendarIcon className="size-5" />
+                </div>
+              </div>
+            </button>
+            {errors.date && (
+              <p className="mt-2 flex items-center gap-1 text-sm text-red-500">
+                <svg className="size-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                {errors.date.message}
+              </p>
+            )}
+          </div>
+
+          {/* Reminder Date */}
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              تاریخ ارسال یادآور
+            </label>
+            <button
+              type="button"
+              onClick={() => setIsReminderDateOpen(true)}
               className={cn(
                 "group relative w-full rounded-xl border-2 bg-white px-4 py-3 text-right transition-all duration-200 hover:border-blue-300 hover:bg-blue-50/50 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20",
                 errors.reminderDate
@@ -254,13 +353,13 @@ export default function ReminderFormModal({
                           {formatDateForDisplay(watch("reminderDate"))}
                         </div>
                         <div className="text-xs text-gray-500">
-                          تاریخ و ساعت یادآوری
+                          تاریخ و ساعت ارسال یادآور
                         </div>
                       </>
                     ) : (
                       <>
                         <div className="text-sm font-medium text-gray-500">
-                          انتخاب تاریخ یادآوری
+                          انتخاب تاریخ ارسال یادآور
                         </div>
                         <div className="text-xs text-gray-400">
                           روی این دکمه کلیک کنید
@@ -274,18 +373,7 @@ export default function ReminderFormModal({
                     "transition-transform duration-200 group-hover:scale-110",
                     watch("reminderDate") ? "text-blue-500" : "text-gray-400",
                   )}>
-                  <svg
-                    className="size-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
+                  <CalendarIcon className="size-5" />
                 </div>
               </div>
             </button>
@@ -303,21 +391,7 @@ export default function ReminderFormModal({
             )}
           </div>
 
-          {/* Message */}
-          <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
-              پیام
-            </label>
-            <TextArea
-              name="message"
-              register={register}
-              error={errors.message}
-              placeholder="پیامی که قرار است ارسال شود را وارد کنید"
-              rows={4}
-            />
-          </div>
-
-          {/* Type Selection */}
+          {/* Type Selection
           <div>
             <label className="mb-3 block text-sm font-medium text-gray-700">
               نوع یادآوری
@@ -389,7 +463,7 @@ export default function ReminderFormModal({
             {errors.type && (
               <p className="mt-1 text-sm text-red-500">{errors.type.message}</p>
             )}
-          </div>
+          </div> */}
         </div>
         {/* Submit Buttons */}
         <div className="mt-4 flex items-center justify-end gap-x-4 border-t border-primary-border px-6 pb-4 pt-4">
@@ -411,10 +485,20 @@ export default function ReminderFormModal({
 
       {/* Calendar Modal */}
       <CalendarModal
-        isOpen={isCalendarOpen}
-        onClose={() => setIsCalendarOpen(false)}
-        onDateSelect={handleDateSelect}
+        isOpen={isReminderDateOpen}
+        onClose={() => setIsReminderDateOpen(false)}
+        onDateSelect={handleReminderDateSelect}
         initialDate={watch("reminderDate")}
+        isRangeMode={false}
+        showTimePicker={true}
+      />
+
+      {/* Calendar Modal */}
+      <CalendarModal
+        isOpen={isDateOpen}
+        onClose={() => setIsDateOpen(false)}
+        onDateSelect={handleDateSelect}
+        initialDate={watch("date")}
         isRangeMode={false}
         showTimePicker={true}
       />

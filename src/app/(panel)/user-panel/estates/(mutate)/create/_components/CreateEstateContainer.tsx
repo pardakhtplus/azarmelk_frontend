@@ -80,6 +80,7 @@ export default function CreateEstateContainer() {
             setSelectedCategories={setSelectedCategories}
             setSelectedRegion={setSelectedRegion}
             selectedRegion={selectedRegion}
+            isUserPanel
           />
         </Suspense>
       )}

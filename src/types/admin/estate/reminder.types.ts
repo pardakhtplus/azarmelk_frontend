@@ -8,15 +8,14 @@ export enum REMINDER_TYPE {
 export enum REMINDER_STATUS {
   PENDING = "PENDING",
   SENT = "SENT",
-  FAILED = "FAILED",
 }
 
 export interface TReminder {
   id: string;
   reminderDate: string; // Date when reminder should be sent
+  date: string; // Date is send in message or notification
   title: string;
   description: string;
-  message: string; // Message to be sent via SMS or notification
   type: REMINDER_TYPE[]; // Array of SMS and/or NOTIFICATION
   estateId?: string;
   mettingId?: string | null;
@@ -29,9 +28,9 @@ export interface TReminder {
 
 export interface TCreateReminder {
   reminderDate: string;
+  date: string;
   title: string;
   description: string;
-  message: string;
   type: REMINDER_TYPE[];
   estateId?: string;
   mettingId?: string;
@@ -40,9 +39,9 @@ export interface TCreateReminder {
 export interface TEditReminder {
   id: string;
   reminderDate: string;
+  date: string;
   title: string;
   description: string;
-  message: string;
   type: REMINDER_TYPE[];
 }
 

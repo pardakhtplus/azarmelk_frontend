@@ -10,13 +10,17 @@ interface CustomSessionsSectionProps {
   customSessions: any[];
   openedRoom: number;
   sessionDate: DateObject;
-  canManageSession: boolean
+  canManageSession: boolean;
+  canCreateSession: boolean;
+  canSeeSession: boolean;
 }
 
 const CustomSessionsSection = ({
   customSessions,
   openedRoom,
-  canManageSession
+  canManageSession,
+  canCreateSession,
+  canSeeSession,
 }: CustomSessionsSectionProps) => {
   if (customSessions.length === 0) return null;
 
@@ -60,6 +64,8 @@ const CustomSessionsSection = ({
               session={sessionWithRoom}
               startSessionDate={sessionDate}
               timeTitle={timeTitle}
+              canSeeSession={canSeeSession}
+              canCreateSession={canCreateSession}
             />
           );
         })}

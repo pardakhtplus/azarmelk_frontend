@@ -30,6 +30,7 @@ export default function SessionList({
   isFutureDate,
   canManageSession,
   canCreateSession,
+  canSeeSession,
 }: {
   isOpenModal: boolean;
   setIsOpenModal: (isOpen: boolean) => void;
@@ -37,6 +38,7 @@ export default function SessionList({
   isFutureDate: boolean;
   canManageSession: boolean;
   canCreateSession: boolean;
+  canSeeSession: boolean;
 }) {
   const [isClient, setIsClient] = useState(false);
   const [openedRoom, setOpenedRoom] = useState<number>(rooms[0].room);
@@ -75,7 +77,7 @@ export default function SessionList({
   const { sessionCreatedList: userSessionCreatedList } = useSessionCreatedList({
     day: formattedDay,
     room: openedRoom,
-    enabled: canCreateSession && !canManageSession,
+    enabled: (canCreateSession || canSeeSession) && !canManageSession,
   });
 
   const sessionList = canManageSession
@@ -247,6 +249,14 @@ export default function SessionList({
                   if (!isFutureDate && existingSessions.length === 0)
                     return null;
 
+                  if (
+                    canSeeSession &&
+                    !canManageSession &&
+                    !canCreateSession &&
+                    existingSessions.length === 0
+                  )
+                    return null;
+
                   return (
                     <TimeSlotItem
                       key={timeSlot.id}
@@ -258,6 +268,8 @@ export default function SessionList({
                       onAddSession={handleAddSession}
                       customTimeSlots={customTimeSlots}
                       canManageSession={canManageSession}
+                      canSeeSession={canSeeSession}
+                      canCreateSession={canCreateSession}
                     />
                   );
                 })}
@@ -295,6 +307,8 @@ export default function SessionList({
                           onAddSession={handleAddSession}
                           customTimeSlots={customTimeSlots}
                           canManageSession={canManageSession}
+                          canSeeSession={canSeeSession}
+                          canCreateSession={canCreateSession}
                         />
                       );
                     })}

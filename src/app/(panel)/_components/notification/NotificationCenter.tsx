@@ -1,16 +1,16 @@
 "use client";
 
 import { IBell, ICheck } from "@/components/Icons";
-import { NotificationStorage } from "@/lib/notificationStorage";
 import { cn } from "@/lib/utils";
+import { useMarkNotificationAsRead } from "@/services/mutations/admin/notification/useMarkNotificationAsRead";
 import { useMarkAllNotificationsAsRead } from "@/services/mutations/client/notification/useMarkAllNotificationsAsRead";
-import { useMarkNotificationAsRead } from "@/services/mutations/client/notification/useMarkNotificationAsRead";
 import { useNotificationListInfinite } from "@/services/queries/admin/notification/useNotificationListInfinite";
 import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
 import { SOCKET_CONFIG, SOCKET_EVENTS } from "@/services/socket";
 import { type TNotification } from "@/types/admin/notification/types";
 import { useQueryClient } from "@tanstack/react-query";
 import { XIcon } from "lucide-react";
+import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { io, type Socket } from "socket.io-client";
 import { useMediaQuery } from "usehooks-ts";
@@ -35,34 +35,11 @@ export default function NotificationCenter({
   const [localNotifications, setLocalNotifications] = useState<TNotification[]>(
     [],
   );
-  const [refreshCounter, setRefreshCounter] = useState(0);
+  const [optimisticallyReadIds, setOptimisticallyReadIds] = useState<
+    Set<string>
+  >(new Set());
   const { userInfo } = useUserInfo();
 
-  // Listen for localStorage changes to update the UI
-  useEffect(() => {
-    const handleStorageChange = () => {
-      console.log("NotificationCenter: Storage changed, refreshing...");
-      setRefreshCounter((prev) => {
-        console.log(
-          "NotificationCenter: Updating refreshCounter from",
-          prev,
-          "to",
-          prev + 1,
-        );
-        return prev + 1;
-      });
-    };
-
-    // Listen for custom storage events
-    window.addEventListener("notificationStorageChange", handleStorageChange);
-
-    return () => {
-      window.removeEventListener(
-        "notificationStorageChange",
-        handleStorageChange,
-      );
-    };
-  }, []);
   const queryClient = useQueryClient();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -70,6 +47,13 @@ export default function NotificationCenter({
   const { notificationListInfinite } = useNotificationListInfinite({
     limit: 10,
   });
+
+  // Clear optimistically read IDs when notifications are refetched
+  useEffect(() => {
+    if (notificationListInfinite.data?.pages) {
+      setOptimisticallyReadIds(new Set());
+    }
+  }, [notificationListInfinite.data?.pages]);
 
   // Mutation hooks for marking as read
   const { markAsReadMutation } = useMarkNotificationAsRead();
@@ -118,30 +102,9 @@ export default function NotificationCenter({
     }
   }, [queryClient, userInfo.data?.data.id]);
 
-  // Cleanup old notification states from localStorage periodically
-  useEffect(() => {
-    // Clean up old states on component mount
-    NotificationStorage.clearOldStates(30); // Keep states for 30 days
-
-    // Set up periodic cleanup (every hour)
-    const cleanupInterval = setInterval(
-      () => {
-        NotificationStorage.clearOldStates(30);
-      },
-      60 * 60 * 1000,
-    ); // 1 hour
-
-    return () => {
-      clearInterval(cleanupInterval);
-    };
-  }, []);
-
-  // Combine API notifications with local notifications and apply local storage read states
+  // Combine API notifications with local notifications and apply optimistic read states
   const notifications = React.useMemo(() => {
-    console.log(
-      "NotificationCenter: useMemo recalculating notifications, refreshCounter:",
-      refreshCounter,
-    );
+    console.log("NotificationCenter: useMemo recalculating notifications");
     const allPages = notificationListInfinite.data?.pages || [];
     const apiNotifications = allPages.flatMap(
       (page) => page?.data?.notifications || [],
@@ -156,11 +119,11 @@ export default function NotificationCenter({
       }
     });
 
-    // Apply local storage read states and sort by creation date (newest first)
+    // Apply optimistic read states and sort by creation date (newest first)
     const result = combined
       .map((notification) => ({
         ...notification,
-        isRead: NotificationStorage.isRead(notification.id),
+        isRead: notification.read || optimisticallyReadIds.has(notification.id),
       }))
       .sort(
         (a, b) =>
@@ -175,7 +138,7 @@ export default function NotificationCenter({
   }, [
     notificationListInfinite.data?.pages,
     localNotifications,
-    refreshCounter,
+    optimisticallyReadIds,
   ]);
 
   useEffect(() => {
@@ -283,22 +246,89 @@ export default function NotificationCenter({
   const markAsRead = async (id: string) => {
     try {
       console.log("NotificationCenter: Marking notification as read:", id);
-      // Call mutation to mark as read (which handles local storage and dispatches event)
+
+      // Optimistically update UI immediately
+      setOptimisticallyReadIds((prev) => new Set(prev).add(id));
+
+      // Update local notifications state immediately
+      setLocalNotifications((prev) =>
+        prev.map((notification) =>
+          notification.id === id
+            ? { ...notification, read: true }
+            : notification,
+        ),
+      );
+
+      // Call mutation to mark as read on backend
       await markAsReadMutation.mutateAsync(id);
       console.log("NotificationCenter: Successfully marked as read:", id);
     } catch (error) {
+      // Revert optimistic update on error
+      setOptimisticallyReadIds((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(id);
+        return newSet;
+      });
+
+      // Revert local notifications state on error
+      setLocalNotifications((prev) =>
+        prev.map((notification) =>
+          notification.id === id
+            ? { ...notification, read: false }
+            : notification,
+        ),
+      );
+
       console.error("Failed to mark notification as read:", error);
     }
   };
 
   const markAllAsRead = async () => {
-    try {
-      // Get all current notification IDs
-      const allNotificationIds = notifications.map((n) => n.id);
+    // Get all current unread notification IDs
+    const unreadNotificationIds = notifications
+      .filter((n) => !n.isRead)
+      .map((n) => n.id);
 
-      // Call mutation to mark all as read (which handles local storage and dispatches event)
-      await markAllAsReadMutation.mutateAsync(allNotificationIds);
+    if (unreadNotificationIds.length === 0) {
+      return;
+    }
+
+    try {
+      // Optimistically update UI immediately
+      setOptimisticallyReadIds((prev) => {
+        const newSet = new Set(prev);
+        unreadNotificationIds.forEach((id) => newSet.add(id));
+        return newSet;
+      });
+
+      // Update local notifications state immediately
+      setLocalNotifications((prev) =>
+        prev.map((notification) =>
+          unreadNotificationIds.includes(notification.id)
+            ? { ...notification, read: true }
+            : notification,
+        ),
+      );
+
+      // Call mutation to mark all as read on backend
+      await markAllAsReadMutation.mutateAsync(unreadNotificationIds);
     } catch (error) {
+      // Revert optimistic update on error
+      setOptimisticallyReadIds((prev) => {
+        const newSet = new Set(prev);
+        unreadNotificationIds.forEach((id) => newSet.delete(id));
+        return newSet;
+      });
+
+      // Revert local notifications state on error
+      setLocalNotifications((prev) =>
+        prev.map((notification) =>
+          unreadNotificationIds.includes(notification.id)
+            ? { ...notification, read: false }
+            : notification,
+        ),
+      );
+
       console.error("Failed to mark all notifications as read:", error);
     }
   };
@@ -314,19 +344,6 @@ export default function NotificationCenter({
       !notificationListInfinite.isFetchingNextPage
     ) {
       notificationListInfinite.fetchNextPage();
-    }
-  };
-
-  const getNotificationIcon = (type: TNotification["type"]) => {
-    switch (type) {
-      case "success":
-        return <div className="size-2 rounded-full bg-green-500" />;
-      case "warning":
-        return <div className="size-2 rounded-full bg-yellow-500" />;
-      case "error":
-        return <div className="size-2 rounded-full bg-red-500" />;
-      default:
-        return <div className="size-2 rounded-full bg-blue-500" />;
     }
   };
 
@@ -379,7 +396,7 @@ export default function NotificationCenter({
       <div className="h-fit border-b border-gray-100 p-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <IBell className="size-5 text-blue-600" />
+            <IBell className="size-5" />
             <h3 className="font-semibold text-gray-900">اعلان ها</h3>
             {unreadCount > 0 && (
               <span className="flex size-6 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
@@ -394,7 +411,11 @@ export default function NotificationCenter({
         {unreadCount > 0 && (
           <div className="mt-2 flex justify-end">
             <button
-              onClick={markAllAsRead}
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                markAllAsRead();
+              }}
               disabled={markAllAsReadMutation.isPending}
               className="text-xs text-blue-600 hover:text-blue-800 disabled:opacity-50">
               {markAllAsReadMutation.isPending
@@ -419,38 +440,52 @@ export default function NotificationCenter({
         ) : (
           <div className="divide-y divide-gray-100">
             {notifications.map((notification) => (
-              <div
+              <Link
+                target={
+                  notification.meetingId || notification.estateId
+                    ? "_blank"
+                    : "_self"
+                }
+                href={
+                  notification.meetingId
+                    ? `/dashboard/sessions/${notification.meetingId}`
+                    : notification.estateId
+                      ? `/estates/${notification.estateId}`
+                      : "#"
+                }
                 key={notification.id}
                 className={cn(
-                  "p-4 transition-colors hover:bg-gray-50",
+                  "block p-4 transition-colors hover:bg-gray-50",
                   !notification.isRead && "bg-blue-50/50",
                 )}>
-                <div className="flex items-start gap-3">
-                  <div className="mt-1">
-                    {getNotificationIcon(notification.type)}
-                  </div>
+                <div className="flex gap-3">
+                  <div className="mt-0.5 w-0.5 rounded-full bg-blue-500" />
                   <div className="min-w-0 flex-1">
-                    <div className="flex items-start justify-between">
+                    <div className="flex items-start justify-between gap-x-2">
                       <p
                         className={cn(
-                          "line-clamp-1 text-sm font-medium text-gray-900",
+                          "text-sm font-medium text-gray-900",
                           !notification.isRead && "font-semibold",
                         )}>
                         {notification.title}
                       </p>
-                      <div className="ml-2 flex items-center gap-1">
+                      <div className="flex shrink-0 items-center gap-1">
                         <span className="text-xs text-gray-500">
                           {formatTimeAgo(notification.createdAt)}
                         </span>
                       </div>
                     </div>
-                    <p className="mt-1 line-clamp-2 text-sm text-gray-600">
+                    <p className="mt-1 text-sm text-gray-600">
                       {notification.description}
                     </p>
                     {!notification.isRead && (
                       <div className="mt-2 flex items-center gap-2">
                         <button
-                          onClick={() => markAsRead(notification.id)}
+                          onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            markAsRead(notification.id);
+                          }}
                           disabled={markAsReadMutation.isPending}
                           className="flex items-center gap-1 rounded-full bg-blue-100 px-2 py-1 text-xs text-blue-700 transition-colors hover:bg-blue-200 disabled:opacity-50">
                           <ICheck className="size-3" />
@@ -460,7 +495,7 @@ export default function NotificationCenter({
                     )}
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
 
             {/* Loading indicator for infinite scroll */}

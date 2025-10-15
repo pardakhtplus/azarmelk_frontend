@@ -4,11 +4,10 @@ import NotificationModal from "@/components/modules/NotificationModal";
 import ReminderFormModal from "@/components/modules/reminder/ReminderFormModal";
 import { REMINDER_CONTENT } from "@/components/modules/reminder/sectionUtils";
 import { formatDateForTehranDisplay } from "@/lib/timezone-utils";
-import { cn } from "@/lib/utils";
 import useMutateReminder from "@/services/mutations/admin/reminder/useMutateReminder";
 import { useReminderList } from "@/services/queries/admin/reminder/useReminderList";
 import {
-  REMINDER_TYPE,
+  REMINDER_STATUS,
   type TReminder,
 } from "@/types/admin/estate/reminder.types";
 import {
@@ -73,34 +72,6 @@ export default function SessionReminders({
     return formatDateForTehranDisplay(dateString);
   };
 
-  const getReminderTypeText = (types: REMINDER_TYPE[]) => {
-    return types
-      .map((type) => {
-        switch (type) {
-          case REMINDER_TYPE.SMS:
-            return "پیامک";
-          case REMINDER_TYPE.NOTIFICATION:
-            return "اعلان";
-          default:
-            return type;
-        }
-      })
-      .join("، ");
-  };
-
-  const getReminderTypeBadgeColor = (types: REMINDER_TYPE[]) => {
-    if (
-      types.includes(REMINDER_TYPE.SMS) &&
-      types.includes(REMINDER_TYPE.NOTIFICATION)
-    ) {
-      return "bg-blue-100 text-blue-800";
-    } else if (types.includes(REMINDER_TYPE.SMS)) {
-      return "bg-green-100 text-green-800";
-    } else {
-      return "bg-purple-100 text-purple-800";
-    }
-  };
-
   return (
     <>
       <div className="relative w-full">
@@ -136,50 +107,52 @@ export default function SessionReminders({
                       <div className="flex items-center gap-4 text-sm text-gray-500">
                         <div className="flex items-center gap-1">
                           <CalendarIcon className="size-4" />
-                          <span>{formatDate(reminder.reminderDate)}</span>
+                          <span>
+                            {" "}
+                            تاریخ رویداد : {formatDate(reminder.date)}
+                          </span>
                         </div>
+                      </div>
+
+                      <div className="mt-1.5 flex items-center gap-4 text-sm text-gray-500">
                         <div className="flex items-center gap-1">
                           <MessageSquareIcon className="size-4" />
-                          <span>{getReminderTypeText(reminder.type)}</span>
+                          <span>
+                            {" "}
+                            تاریخ ارسال یادآور :{" "}
+                            {formatDate(reminder.reminderDate)}
+                          </span>
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={cn(
-                          "rounded-full px-2 py-1 text-xs font-medium",
-                          getReminderTypeBadgeColor(reminder.type),
-                        )}>
-                        {getReminderTypeText(reminder.type)}
-                      </span>
-                      <div className="flex items-center gap-1">
-                        <button
-                          onClick={() => handleEditReminder(reminder)}
-                          className="flex size-8 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-blue-50 hover:text-blue-600"
-                          title="ویرایش یادآور">
-                          <EditIcon className="size-4" />
-                        </button>
-                        <NotificationModal
-                          colorVariant="red"
-                          actionName="حذف"
-                          actionClassName="bg-red"
-                          title="حذف یادآور"
-                          onSubmit={async () => {
-                            const res = await deleteReminder.mutateAsync(
-                              reminder.id,
-                            );
-                            if (!res) return false;
-                            return true;
-                          }}
-                          description={`آیا می‌خواهید یادآور "${reminder.title}" حذف شود؟`}
-                          className="flex !size-8 items-center justify-center rounded-full !border-none !bg-transparent !p-0 !py-0 text-gray-500 transition-colors hover:!bg-red/10 hover:text-red-600">
-                          <TrashIcon className="size-4" />
-                        </NotificationModal>
+                    {reminder.status === REMINDER_STATUS.PENDING && (
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => handleEditReminder(reminder)}
+                            className="flex size-8 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-blue-50 hover:text-blue-600"
+                            title="ویرایش یادآور">
+                            <EditIcon className="size-4" />
+                          </button>
+                          <NotificationModal
+                            colorVariant="red"
+                            actionName="حذف"
+                            actionClassName="bg-red"
+                            title="حذف یادآور"
+                            onSubmit={async () => {
+                              const res = await deleteReminder.mutateAsync(
+                                reminder.id,
+                              );
+                              if (!res) return false;
+                              return true;
+                            }}
+                            description={`آیا می‌خواهید یادآور "${reminder.title}" حذف شود؟`}
+                            className="flex !size-8 items-center justify-center rounded-full !border-none !bg-transparent !p-0 !py-0 text-gray-500 transition-colors hover:!bg-red/10 hover:text-red-600">
+                            <TrashIcon className="size-4" />
+                          </NotificationModal>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="rounded-md bg-gray-50 p-3">
-                    <p className="text-sm text-gray-700">{reminder.message}</p>
+                    )}
                   </div>
                 </div>
               ))}

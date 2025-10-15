@@ -1,34 +1,30 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useReadNotification from "@/services/mutations/admin/notification/useReadNotification";
 
-export function useMarkAllNotificationsAsRead() {
+export function useMarkNotificationAsRead() {
   const queryClient = useQueryClient();
   const { readNotification } = useReadNotification();
 
-  const markAllAsReadMutation = useMutation({
-    mutationFn: async (notificationIds: string[]) => {
-      if (notificationIds.length === 0) {
-        return { success: true };
-      }
-
-      // Call backend API to mark all notifications as read
+  const markAsReadMutation = useMutation({
+    mutationFn: async (notificationId: string) => {
+      // Call backend API to mark as read
       const result = await readNotification.mutateAsync({
-        id: notificationIds,
+        id: [notificationId],
       });
-      return { success: true, result };
+      return { success: true, notificationId, result };
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       // Invalidate queries to refetch updated notification data
       queryClient.invalidateQueries({ queryKey: ["notificationList"] });
       queryClient.invalidateQueries({ queryKey: ["notificationListInfinite"] });
-      console.log("All notifications marked as read");
+      console.log(`Notification ${data.notificationId} marked as read`);
     },
     onError: (error) => {
-      console.error("Failed to mark all notifications as read:", error);
+      console.error("Failed to mark notification as read:", error);
     },
   });
 
   return {
-    markAllAsReadMutation,
+    markAsReadMutation,
   };
 }

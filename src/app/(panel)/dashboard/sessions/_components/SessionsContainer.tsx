@@ -106,6 +106,10 @@ export default function SessionsContainer() {
     canManageSession ||
     userInfo?.data?.data.accessPerms.includes(Permissions.CREATE_SESSION);
 
+  const canSeeSession =
+    canManageSession ||
+    userInfo?.data?.data.accessPerms.includes(Permissions.GET_SESSION);
+
   // Return null if the SESSIONS feature is not enabled
   if (!isFeatureEnabled(FeatureFlag.SESSIONS)) {
     return null;
@@ -131,6 +135,7 @@ export default function SessionsContainer() {
             currentDate={currentDate}
             canManageSession={canManageSession ?? false}
             canCreateSession={canCreateSession ?? false}
+            canSeeSession={canSeeSession ?? false}
           />
         </div>
       </div>

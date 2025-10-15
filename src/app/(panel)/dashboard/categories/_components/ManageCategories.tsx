@@ -149,14 +149,14 @@ export default function ManageCategories() {
         regions.data?.data.children.map((area) => (
           <div
             key={area.id}
-            className="flex w-full items-center justify-between gap-2 px-5 py-4 transition-all hover:bg-neutral-100/80"
+            className="flex w-full cursor-pointer items-center justify-between gap-2 px-5 py-4 transition-all hover:bg-neutral-100/80"
             onClick={() => {
               if (selectedCategories.length >= 4) return;
 
               setSelectedCategories([...selectedCategories, area]);
             }}>
-            <div className="flex flex-col gap-0.5">
-              <span>{area.name}</span>
+            <div className="flex cursor-pointer flex-col gap-0.5">
+              <span className="cursor-pointer">{area.name}</span>
               <span className="text-xs text-text-100">
                 تعداد فایل: {area._count?.estates || 0}
               </span>

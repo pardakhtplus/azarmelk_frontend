@@ -1,21 +1,17 @@
-import {
-  IFolderMagnifyingGlassRegular,
-  IFolderOpen,
-  IUser,
-} from "@/components/Icons";
 import { isFeatureEnabled } from "@/config/features";
+import { FolderInputIcon, FolderOpenIcon, UserRoundIcon } from "lucide-react";
 import { type MenuItem } from "../../_components/PanelMenu";
 
 // Define all menu items with their associated feature flags
 const allMenuItems: MenuItem[] = [
   {
     title: "پنل کاربری",
-    icon: <IUser className="size-5 shrink-0" />,
+    icon: <UserRoundIcon className="size-5 shrink-0" />,
     href: "/user-panel",
   },
   {
     title: "فایل ها",
-    icon: <IFolderOpen className="size-6 shrink-0" />,
+    icon: <FolderOpenIcon className="size-5 shrink-0" />,
     subItems: [
       {
         title: "مدیریت فایل ها",
@@ -37,7 +33,7 @@ const allMenuItems: MenuItem[] = [
   },
   {
     title: "درخواست ملک",
-    icon: <IFolderMagnifyingGlassRegular className="ml-1 size-5 shrink-0" />,
+    icon: <FolderInputIcon className="size-5 shrink-0" />,
     subItems: [
       {
         title: "لیست درخواست ها",

@@ -29,6 +29,14 @@ export default function SessionDetailContainer() {
     userInfo?.data?.data.accessPerms.includes(Permissions.MANAGE_SESSION) ||
     userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER) ||
     userInfo?.data?.data.accessPerms.includes(Permissions.OWNER);
+  const canSeeSession =
+    userInfo?.data?.data.accessPerms.includes(Permissions.GET_SESSION) ||
+    userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER) ||
+    userInfo?.data?.data.accessPerms.includes(Permissions.OWNER);
+  const canCreateSession =
+    userInfo?.data?.data.accessPerms.includes(Permissions.CREATE_SESSION) ||
+    userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER) ||
+    userInfo?.data?.data.accessPerms.includes(Permissions.OWNER);
 
   if (!isFeatureEnabled(FeatureFlag.SESSIONS)) {
     return null;
@@ -56,6 +64,8 @@ export default function SessionDetailContainer() {
             showEdit={sessionData.status === SESSION_STATUS.PENDING}
             session={sessionData}
             canManageSession={canManageSession ?? false}
+            canSeeSession={canSeeSession ?? false}
+            canCreateSession={canCreateSession ?? false}
           />
           <SessionInfo session={sessionData} />
           <SessionUsers
@@ -63,12 +73,12 @@ export default function SessionDetailContainer() {
             creatorId={sessionData.creator?.id}
           />
           <SessionCreator creator={sessionData.creator} />
-          {canManageSession && (
-            <SessionCommentsTabs
-              sessionId={id as string}
-              sessionTitle={sessionData.title}
-            />
-          )}
+          <SessionCommentsTabs
+            sessionId={id as string}
+            sessionTitle={sessionData.title}
+            canManageSession={canManageSession ?? false}
+            canCreateSession={canCreateSession ?? false}
+          />
         </>
       )}
       {isOpenEditModal && sessionData && (

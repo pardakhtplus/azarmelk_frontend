@@ -86,17 +86,13 @@ export async function middleware(req: NextRequest) {
 
     // DASHBOARD
     if (req.nextUrl.pathname.startsWith("/dashboard")) {
-      if (payload.accessPerms.includes(Permissions.USER)) {
-        return NextResponse.redirect(new URL("/user-panel", req.url));
-      } else {
-        const subject = getSubjectUsingPathname(req.nextUrl.pathname);
+      const subject = getSubjectUsingPathname(req.nextUrl.pathname);
 
-        if (!subject) {
-          return NextResponse.next();
-        }
-        if (!canPerform(subject, Action.READ, payload.accessPerms)) {
-          return NextResponse.rewrite(new URL("/403", req.url));
-        }
+      if (!subject) {
+        return NextResponse.next();
+      }
+      if (!canPerform(subject, Action.READ, payload.accessPerms)) {
+        return NextResponse.rewrite(new URL("/403", req.url));
       }
     }
 

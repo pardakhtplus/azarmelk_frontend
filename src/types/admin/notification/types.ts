@@ -5,6 +5,9 @@ export interface TNotification {
   type: "info" | "success" | "warning" | "error";
   createdAt: string;
   updatedAt: string;
+  read: boolean;
+  meetingId?: string;
+  estateId?: string;
 }
 
 export interface TNotificationListResponse {

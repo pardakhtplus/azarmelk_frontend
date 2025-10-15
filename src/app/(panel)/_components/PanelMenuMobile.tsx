@@ -135,7 +135,10 @@ export default function PanelMenuMobile({
             <div className="flex items-center gap-2">
               <div className="size-12 shrink-0 overflow-hidden rounded-full border-2 border-white shadow-sm">
                 <Image
-                  src="/images/avatar.jpg"
+                  src={
+                    userInfo?.data?.data.avatar?.url ||
+                    "/images/profile-placeholder.jpg"
+                  }
                   alt="avatar"
                   width={200}
                   height={200}
@@ -153,6 +156,7 @@ export default function PanelMenuMobile({
               </div>
             </div>
             <div
+              className="shrink-0"
               onClick={async (event) => {
                 event.preventDefault();
                 event.stopPropagation();

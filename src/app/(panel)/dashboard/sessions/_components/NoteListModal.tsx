@@ -13,6 +13,7 @@ interface NoteListModalProps {
   onClose: () => void;
   sessionTitle: string;
   sessionId: string;
+  canCreateSession: boolean;
 }
 
 export default function NoteListModal({
@@ -20,6 +21,7 @@ export default function NoteListModal({
   onClose,
   sessionTitle,
   sessionId,
+  canCreateSession,
 }: NoteListModalProps) {
   const [newNote, setNewNote] = useState("");
   const queryClient = useQueryClient();
@@ -103,28 +105,30 @@ export default function NoteListModal({
         </div>
 
         {/* Add new note section - moved to bottom */}
-        <div className="border-t p-4">
-          <p className="mb-2 text-sm font-medium">افزودن یادداشت جدید</p>
-          <div className="flex flex-col gap-2">
-            <textarea
-              name="newNote"
-              placeholder="یادداشت خود را بنویسید..."
-              value={newNote}
-              onChange={(e) => setNewNote(e.target.value)}
-              className="w-full resize-none rounded-lg border border-gray-300 p-3 text-sm focus:border-black/50 focus:outline-none"
-              rows={3}
-            />
-            <div className="flex justify-end">
-              <Button
-                onClick={handleAddNote}
-                disabled={!newNote.trim()}
-                isLoading={mutateSessionNote.isPending}
-                className="whitespace-nowrap">
-                افزودن یادداشت
-              </Button>
+        {canCreateSession ? (
+          <div className="border-t p-4">
+            <p className="mb-2 text-sm font-medium">افزودن یادداشت جدید</p>
+            <div className="flex flex-col gap-2">
+              <textarea
+                name="newNote"
+                placeholder="یادداشت خود را بنویسید..."
+                value={newNote}
+                onChange={(e) => setNewNote(e.target.value)}
+                className="w-full resize-none rounded-lg border border-gray-300 p-3 text-sm focus:border-black/50 focus:outline-none"
+                rows={3}
+              />
+              <div className="flex justify-end">
+                <Button
+                  onClick={handleAddNote}
+                  disabled={!newNote.trim()}
+                  isLoading={mutateSessionNote.isPending}
+                  className="whitespace-nowrap">
+                  افزودن یادداشت
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
+        ) : null}
       </div>
     </Modal>,
     document.body,

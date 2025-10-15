@@ -616,55 +616,59 @@ export default function EstateActions({
             <IPencil className="size-[18px]" />
             <span>ویرایش</span>
           </Link>
-          <button
-            className="flex w-full items-center gap-x-2 rounded-md py-2 pr-3 text-right text-sm transition-colors hover:bg-gray-100"
-            onClick={() => {
-              setIsNotesOpen(true);
-              setOpen(false);
-            }}>
-            <INotes className="size-[18px]" />
-            <span>گزارش ها</span>
-          </button>
-          {isEstateManager && (
-            <button
-              className="flex w-full items-center gap-x-2 rounded-md py-2 pr-3 text-right text-sm transition-colors hover:bg-gray-100"
-              onClick={() => {
-                setIsLogsOpen(true);
-                setOpen(false);
-              }}>
-              <IClockRotateLeft className="size-[18px]" />
-              <span>تاریخچه</span>
-            </button>
+          {isUserPanel ? null : (
+            <>
+              <button
+                className="flex w-full items-center gap-x-2 rounded-md py-2 pr-3 text-right text-sm transition-colors hover:bg-gray-100"
+                onClick={() => {
+                  setIsNotesOpen(true);
+                  setOpen(false);
+                }}>
+                <INotes className="size-[18px]" />
+                <span>گزارش ها</span>
+              </button>
+              {isEstateManager && (
+                <button
+                  className="flex w-full items-center gap-x-2 rounded-md py-2 pr-3 text-right text-sm transition-colors hover:bg-gray-100"
+                  onClick={() => {
+                    setIsLogsOpen(true);
+                    setOpen(false);
+                  }}>
+                  <IClockRotateLeft className="size-[18px]" />
+                  <span>تاریخچه</span>
+                </button>
+              )}
+              {isHighPermission && (
+                <button
+                  className="flex w-full items-center gap-x-2 rounded-md py-2 pr-3 text-right text-sm transition-colors hover:bg-gray-100"
+                  onClick={() => {
+                    setIsLandingModalOpen(true);
+                    setOpen(false);
+                  }}>
+                  <FolderPlusIcon className="size-[18px]" />
+                  <span>افزودن به لندینگ</span>
+                </button>
+              )}
+              <button
+                className="flex w-full items-center gap-x-2 rounded-md py-2 pr-3 text-right text-sm transition-colors hover:bg-gray-100"
+                onClick={() => {
+                  setIsCompletionModalOpen(true);
+                  setOpen(false);
+                }}>
+                <BarChartIcon className="size-[18px]" />
+                <span>وضعیت تکمیل</span>
+              </button>
+              <button
+                className="flex w-full items-center gap-x-2 rounded-md py-2 pr-3 text-right text-sm transition-colors hover:bg-gray-100"
+                onClick={() => {
+                  setIsRemindersOpen(true);
+                  setOpen(false);
+                }}>
+                <BellIcon className="size-[18px]" />
+                <span>یادآورها</span>
+              </button>
+            </>
           )}
-          {isHighPermission && (
-            <button
-              className="flex w-full items-center gap-x-2 rounded-md py-2 pr-3 text-right text-sm transition-colors hover:bg-gray-100"
-              onClick={() => {
-                setIsLandingModalOpen(true);
-                setOpen(false);
-              }}>
-              <FolderPlusIcon className="size-[18px]" />
-              <span>افزودن به لندینگ</span>
-            </button>
-          )}
-          <button
-            className="flex w-full items-center gap-x-2 rounded-md py-2 pr-3 text-right text-sm transition-colors hover:bg-gray-100"
-            onClick={() => {
-              setIsCompletionModalOpen(true);
-              setOpen(false);
-            }}>
-            <BarChartIcon className="size-[18px]" />
-            <span>وضعیت تکمیل</span>
-          </button>
-          <button
-            className="flex w-full items-center gap-x-2 rounded-md py-2 pr-3 text-right text-sm transition-colors hover:bg-gray-100"
-            onClick={() => {
-              setIsRemindersOpen(true);
-              setOpen(false);
-            }}>
-            <BellIcon className="size-[18px]" />
-            <span>یادآورها</span>
-          </button>
         </div>,
         document.body,
       )}

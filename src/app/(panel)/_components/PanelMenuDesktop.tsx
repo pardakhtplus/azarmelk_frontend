@@ -10,7 +10,7 @@ import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type MenuItem } from "./PanelMenu";
 import NotificationCenter from "./notification/NotificationCenter";
 import NotificationButton from "./notification/NotificationButton";
@@ -42,6 +42,15 @@ export default function PanelMenuDesktop({
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const notificationTriggerRef = useRef<HTMLButtonElement>(null);
   const notificationTriggerRefMobile = useRef<HTMLButtonElement>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div
@@ -53,6 +62,7 @@ export default function PanelMenuDesktop({
         className={cn(
           "sticky top-2 z-40 flex h-full w-full shrink-0 items-center justify-between rounded-xl border-primary-border/50 bg-background transition-all duration-300 ease-in-out max-lg:border lg:col-span-3 lg:block lg:max-w-xs lg:rounded-2xl",
           isMinimized && "items-center !px-0 lg:max-w-[80px]",
+          isScrolled && "max-lg:shadow-md",
         )}>
         <div
           className={cn(
@@ -254,7 +264,7 @@ export default function PanelMenuDesktop({
                   </div>
                 </div>
                 <div
-                  className={cn(isMinimized && "hidden")}
+                  className={cn("shrink-0", isMinimized && "hidden")}
                   onClick={async (event) => {
                     event.preventDefault();
                     event.stopPropagation();

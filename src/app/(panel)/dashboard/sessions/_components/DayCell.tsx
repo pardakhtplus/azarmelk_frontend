@@ -20,6 +20,7 @@ interface DayCellProps {
   canceledCount: number;
   canManageSession: boolean;
   canCreateSession: boolean;
+  canSeeSession: boolean;
 }
 
 export default function DayCell({
@@ -31,6 +32,7 @@ export default function DayCell({
   canceledCount,
   canManageSession,
   canCreateSession,
+  canSeeSession,
 }: DayCellProps) {
   const dayIsToday = isToday(day);
   const dayIsCurrentMonth = isCurrentMonth(day, currentDate);
@@ -58,7 +60,7 @@ export default function DayCell({
             : undefined
         }
         onClick={() => {
-          if (dayIsCurrentMonth && canCreateSession) {
+          if (dayIsCurrentMonth && (canCreateSession || canSeeSession)) {
             setIsOpenModal(true);
           }
         }}>
@@ -135,6 +137,7 @@ export default function DayCell({
           isFutureDate={isFutureDate(day)}
           canManageSession={canManageSession}
           canCreateSession={canCreateSession}
+          canSeeSession={canSeeSession}
         />
       ) : null}
     </>

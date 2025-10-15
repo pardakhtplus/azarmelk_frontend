@@ -27,6 +27,7 @@ interface CalendarGridProps {
   currentDate: DateObject;
   canManageSession: boolean;
   canCreateSession: boolean;
+  canSeeSession: boolean;
 }
 
 export default function CalendarGrid({
@@ -34,6 +35,7 @@ export default function CalendarGrid({
   currentDate,
   canManageSession,
   canCreateSession,
+  canSeeSession,
 }: CalendarGridProps) {
   const startDate = new DateObject(currentDate)
     .toFirstOfMonth()
@@ -67,7 +69,7 @@ export default function CalendarGrid({
       end: convertToEnglishNumbers(
         endDate.convert(gregorian, gregorian_en).toUTC().format(dateType),
       ),
-      enabled: canCreateSession && !canManageSession,
+      enabled: (canCreateSession || canSeeSession) && !canManageSession,
     });
 
   const sessionCountList = canManageSession
@@ -115,6 +117,7 @@ export default function CalendarGrid({
                 canceledCount={count?.canceled.count || 0}
                 canManageSession={canManageSession}
                 canCreateSession={canCreateSession}
+                canSeeSession={canSeeSession}
               />
             );
           })}

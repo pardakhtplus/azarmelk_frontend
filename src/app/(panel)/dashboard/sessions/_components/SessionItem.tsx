@@ -38,12 +38,16 @@ interface SessionItemProps {
   startSessionDate: DateObject;
   timeTitle: string;
   canManageSession: boolean;
+  canSeeSession: boolean;
+  canCreateSession: boolean;
 }
 
 export default function SessionItem({
   session,
   startSessionDate,
   canManageSession,
+  canCreateSession,
+  canSeeSession,
 }: SessionItemProps) {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [showActionMenu, setShowActionMenu] = useState(false);
@@ -169,9 +173,19 @@ export default function SessionItem({
               ref={menuRef}
               onClick={(e) => e.stopPropagation()}
               className={cn(
-                "visible absolute -bottom-2 left-full z-10 mt-1 w-44 overflow-y-auto rounded-md border border-gray-200 bg-white p-1 opacity-100 shadow-lg transition-all",
+                "visible absolute -bottom-7 left-full z-10 mt-1 w-44 overflow-y-auto rounded-md border border-gray-200 bg-white p-1 opacity-100 shadow-lg transition-all",
                 showActionMenu || "invisible opacity-0",
               )}>
+              {canSeeSession ? (
+                <>
+                  <button
+                    className="flex w-full items-center gap-x-2 rounded-md px-3 py-2 text-right text-sm transition-colors hover:bg-gray-100"
+                    onClick={() => setIsOpenNoteListModal(true)}>
+                    <INote className="size-[18px]" />
+                    <span>یادداشت ها</span>
+                  </button>
+                </>
+              ) : null}
               {canManageSession ? (
                 <>
                   <button
@@ -182,12 +196,7 @@ export default function SessionItem({
                     <BellIcon className="size-[18px]" />
                     <span>یادآورها</span>
                   </button>
-                  <button
-                    className="flex w-full items-center gap-x-2 rounded-md px-3 py-2 text-right text-sm transition-colors hover:bg-gray-100"
-                    onClick={() => setIsOpenNoteListModal(true)}>
-                    <INote className="size-[18px]" />
-                    <span>یادداشت ها</span>
-                  </button>
+
                   <button
                     className="flex w-full items-center gap-x-2 rounded-md px-3 py-2 text-right text-sm transition-colors hover:bg-gray-100"
                     onClick={() => setIsOpenLogModal(true)}>
@@ -208,7 +217,8 @@ export default function SessionItem({
               {session.status === SESSION_STATUS.PENDING && (
                 <>
                   {canManageSession ||
-                  session.creator.id === userInfo?.data?.data.id ? (
+                  (session.creator.id === userInfo?.data?.data.id &&
+                    canCreateSession) ? (
                     <button
                       className="flex w-full items-center gap-x-2 rounded-md px-3 py-2 text-right text-sm transition-colors hover:bg-gray-100"
                       onClick={handleEdit}>
@@ -432,6 +442,7 @@ export default function SessionItem({
           onClose={() => setIsOpenNoteListModal(false)}
           sessionTitle={session.title}
           sessionId={session.id}
+          canCreateSession={canCreateSession}
         />
       )}
 

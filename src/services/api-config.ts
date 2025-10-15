@@ -87,6 +87,7 @@ export const API_CONFIG = {
 
       notification: {
         getList: "/api/v1/admin/notification/getList",
+        read: "/api/v1/admin/notification/update",
       },
 
       reminder: {

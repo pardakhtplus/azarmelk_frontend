@@ -27,6 +27,8 @@ interface TimeSlotItemProps {
   onAddSession: (date: DateObject) => void;
   customTimeSlots: CustomTimeSlot[];
   canManageSession: boolean;
+  canSeeSession: boolean;
+  canCreateSession: boolean;
 }
 
 const TimeSlotItem = ({
@@ -38,6 +40,8 @@ const TimeSlotItem = ({
   onAddSession,
   customTimeSlots,
   canManageSession,
+  canSeeSession,
+  canCreateSession,
 }: TimeSlotItemProps) => {
   const isCustomTimeSlot = customTimeSlots.some(
     (slot) => slot.id === timeSlot.id,
@@ -75,6 +79,8 @@ const TimeSlotItem = ({
               startSessionDate={sessionDate}
               timeTitle={timeSlot.title || ""}
               canManageSession={canManageSession}
+              canSeeSession={canSeeSession}
+              canCreateSession={canCreateSession}
             />
           );
         })}
@@ -84,7 +90,9 @@ const TimeSlotItem = ({
           (session) =>
             session.status === SESSION_STATUS.CONFIRMED ||
             session.status === SESSION_STATUS.PENDING,
-        ).length && isFutureDate ? (
+        ).length &&
+        isFutureDate &&
+        canCreateSession ? (
           <button
             className="flex h-12 w-full items-center justify-center gap-x-1.5 rounded-lg bg-neutral-100 py-2.5"
             onClick={() => onAddSession(sessionDate)}>
@@ -92,29 +100,32 @@ const TimeSlotItem = ({
             <span>افزودن جلسه جدید</span>
           </button>
         ) : null}
-        {isCustomTimeSlot && isFutureDate && !existingSessions.length && (
-          <NotificationModal
-            title="حذف"
-            description="آیا از حذف این تایم مطمئن هستید؟"
-            className="-mt-1 flex h-12 w-full items-center justify-center gap-x-1.5 rounded-lg border-primary-red/50 bg-primary-red/10 py-2.5 text-primary-red"
-            aria-label="Delete"
-            onSubmit={async () => {
-              const res = await deleteSessionDate.mutateAsync({
-                id: timeSlot.id,
-              });
+        {isCustomTimeSlot &&
+          isFutureDate &&
+          !existingSessions.length &&
+          canManageSession && (
+            <NotificationModal
+              title="حذف"
+              description="آیا از حذف این تایم مطمئن هستید؟"
+              className="-mt-1 flex h-12 w-full items-center justify-center gap-x-1.5 rounded-lg border-primary-red/50 bg-primary-red/10 py-2.5 text-primary-red"
+              aria-label="Delete"
+              onSubmit={async () => {
+                const res = await deleteSessionDate.mutateAsync({
+                  id: timeSlot.id,
+                });
 
-              if (!res) return false;
+                if (!res) return false;
 
-              queryClient.invalidateQueries({
-                queryKey: ["sessionDateList"],
-              });
+                queryClient.invalidateQueries({
+                  queryKey: ["sessionDateList"],
+                });
 
-              return true;
-            }}>
-            <Trash2 className="size-4" strokeWidth={1.5} />
-            <span>حذف ساعت</span>
-          </NotificationModal>
-        )}
+                return true;
+              }}>
+              <Trash2 className="size-4" strokeWidth={1.5} />
+              <span>حذف ساعت</span>
+            </NotificationModal>
+          )}
       </div>
     </div>
   );

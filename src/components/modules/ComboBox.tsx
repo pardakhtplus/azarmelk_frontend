@@ -1,8 +1,9 @@
 import React, { type RefObject, useEffect, useRef, useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
-import { useOnClickOutside } from "usehooks-ts";
+import { useMediaQuery, useOnClickOutside } from "usehooks-ts";
 import { type FieldError } from "react-hook-form";
 import { cn } from "@/lib/utils";
+import { createPortal } from "react-dom";
 
 export type TOption = {
   key: string;
@@ -35,6 +36,7 @@ const ComboBox = ({
   disable?: boolean;
   dropDownLabel?: string;
 }) => {
+  const isSm = useMediaQuery("(max-width: 640px)");
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -88,37 +90,74 @@ const ComboBox = ({
           {error?.message}
         </p>
       ) : null}
-      {isOpen && (
+      {isOpen ? (
         <>
-          <div
-            className="fixed inset-0 z-40 block size-full bg-black/30 backdrop-blur-sm sm:hidden"
-            onClick={() => setIsOpen(false)}
-          />
-          <div
-            className={cn(
-              "fixed bottom-0 left-0 right-0 z-50 mt-1 size-full max-h-64 w-fit overflow-auto border border-primary-border bg-white py-1 text-base shadow-lg ring-opacity-5 focus:outline-none sm:absolute sm:!inset-auto sm:z-20 sm:h-auto sm:max-h-48 sm:rounded-md sm:text-sm",
-              dropDownClassName,
-            )}>
-            {dropDownLabel && (
-              <div className="py-2 pr-4 text-xs text-text-200">
-                {dropDownLabel}
-              </div>
-            )}
-            {options?.map((option, index) => (
+          {isSm ? (
+            createPortal(
+              <>
+                <div
+                  className="fixed inset-0 z-40 block size-full bg-black/30 backdrop-blur-sm sm:hidden"
+                  onClick={() => setIsOpen(false)}
+                />
+                <div
+                  className={cn(
+                    "fixed bottom-0 left-0 right-0 z-50 mt-1 size-full max-h-64 w-fit overflow-auto border border-primary-border bg-white py-1 text-base shadow-lg ring-opacity-5 focus:outline-none sm:absolute sm:!inset-auto sm:z-20 sm:h-auto sm:max-h-48 sm:rounded-md sm:text-sm",
+                    dropDownClassName,
+                  )}>
+                  {dropDownLabel && (
+                    <div className="py-2 pr-4 text-xs text-text-200">
+                      {dropDownLabel}
+                    </div>
+                  )}
+                  {options?.map((option, index) => (
+                    <div
+                      key={index}
+                      className={cn(
+                        "shrink-0 cursor-pointer text-nowrap px-4 py-2 hover:bg-gray-100",
+                        option.title === value && "!bg-primary/10",
+                        // !value && !option.key && "!bg-primary/10",
+                      )}
+                      onClick={() => handleOptionSelect(option)}>
+                      {option.title}
+                    </div>
+                  ))}
+                </div>
+              </>,
+              document.body,
+            )
+          ) : (
+            <>
               <div
-                key={index}
+                className="fixed inset-0 z-40 block size-full bg-black/30 backdrop-blur-sm sm:hidden"
+                onClick={() => setIsOpen(false)}
+              />
+              <div
                 className={cn(
-                  "shrink-0 cursor-pointer text-nowrap px-4 py-2 hover:bg-gray-100",
-                  option.title === value && "!bg-primary/10",
-                  // !value && !option.key && "!bg-primary/10",
+                  "fixed bottom-0 left-0 right-0 z-50 mt-1 size-full max-h-64 w-fit overflow-auto border border-primary-border bg-white py-1 text-base shadow-lg ring-opacity-5 focus:outline-none sm:absolute sm:!inset-auto sm:z-20 sm:h-auto sm:max-h-48 sm:rounded-md sm:text-sm",
+                  dropDownClassName,
+                )}>
+                {dropDownLabel && (
+                  <div className="py-2 pr-4 text-xs text-text-200">
+                    {dropDownLabel}
+                  </div>
                 )}
-                onClick={() => handleOptionSelect(option)}>
-                {option.title}
+                {options?.map((option, index) => (
+                  <div
+                    key={index}
+                    className={cn(
+                      "shrink-0 cursor-pointer text-nowrap px-4 py-2 hover:bg-gray-100",
+                      option.title === value && "!bg-primary/10",
+                      // !value && !option.key && "!bg-primary/10",
+                    )}
+                    onClick={() => handleOptionSelect(option)}>
+                    {option.title}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </>
+          )}
         </>
-      )}
+      ) : null}
     </div>
   );
 };

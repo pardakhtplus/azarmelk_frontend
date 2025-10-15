@@ -93,7 +93,7 @@ export default function UserContainer() {
                   setIsOpenContactHistoryModal(true);
                 }}>
                 <NotebookTabsIcon className="size-5" />
-                <span className="hidden md:block">تاریخچه تلفن</span>
+                <span className="hidden md:block">تاریخچه تماس</span>
               </BorderedButton>
               {isSuperUser && user.data?.data && (
                 <TransferAdvisorButton

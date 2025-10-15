@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { IBell } from "@/components/Icons";
 import { cn } from "@/lib/utils";
 import { useNotificationListInfinite } from "@/services/queries/admin/notification/useNotificationListInfinite";
-import { NotificationStorage } from "@/lib/notificationStorage";
 
 interface NotificationButtonProps {
   onClick: () => void;
@@ -18,43 +17,17 @@ const NotificationButton = React.forwardRef<
   HTMLButtonElement,
   NotificationButtonProps
 >(({ onClick, isMinimized = false, isOpen = false, className }, ref) => {
-  const [refreshCounter, setRefreshCounter] = useState(0);
   const { notificationListInfinite } = useNotificationListInfinite({
-    limit: 20,
+    limit: 10,
   });
 
-  // Listen for localStorage changes to update the count
-  useEffect(() => {
-    const handleStorageChange = () => {
-      console.log("NotificationButton: Storage changed, refreshing...");
-      setRefreshCounter((prev) => prev + 1);
-    };
-
-    // Listen for custom storage events
-    window.addEventListener("notificationStorageChange", handleStorageChange);
-
-    return () => {
-      window.removeEventListener(
-        "notificationStorageChange",
-        handleStorageChange,
-      );
-    };
-  }, []);
-
-  // Get all notifications from all pages and apply local storage read states
-  const allPages = notificationListInfinite.data?.pages || [];
+  // Get all notifications from all pages and calculate unread count from backend data
   const notifications = React.useMemo(() => {
-    return allPages
-      .flatMap((page) => page?.data?.notifications || [])
-      .map((notification) => ({
-        ...notification,
-        isRead: NotificationStorage.isRead(notification.id),
-      }));
+    const allPages = notificationListInfinite.data?.pages || [];
+    return allPages.flatMap((page) => page?.data?.notifications || []);
+  }, [notificationListInfinite.data?.pages]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allPages, refreshCounter]);
-
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
     <button
@@ -77,7 +50,7 @@ const NotificationButton = React.forwardRef<
         <div className="relative max-lg:!flex max-lg:!size-full max-lg:!items-center max-lg:!justify-center">
           <IBell
             className={cn(
-              "size-5 text-blue-600 transition-all duration-200 group-hover:text-blue-700",
+              "size-5 text-gray-700 transition-all duration-200 group-hover:text-black",
               isMinimized && "size-6",
               isOpen && "scale-110",
             )}

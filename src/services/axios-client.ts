@@ -772,6 +772,10 @@ export const api = {
             "?" +
             handleQueries({ ...params }),
         ),
+      read: (params: { id: string[] }) =>
+        apiService.put(API_CONFIG.endpoints.admin.notification.read, {
+          id: params.id,
+        }),
     },
     reminder: {
       create: (data: TCreateReminder) =>

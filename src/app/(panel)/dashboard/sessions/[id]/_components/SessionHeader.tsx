@@ -21,6 +21,8 @@ interface SessionHeaderProps {
   children?: React.ReactNode;
   session: TSession;
   canManageSession: boolean;
+  canSeeSession: boolean;
+  canCreateSession: boolean;
 }
 
 export default function SessionHeader({
@@ -30,10 +32,10 @@ export default function SessionHeader({
   onEdit,
   showApprove,
   showReject,
-  showCancel,
   children,
   session,
   canManageSession,
+  canCreateSession,
 }: SessionHeaderProps) {
   const { editSessionStatus } = useEditSessionStatus();
   const queryClient = useQueryClient();
@@ -136,55 +138,59 @@ export default function SessionHeader({
             <span className="hidden md:block">رد جلسه</span>
           </NotificationModal>
         )}
-        {showCancel && canManageSession && (
-          <NotificationModal
-            onSubmit={async (note) => {
-              const res = await editSessionStatus.mutateAsync({
-                id: session.id,
-                status: SESSION_STATUS.CANCELED,
-                note: note,
-              });
+        {session.status === SESSION_STATUS.CONFIRMED &&
+          (canManageSession ||
+            (canCreateSession &&
+              session.creator.id === userInfo?.data?.data.id)) && (
+            <NotificationModal
+              onSubmit={async (note) => {
+                const res = await editSessionStatus.mutateAsync({
+                  id: session.id,
+                  status: SESSION_STATUS.CANCELED,
+                  note: note,
+                });
 
-              if (!res) return false;
+                if (!res) return false;
 
-              queryClient.invalidateQueries({
-                queryKey: ["session", session.id],
-              });
+                queryClient.invalidateQueries({
+                  queryKey: ["session", session.id],
+                });
 
-              queryClient.invalidateQueries({
-                queryKey: ["sessionList"],
-              });
+                queryClient.invalidateQueries({
+                  queryKey: ["sessionList"],
+                });
 
-              queryClient.invalidateQueries({
-                queryKey: ["sessionCountList"],
-              });
+                queryClient.invalidateQueries({
+                  queryKey: ["sessionCountList"],
+                });
 
-              queryClient.invalidateQueries({
-                queryKey: ["sessionCreatedList"],
-              });
+                queryClient.invalidateQueries({
+                  queryKey: ["sessionCreatedList"],
+                });
 
-              queryClient.invalidateQueries({
-                queryKey: ["sessionCountCreatedList"],
-              });
+                queryClient.invalidateQueries({
+                  queryKey: ["sessionCountCreatedList"],
+                });
 
-              return true;
-            }}
-            title="لغو جلسه"
-            description={`آیا از لغو جلسه "${session.title}" مطمئن هستید؟`}
-            isHaveNote
-            noteTitle="یادداشت"
-            actionName="لغو جلسه"
-            actionClassName="bg-primary-red"
-            variant="button"
-            colorVariant="red"
-            className="max-md:!size-11 max-md:!px-0">
-            <BanIcon className="size-[18px]" />
-            <span className="hidden md:block">لغو جلسه</span>
-          </NotificationModal>
-        )}
+                return true;
+              }}
+              title="لغو جلسه"
+              description={`آیا از لغو جلسه "${session.title}" مطمئن هستید؟`}
+              isHaveNote
+              noteTitle="یادداشت"
+              actionName="لغو جلسه"
+              actionClassName="bg-primary-red"
+              variant="button"
+              colorVariant="red"
+              className="max-md:!size-11 max-md:!px-0">
+              <BanIcon className="size-[18px]" />
+              <span className="hidden md:block">لغو جلسه</span>
+            </NotificationModal>
+          )}
         {(canManageSession ||
           (session.creator.id === userInfo?.data?.data.id &&
-            session.status === SESSION_STATUS.PENDING)) && (
+            session.status === SESSION_STATUS.PENDING &&
+            canCreateSession)) && (
           <Button
             variant="blue"
             onClick={onEdit}
