@@ -10,13 +10,7 @@ import {
   REMINDER_STATUS,
   type TReminder,
 } from "@/types/admin/estate/reminder.types";
-import {
-  CalendarIcon,
-  EditIcon,
-  MessageSquareIcon,
-  PlusIcon,
-  TrashIcon,
-} from "lucide-react";
+import { EditIcon, MessageSquareIcon, PlusIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
 
 interface SessionRemindersProps {
@@ -104,15 +98,6 @@ export default function SessionReminders({
                       <p className="mb-2 text-sm text-gray-600">
                         {reminder.description}
                       </p>
-                      <div className="flex items-center gap-4 text-sm text-gray-500">
-                        <div className="flex items-center gap-1">
-                          <CalendarIcon className="size-4" />
-                          <span>
-                            {" "}
-                            تاریخ رویداد : {formatDate(reminder.date)}
-                          </span>
-                        </div>
-                      </div>
 
                       <div className="mt-1.5 flex items-center gap-4 text-sm text-gray-500">
                         <div className="flex items-center gap-1">

@@ -75,7 +75,7 @@ const NotificationButton = React.forwardRef<
       </div>
       <div
         className={cn(
-          "flex items-center gap-1",
+          "flex items-center gap-1 max-lg:!hidden",
           isMinimized ? "w-0 opacity-0" : "w-auto opacity-100",
         )}>
         {unreadCount > 0 && (

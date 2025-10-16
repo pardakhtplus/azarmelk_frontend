@@ -7,7 +7,7 @@ import useEditUserInfo from "@/services/mutations/client/auth/useEditUserInfo";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import FormCard from "../../_components/FormCard";
@@ -27,6 +27,7 @@ export default function Verify({
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,6 +39,39 @@ export default function Verify({
   const router = useRouter();
 
   const queryClient = useQueryClient();
+
+  // WebOTP: auto-read SMS OTP codes when supported
+  useEffect(() => {
+    let abortController: AbortController | null = null;
+    if (typeof window === "undefined") return;
+    const nav: any = navigator as any;
+    const isSupported =
+      Boolean((window as any).OTPCredential) && nav?.credentials?.get;
+    if (!isSupported) return;
+
+    try {
+      abortController = new AbortController();
+      nav.credentials
+        .get({ otp: { transport: ["sms"] }, signal: abortController.signal })
+        .then((cred: any) => {
+          if (cred?.code) {
+            setValue("code", cred.code, {
+              shouldValidate: true,
+              shouldDirty: true,
+            });
+          }
+        })
+        .catch(() => {
+          // Ignore errors silently
+        });
+    } catch {
+      // No-op
+    }
+
+    return () => {
+      if (abortController) abortController.abort();
+    };
+  }, [setValue]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!values.code) return;
@@ -92,6 +126,8 @@ export default function Verify({
           name="code"
           error={errors.code}
           placeholder=""
+          autoComplete="one-time-code"
+          inputMode="numeric"
           containerClassName="mb-2 mt-2"
         />
         <ResendCode onClick={onResend} />

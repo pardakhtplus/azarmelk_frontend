@@ -1,6 +1,6 @@
 import Button from "@/components/modules/buttons/Button";
 import BorderedInput from "@/components/modules/inputs/BorderedInput";
-import { unFormatNumber } from "@/lib/utils";
+import { numberToPersianWords, unFormatNumber } from "@/lib/utils";
 import { ArrowDownIcon } from "lucide-react";
 import { useState } from "react";
 import { calcRent } from "./CommissionsUtils";
@@ -34,6 +34,11 @@ export default function RentCommission() {
           showCurrency
           currencyClassName="left-4"
         />
+        {rahnValue && (
+          <p className="mt-1.5 text-xs">
+            {numberToPersianWords(Number(unFormatNumber(rahnValue || "0")))}
+          </p>
+        )}
       </div>
       <div className="pt-6">
         <p className="mb-3 text-xs font-light text-text-300">مبلغ اجاره</p>
@@ -48,6 +53,11 @@ export default function RentCommission() {
           showCurrency
           currencyClassName="left-4"
         />
+        {ejareValue && (
+          <p className="mt-1.5 text-xs">
+            {numberToPersianWords(Number(unFormatNumber(ejareValue || "0")))}
+          </p>
+        )}
       </div>
       <Button
         disabled={!ejareValue || !rahnValue}

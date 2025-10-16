@@ -13,7 +13,6 @@ export enum REMINDER_STATUS {
 export interface TReminder {
   id: string;
   reminderDate: string; // Date when reminder should be sent
-  date: string; // Date is send in message or notification
   title: string;
   description: string;
   type: REMINDER_TYPE[]; // Array of SMS and/or NOTIFICATION
@@ -28,7 +27,6 @@ export interface TReminder {
 
 export interface TCreateReminder {
   reminderDate: string;
-  date: string;
   title: string;
   description: string;
   type: REMINDER_TYPE[];
@@ -39,7 +37,6 @@ export interface TCreateReminder {
 export interface TEditReminder {
   id: string;
   reminderDate: string;
-  date: string;
   title: string;
   description: string;
   type: REMINDER_TYPE[];

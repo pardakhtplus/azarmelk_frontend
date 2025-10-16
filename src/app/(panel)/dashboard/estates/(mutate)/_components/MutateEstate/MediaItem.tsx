@@ -136,7 +136,7 @@ export default function MediaItem({
           <>
             <button
               onClick={() => setIsShowFullSize(true)}
-              className="invisible absolute inset-0 z-10 m-auto flex size-12 items-center justify-center rounded-full bg-blue/20 opacity-0 backdrop-blur-md transition-all hover:bg-blue/30 group-hover:visible group-hover:opacity-100">
+              className="invisible absolute inset-0 z-10 m-auto flex size-12 items-center justify-center rounded-full bg-blue/20 opacity-0 backdrop-blur-md transition-all hover:bg-blue/30 group-hover:visible group-hover:opacity-100 max-lg:!visible max-lg:!opacity-100">
               <IEye className="size-7 text-blue/80" />
             </button>
             {createPortal(
@@ -160,13 +160,15 @@ export default function MediaItem({
                     className="size-full object-contain transition-transform"
                   />
                 ) : mediaItem.mimeType.toLowerCase().startsWith("video") ? (
-                  <video
-                    src={mediaItem.url}
-                    width={1200}
-                    height={1200}
-                    className="size-full object-contain transition-transform"
-                    controls
-                  />
+                  <div className="flex h-full w-full items-center justify-center">
+                    <video
+                      src={mediaItem.url}
+                      width={1200}
+                      height={1200}
+                      className="m-auto size-fit max-h-full max-w-full transition-transform"
+                      controls
+                    />
+                  </div>
                 ) : null}
               </div>,
               document.body,

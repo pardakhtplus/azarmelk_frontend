@@ -3,7 +3,7 @@ import BorderedInput from "@/components/modules/inputs/BorderedInput";
 import { ArrowDownIcon } from "lucide-react";
 import { useState } from "react";
 import { calcSale } from "./CommissionsUtils";
-import { unFormatNumber } from "@/lib/utils";
+import { numberToPersianWords, unFormatNumber } from "@/lib/utils";
 import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
 import { Permissions } from "@/permissions/permission.types";
 
@@ -13,9 +13,9 @@ export default function SaleCommission() {
   const [commissionValue, setCommissionValue] = useState(0);
   const { userInfo } = useUserInfo();
 
-  const isAdvisor = !userInfo?.data?.data.accessPerms.includes(
-    Permissions.USER,
-  );
+  const isAdvisor =
+    userInfo.data?.data.phoneNumber &&
+    !userInfo?.data?.data.accessPerms.includes(Permissions.USER);
 
   const handleCalcCommission = () => {
     const commissionResponse = calcSale(
@@ -92,6 +92,13 @@ export default function SaleCommission() {
           showCurrency
           currencyClassName="left-4"
         />
+        {transactionValue && (
+          <p className="mt-1.5 text-xs">
+            {numberToPersianWords(
+              Number(unFormatNumber(transactionValue || "0")),
+            )}
+          </p>
+        )}
       </div>
       <Button
         disabled={!transactionValue}

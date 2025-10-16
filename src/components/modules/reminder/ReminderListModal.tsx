@@ -12,7 +12,6 @@ import {
 } from "@/types/admin/estate/reminder.types";
 import {
   BellIcon,
-  CalendarIcon,
   EditIcon,
   MessageSquareIcon,
   PlusIcon,
@@ -155,15 +154,6 @@ export default function ReminderListModal({
                           <p className="mb-1.5 text-sm text-gray-600">
                             {reminder.description}
                           </p>
-                          <div className="flex items-center gap-4 text-sm text-gray-500">
-                            <div className="flex items-center gap-1">
-                              <CalendarIcon className="size-4" />
-                              <span>
-                                {" "}
-                                تاریخ رویداد : {formatDate(reminder.date)}
-                              </span>
-                            </div>
-                          </div>
 
                           <div className="mt-1.5 flex items-center gap-4 text-sm text-gray-500">
                             <div className="flex items-center gap-1">

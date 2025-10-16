@@ -23,7 +23,6 @@ export default function useReadNotification() {
 
         const data = (await res.data) as { message: string };
 
-        toast.success(data.message);
         return data;
       } catch (error: unknown) {
         toast.error(handleApiError(error, true));
