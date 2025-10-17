@@ -407,7 +407,7 @@ export default function EstatesContainer({
               order: preservedSettings.get("status")?.order ?? 0,
               isEditable: true,
             },
-            ...(accessToOwners
+            ...(accessToOwners && !isUserPanel
               ? [
                   {
                     field: "owners",
@@ -696,7 +696,7 @@ export default function EstatesContainer({
                         currentFilters.completionStatus === "incomplete"
                       }>
                       <div className="absolute left-2 top-2 z-[2] flex items-center gap-x-2">
-                        {accessToOwners && (
+                        {accessToOwners && !isUserPanel && (
                           <button
                             className={cn(
                               "flex size-8 shrink-0 items-center justify-center rounded-full bg-white/60 p-1 text-primary-blue shadow-md backdrop-blur-sm transition-all hover:bg-white/80",

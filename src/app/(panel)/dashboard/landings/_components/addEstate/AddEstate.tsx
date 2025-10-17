@@ -129,7 +129,6 @@ export default function AddEstate({
     return value !== "" && value !== null && value !== false;
   });
 
-
   const handleClearAllFilters = useCallback(() => {
     setSelectedCategories([]);
     setSelectedRegions([]);
@@ -269,11 +268,11 @@ export default function AddEstate({
 
             {/* Estates List */}
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">
+              <div className="flex flex-wrap items-center justify-between gap-y-2">
+                <h3 className="shrink-0 text-lg font-semibold text-gray-900">
                   لیست املاک
                 </h3>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                   <div className="flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-2">
                     <div className="flex size-6 items-center justify-center rounded-full bg-blue-100">
                       <span className="text-xs font-bold text-blue-700">

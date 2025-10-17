@@ -177,8 +177,8 @@ export default function ReminderFormModal({
       isOpen={isOpen}
       title={editingReminder ? "ویرایش یادآور" : "افزودن یادآور"}
       classNames={{
-        background: "z-[60] !py-0 sm:!py-6 !px-0 sm:!px-4 !items-start",
-        box: "!max-w-3xl !max-h-none sm:!max-h-none !mb-4 rounded-none sm:rounded-xl overflow-x-hidden !h-full sm:!h-fit",
+        background: "z-[60] !py-0 sm:!py-6 !px-0 sm:!px-4",
+        box: "!max-w-3xl !max-h-[100%] !mb-4 rounded-none sm:rounded-xl overflow-x-hidden !h-fit",
         header: "!py-4",
       }}
       onCloseModal={handleClose}

@@ -32,6 +32,7 @@ const formSchema = z.object({
     .string({ message: "سمت را وارد کنید!" })
     .optional()
     .default("مالک"),
+  fixPhoneNumber: z.string().optional().or(z.literal("")),
 });
 
 export default function AddNewOwner({
@@ -42,6 +43,7 @@ export default function AddNewOwner({
   owners,
   clearErrors,
   isUserPanel,
+  existingUser,
 }: {
   closeCheckModal?: () => void;
   isOpenNewOwnerModal: boolean;
@@ -50,6 +52,14 @@ export default function AddNewOwner({
   owners: UseFieldArrayReturn<z.infer<typeof mutateEstateSchema>, "owners">;
   clearErrors: UseFormClearErrors<z.infer<typeof mutateEstateSchema>>;
   isUserPanel?: boolean;
+  existingUser?: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    position?: string;
+    fixPhoneNumber?: string;
+  };
 }) {
   const [isClient, setIsClient] = useState(false);
 
@@ -67,20 +77,34 @@ export default function AddNewOwner({
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     values: {
-      firstName: "",
-      lastName: "",
+      firstName: existingUser?.firstName || "",
+      lastName: existingUser?.lastName || "",
       phoneNumber: ownerPhone,
-      position: "مالک",
+      position: existingUser?.position || "مالک",
+      fixPhoneNumber: existingUser?.fixPhoneNumber || "",
     },
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    // For user panel, only allow adding fixPhoneNumber if it doesn't exist
+    if (
+      isUserPanel &&
+      existingUser &&
+      existingUser.fixPhoneNumber &&
+      data.fixPhoneNumber !== existingUser.fixPhoneNumber
+    ) {
+      // Don't allow editing existing fixPhoneNumber in user panel
+      data.fixPhoneNumber = existingUser.fixPhoneNumber;
+    }
+
     const res = await mutateOwner.mutateAsync({
+      id: existingUser?.id, // Pass ID for edit mode
       data: {
         firstName: data.firstName,
         lastName: data.lastName,
         phoneNumber: data.phoneNumber,
         position: data.position || "مالک",
+        fixPhoneNumber: data.fixPhoneNumber || undefined,
       },
     });
 
@@ -94,6 +118,7 @@ export default function AddNewOwner({
       lastName: data.lastName,
       phoneNumber: data.phoneNumber,
       position: data.position || "مالک",
+      fixPhoneNumber: data.fixPhoneNumber || undefined,
     });
 
     closeCheckModal?.();
@@ -115,7 +140,7 @@ export default function AddNewOwner({
           isOpen={isOpenNewOwnerModal}
           handleSubmit={handleSubmit}
           onSubmit={onSubmit}
-          title="افزودن شخص جدید"
+          title={existingUser ? "ویرایش اطلاعات مالک" : "افزودن شخص جدید"}
           classNames={{
             background: "z-50 !py-0 sm:!px-4 !px-0",
             box: "sm:!max-w-3xl sm:!max-h-[95%] overflow-x-hidden !max-h-none !max-w-none rounded-none !h-full sm:!h-fit flex flex-col justify-between sm:rounded-xl",
@@ -190,11 +215,39 @@ export default function AddNewOwner({
                 />
               </div>
             </div>
+
+            <div className="mt-4">
+              <div className="w-full">
+                <label
+                  htmlFor="fixPhoneNumber"
+                  className="text-sm font-medium text-text-300">
+                  شماره ثابت
+                  {isUserPanel && existingUser?.fixPhoneNumber && (
+                    <span className="mr-2 text-xs text-amber-500">
+                      (قابل ویرایش نیست)
+                    </span>
+                  )}
+                </label>
+                <BorderedInput
+                  name="fixPhoneNumber"
+                  type="text"
+                  containerClassName="mt-1"
+                  register={register}
+                  error={errors.fixPhoneNumber}
+                  placeholder="02112345678"
+                  className="text-left"
+                  dir="ltr"
+                  disabled={
+                    isUserPanel && existingUser?.fixPhoneNumber ? true : false
+                  }
+                />
+              </div>
+            </div>
             <div className="mt-8 flex justify-start gap-x-3 border-t border-gray-200 pt-6">
               <Button
                 className="min-w-[120px]"
                 isLoading={mutateOwner.isPending}>
-                ثبت مالک
+                {existingUser ? "ویرایش مالک" : "ثبت مالک"}
               </Button>
               <BorderedButton
                 onClick={() => {

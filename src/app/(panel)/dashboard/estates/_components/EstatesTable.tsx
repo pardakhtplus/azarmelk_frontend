@@ -301,6 +301,7 @@ export function OwnersCell({
     lastName: string;
     phoneNumber: string;
     position: string;
+    fixPhoneNumber?: string;
   }[];
 }) {
   const [isOpenModal, setIsOpenModal] = useState(false);

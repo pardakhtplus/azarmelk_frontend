@@ -89,7 +89,7 @@ export default function ReminderListModal({
           title="یادآورها"
           classNames={{
             background: "z-[60] !py-0 sm:!py-2 !px-0 sm:!px-4",
-            box: "!max-w-3xl !max-h-none sm:!max-h-[100%] rounded-none sm:rounded-xl overflow-x-hidden !h-full sm:!h-fit",
+            box: "!max-w-3xl !max-h-[100%] rounded-none sm:rounded-xl overflow-x-hidden !h-fit",
             header: "!py-4",
           }}
           onCloseModal={onClose}

@@ -9,6 +9,7 @@ interface Owner {
   lastName: string;
   phoneNumber: string;
   position: string;
+  fixPhoneNumber?: string;
 }
 
 interface OwnerModalProps {
@@ -58,7 +59,6 @@ export default function OwnerModal({
           </div>
 
           {/* سمت */}
-
           <div className="flex items-center gap-3">
             <ILocationDotLight className="size-5 text-text-300" />
             <div>
@@ -66,6 +66,19 @@ export default function OwnerModal({
               <p className="font-medium">{owner.position || "مالک"}</p>
             </div>
           </div>
+
+          {/* شماره ثابت */}
+          {owner.fixPhoneNumber && (
+            <div className="flex items-center gap-3">
+              <IPhone className="size-5 text-text-300" />
+              <div>
+                <p className="text-sm text-text-300">شماره ثابت</p>
+                <p className="font-medium" dir="ltr">
+                  {owner.fixPhoneNumber}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </Modal>

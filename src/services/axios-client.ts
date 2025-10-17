@@ -106,7 +106,7 @@ const axiosConfig: AxiosRequestConfig = {
     "Content-Type": "application/json",
   },
   withCredentials: true,
-  timeout: 30000, // Default timeout
+  timeout: 3000000, // Default timeout
 };
 
 // Create axios instance
@@ -440,11 +440,9 @@ export const api = {
       create: (data: TMutateOwner) =>
         apiService.post(API_CONFIG.endpoints.admin.owner.create, data),
       edit: (data: TMutateOwner) =>
-        apiService.put(
-          API_CONFIG.endpoints.admin.owner.edit +
-            "?" +
-            handleQueries({ ...data }),
-        ),
+        apiService.put(API_CONFIG.endpoints.admin.owner.edit, {
+          ...data,
+        }),
       getEstateList: ({
         phoneNumber,
         categoryId,
@@ -997,11 +995,9 @@ export const api = {
             data,
           ),
         edit: (data: TMutateOwner) =>
-          apiService.put(
-            API_CONFIG.endpoints.client.dashboard.owner.edit +
-              "?" +
-              handleQueries({ ...data }),
-          ),
+          apiService.put(API_CONFIG.endpoints.client.dashboard.owner.edit, {
+            ...data,
+          }),
         getEstateList: ({
           phoneNumber,
           categoryId,

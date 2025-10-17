@@ -85,7 +85,7 @@ export default function UserContainer() {
               <BorderedButton
                 type="button"
                 variant="green"
-                className={cn("w-full rounded-xl max-md:!size-11 max-md:!px-0")}
+                className={cn("w-full rounded-xl")}
                 onClick={(event) => {
                   event.preventDefault();
                   event.stopPropagation();
@@ -93,7 +93,7 @@ export default function UserContainer() {
                   setIsOpenContactHistoryModal(true);
                 }}>
                 <NotebookTabsIcon className="size-5" />
-                <span className="hidden md:block">تاریخچه تماس</span>
+                <span className="block">تاریخچه تماس</span>
               </BorderedButton>
               {isSuperUser && user.data?.data && (
                 <TransferAdvisorButton
@@ -154,14 +154,14 @@ export default function UserContainer() {
                       ? `آیا میخواهید دسترسی "${user.data?.data.firstName} ${user.data?.data.lastName}" را قطع کنید؟`
                       : `آیا میخواهید دسترسی "${user.data?.data.firstName} ${user.data?.data.lastName}" را فعال کنید؟`
                   }
-                  className={cn("rounded-xl max-md:!size-11 max-md:!px-0")}
+                  className={cn("rounded-xl")}
                   colorVariant={user.data?.data.isActive ? "red" : "green"}>
                   {user.data?.data.isActive ? (
                     <IPause className="size-5" />
                   ) : (
                     <IPlay className="size-5" />
                   )}
-                  <span className="hidden md:block">
+                  <span className="block">
                     {user.data?.data.isActive ? "قطع دسترسی" : "فعال کردن"}
                   </span>
                 </NotificationModal>

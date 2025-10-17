@@ -49,7 +49,7 @@ export default function SessionCommentsTabs({
       <div className="mb-4 flex gap-2 border-b border-primary-border/30">
         <button
           className={cn(
-            "border-b-2 px-4 py-2 text-sm font-medium transition-all",
+            "border-b-2 px-2 py-2 text-sm font-medium transition-all lg:px-4",
             activeTab === "notes"
               ? "border-primary text-primary"
               : "border-transparent text-gray-500 hover:text-primary",
@@ -60,7 +60,7 @@ export default function SessionCommentsTabs({
         {canManageSession ? (
           <button
             className={cn(
-              "border-b-2 px-4 py-2 text-sm font-medium transition-all",
+              "border-b-2 px-2 py-2 text-sm font-medium transition-all lg:px-4",
               activeTab === "logs"
                 ? "border-primary text-primary"
                 : "border-transparent text-gray-500 hover:text-primary",
@@ -71,7 +71,7 @@ export default function SessionCommentsTabs({
         ) : null}
         <button
           className={cn(
-            "border-b-2 px-4 py-2 text-sm font-medium transition-all",
+            "border-b-2 px-2 py-2 text-sm font-medium transition-all lg:px-4",
             activeTab === "reminders"
               ? "border-primary text-primary"
               : "border-transparent text-gray-500 hover:text-primary",

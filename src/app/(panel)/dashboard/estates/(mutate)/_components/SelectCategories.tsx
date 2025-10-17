@@ -269,7 +269,7 @@ function CategoryButton({
   return (
     <div
       className={cn(
-        "flex w-full items-center justify-between gap-2 px-5 py-4 transition-all hover:bg-neutral-100/80",
+        "flex w-full cursor-pointer items-center justify-between gap-2 px-5 py-4 transition-all hover:bg-neutral-100/80",
         !canSelect && "py-5",
       )}
       onClick={() => {

@@ -18,6 +18,7 @@ import { type z } from "zod";
 import { type mutateEstateSchema } from "../MutateEstate";
 import AddNewOwner from "./AddNewOwner";
 import { useUserOwnerEstateList } from "@/services/queries/client/dashboard/owner/useUserOwnerEstateList";
+import { ImageOffIcon } from "lucide-react";
 
 // The actual component
 export default function CheckOwnerEstates({
@@ -99,6 +100,7 @@ export default function CheckOwnerEstates({
         lastName: ownerData.user.lastName,
         phoneNumber: ownerData.user.phoneNumber,
         position: ownerData.user.position || "مالک",
+        fixPhoneNumber: ownerData.user.fixPhoneNumber,
       });
       setIsOpenModal(false);
       setOwnerPhone("");
@@ -127,8 +129,9 @@ export default function CheckOwnerEstates({
           isOpen={isOpenModal}
           title="افزودن شخص جدید"
           classNames={{
-            background: "z-50 !py-0 !px-4",
-            box: "sm:!max-w-2xl !max-h-[95%] overflow-x-hidden !max-w-none !h-fit flex flex-col justify-between rounded-xl",
+            background: "z-50 !py-0 !px-0 sm:!px-4",
+            box: "sm:!max-w-2xl max-h-full sm:!max-h-[95%] overflow-x-hidden !max-w-none !h-fit flex flex-col justify-between rounded-none sm:rounded-xl",
+            header: "sticky top-0 z-10 bg-white",
           }}
           onCloseModal={() => {
             setIsOpenModal(false);
@@ -174,9 +177,36 @@ export default function CheckOwnerEstates({
                       <p className="text-center text-lg font-medium text-blue-800">
                         کاربر با شماره {ownerPhone} یافت شد!
                       </p>
-                      <p className="mt-2 text-center text-sm text-blue-600">
-                        {ownerData.user.firstName} {ownerData.user.lastName}
-                      </p>
+                      <div className="mt-3 space-y-2">
+                        <div className="flex items-center justify-center gap-x-2">
+                          <span className="text-sm font-medium text-blue-700">
+                            نام:
+                          </span>
+                          <span className="text-sm text-blue-600">
+                            {ownerData.user.firstName} {ownerData.user.lastName}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-center gap-x-2">
+                          <span className="text-sm font-medium text-blue-700">
+                            سمت:
+                          </span>
+                          <span className="text-sm text-blue-600">
+                            {ownerData.user.position || "مالک"}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-center gap-x-2">
+                          <span className="text-sm font-medium text-blue-700">
+                            شماره ثابت:
+                          </span>
+                          <span className="text-sm text-blue-600">
+                            {ownerData.user.fixPhoneNumber || (
+                              <span className="font-medium text-amber-600">
+                                ندارد
+                              </span>
+                            )}
+                          </span>
+                        </div>
+                      </div>
                     </div>
 
                     {ownerData.estates && ownerData.estates.length > 0 ? (
@@ -190,15 +220,18 @@ export default function CheckOwnerEstates({
                               key={estate.id}
                               className="flex h-36 gap-x-5 rounded-xl border border-primary-border p-3">
                               <div className="relative aspect-[16/11] h-full overflow-hidden rounded-lg">
-                                <Image
-                                  src={
-                                    estate.posterFile?.url ||
-                                    "/images/image-placeholder.jpg"
-                                  }
-                                  alt="estate-owner-check"
-                                  fill
-                                  className="size-full object-cover"
-                                />
+                                {estate.posterFile?.url ? (
+                                  <Image
+                                    src={estate.posterFile?.url}
+                                    alt="estate-owner-check"
+                                    fill
+                                    className="size-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="flex size-full items-center justify-center bg-gray-100">
+                                    <ImageOffIcon className="size-6 text-gray-400" />
+                                  </div>
+                                )}
                               </div>
                               <div className="flex flex-col gap-y-2 pt-2">
                                 <p className="font-semibold">{estate.title}</p>
@@ -225,13 +258,23 @@ export default function CheckOwnerEstates({
                       </p>
                     )}
 
-                    <div className="mt-6 flex justify-center">
+                    <div className="mt-6 flex justify-center gap-x-4">
                       <Button
                         type="button"
                         className="w-full max-w-xs"
                         onClick={handleConfirmOwner}>
                         تایید و اضافه کردن
                       </Button>
+                      {isUserPanel ? null : (
+                        <BorderedButton
+                          type="button"
+                          className="w-full max-w-xs"
+                          onClick={() => {
+                            setIsOpenNewOwnerModal(true);
+                          }}>
+                          ویرایش اطلاعات
+                        </BorderedButton>
+                      )}
                     </div>
                   </>
                 ) : (
@@ -284,6 +327,7 @@ export default function CheckOwnerEstates({
         owners={owners}
         clearErrors={clearErrors}
         isUserPanel={isUserPanel}
+        existingUser={ownerData?.user}
       />
     </>
   );

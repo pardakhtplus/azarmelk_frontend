@@ -39,10 +39,10 @@ export default function CompletionStatusModal({
         propertyType: formData.data.category.propertyType as PropertyType,
       }
     : undefined;
-  
+
   console.log(categoryTypes, "categoryTypes");
-  
-  console.log(formData?.data.category , "formData?.data");
+
+  console.log(formData, "formData?.data");
 
   const completionPercentage =
     formData?.data && categoryTypes
@@ -54,7 +54,7 @@ export default function CompletionStatusModal({
       ? getIncompleteFields(formData.data, categoryTypes)
       : [];
 
-  console.log(incompleteFields , "incompleteFields");
+  console.log(incompleteFields, "incompleteFields");
 
   const getCompletionColor = (percentage: number) => {
     if (percentage >= 80) return "text-green-600";

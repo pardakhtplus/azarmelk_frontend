@@ -43,6 +43,12 @@ export default function EstateOwner({
             <p className="text-sm text-gray-600">{field.position || "مالک"}</p>
             <p className="text-xs text-gray-500">-</p>
             <p className="text-sm font-medium">{field.phoneNumber}</p>
+            {field.fixPhoneNumber && (
+              <>
+                <p className="text-xs text-gray-500">-</p>
+                <p className="text-sm text-gray-600">{field.fixPhoneNumber}</p>
+              </>
+            )}
           </div>
           <div className="flex items-center gap-x-1">
             <button

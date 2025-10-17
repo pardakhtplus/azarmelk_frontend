@@ -10,6 +10,7 @@ interface Owner {
   lastName: string;
   phoneNumber: string;
   position: string;
+  fixPhoneNumber?: string;
 }
 
 interface OwnersSectionProps {

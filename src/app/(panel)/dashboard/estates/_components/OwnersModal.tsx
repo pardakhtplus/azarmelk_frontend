@@ -15,6 +15,7 @@ export default function OwnersModal({
     phoneNumber: string;
     firstName: string;
     lastName: string;
+    fixPhoneNumber?: string;
   }[];
 }) {
   return (
@@ -75,6 +76,32 @@ export default function OwnersModal({
                     </button>
                   </div>
                 </div>
+
+                {owner.fixPhoneNumber && (
+                  <div className="flex flex-col gap-1 rounded-xl border border-primary-border px-5 py-3 sm:col-span-2">
+                    <span className="text-sm font-medium text-gray-600">
+                      شماره ثابت:
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="font-mono text-sm text-gray-900"
+                        dir="ltr">
+                        {owner.fixPhoneNumber}
+                      </span>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            owner.fixPhoneNumber || "",
+                          );
+                          toast.success("شماره ثابت کپی شد");
+                        }}
+                        className="text-primary-blue transition-colors hover:text-primary-blue/80"
+                        title="کپی شماره ثابت">
+                        <ICopy className="size-4" />
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -10,7 +10,10 @@ export default function useUserMutateOwner() {
     mutationFn: async (props: { id?: string; data: TMutateOwner }) => {
       try {
         const res = props.id
-          ? await api.client.dashboard.owner.edit(props.data)
+          ? await api.client.dashboard.owner.edit({
+              ...props.data,
+              id: props.id,
+            })
           : await api.client.dashboard.owner.create(props.data);
 
         if (res.status === 405) {

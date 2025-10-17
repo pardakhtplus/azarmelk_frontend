@@ -9,6 +9,7 @@ export type TOwnerPreview = {
   lastName?: string;
   phoneNumber?: string;
   position?: string;
+  fixPhoneNumber?: string;
 };
 
 export default function OwnerModal({
@@ -49,6 +50,12 @@ export default function OwnerModal({
             <div>
               <label className="text-gray-500">سمت</label>
               <p className="mt-1">{owner?.position || "مالک"}</p>
+            </div>
+            <div>
+              <label className="text-gray-500">شماره ثابت</label>
+              <p className="mt-1" dir="ltr">
+                {owner?.fixPhoneNumber || "-"}
+              </p>
             </div>
           </div>
         ) : (

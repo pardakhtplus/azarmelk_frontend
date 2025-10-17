@@ -5,6 +5,7 @@ export interface TMutateOwner {
   lastName: string;
   phoneNumber: string;
   position?: string;
+  fixPhoneNumber?: string;
   id?: string;
 }
 
@@ -48,6 +49,7 @@ export interface TOwnerEstateListResponse {
       lastName: string;
       phoneNumber: string;
       position?: string;
+      fixPhoneNumber?: string;
     };
     pagination?: TMeta;
   };

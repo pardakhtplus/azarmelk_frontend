@@ -8,9 +8,12 @@ import {
 import { ESTATE_STATUS } from "@/enums";
 import { type PropertyTypeEnum } from "@/lib/categories";
 import { cn } from "@/lib/utils";
+import { Permissions } from "@/permissions/permission.types";
+import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
 import { type TEstate } from "@/types/types";
 import { ImageOffIcon } from "lucide-react";
 import Image from "next/image";
+import { toast } from "react-hot-toast";
 
 interface Props {
   estate: TEstate;
@@ -23,7 +26,13 @@ export default function EstateCardItem({
   children,
   showCompletionPercentage,
 }: Props) {
+  const { userInfo } = useUserInfo();
   const statusInfo = getStatusInfo(estate.status, estate.archiveStatus);
+
+  const isAdvisor =
+    userInfo.data?.data.phoneNumber &&
+    !userInfo.data?.data.accessPerms.includes(Permissions.USER);
+
   return (
     <div
       suppressHydrationWarning
@@ -72,6 +81,19 @@ export default function EstateCardItem({
               )}>
               {statusInfo?.mainStatus?.label}
             </span>
+          </div>
+        ) : null}
+        {isAdvisor && estate.estateCode ? (
+          <div
+            className="absolute bottom-2 right-2 w-fit cursor-text rounded-sm bg-neutral-200/70 px-2 py-0.5 text-xs text-black"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+
+              navigator.clipboard.writeText(estate.estateCode.toString());
+              toast.success("کد ملک با موفقیت کپی شد");
+            }}>
+            <p className="-mb-px">{estate.estateCode}</p>
           </div>
         ) : null}
       </div>

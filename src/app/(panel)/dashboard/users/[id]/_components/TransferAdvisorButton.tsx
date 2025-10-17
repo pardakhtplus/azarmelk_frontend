@@ -40,17 +40,14 @@ export default function TransferAdvisorButton({
       <BorderedButton
         type="button"
         variant="blue"
-        className={cn(
-          "w-full rounded-xl max-md:!size-11 max-md:!px-0",
-          className,
-        )}
+        className={cn("w-full rounded-xl", className)}
         onClick={(event) => {
           event.preventDefault();
           event.stopPropagation();
           setIsModalOpen(true);
         }}>
         <ArrowRightLeft className="size-5" />
-        <span className="hidden md:block">انتقال املاک</span>
+        <span className="block">انتقال املاک</span>
       </BorderedButton>
 
       <TransferAdvisorModal

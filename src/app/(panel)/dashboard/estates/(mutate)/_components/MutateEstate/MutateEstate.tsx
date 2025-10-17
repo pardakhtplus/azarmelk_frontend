@@ -60,6 +60,7 @@ export const mutateEstateSchema = z.object({
         lastName: z.string().optional(),
         phoneNumber: z.string().optional(),
         position: z.string().optional(),
+        fixPhoneNumber: z.string().optional(),
       }),
     )
     .optional(),

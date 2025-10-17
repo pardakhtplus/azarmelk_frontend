@@ -301,7 +301,7 @@ export function numberToPersianWords(
   n: number,
   appendCurrency = "تومان",
 ): string {
-  if (!Number.isFinite(n)) throw new Error("عدد نامعتبر است");
+  if (!Number.isFinite(n)) return "";
   if (Math.abs(n) < 1 && n !== 0) n = Math.round(n);
 
   const negatives = n < 0;

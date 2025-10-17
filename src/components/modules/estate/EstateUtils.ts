@@ -571,6 +571,9 @@ export const getIncompleteFields = (
     return [];
   }
 
+  console.log(categoryTypes, "categoryTypes ___________");
+  console.log(formData, "formData ___________");
+
   // پیدا کردن فیلدهای مورد نیاز برای دسته‌بندی انتخاب شده
   let requiredFields: string[] = [];
 
@@ -678,6 +681,9 @@ export const calculateEstateCompletionPercentage = (
     return 0;
   }
 
+  console.log(categoryTypes, "categoryTypes ___________");
+  console.log(formData, "formData ___________");
+
   // پیدا کردن فیلدهای مورد نیاز برای دسته‌بندی انتخاب شده
   let requiredFields: string[] = [];
 
@@ -695,8 +701,7 @@ export const calculateEstateCompletionPercentage = (
     propertyTypeName || "",
   ) as PropertyType;
 
-  console.log(dealType, mainCategory, propertyType, "dealType, mainCategory, propertyType");
-
+  // console.log(dealType, mainCategory, propertyType, "dealType, mainCategory, propertyType");
 
   if (dealType && mainCategory && propertyType) {
     const fieldConfig = filteredCreateFileFields.find(
@@ -713,7 +718,7 @@ export const calculateEstateCompletionPercentage = (
     }
   }
 
-  console.log(requiredFields, "requiredFields");
+  // console.log(requiredFields, "requiredFields");
 
   // اگر فیلدهای مورد نیاز پیدا نشد، از فیلدهای اصلی استفاده کن
   if (requiredFields.length === 0) {
@@ -734,7 +739,7 @@ export const calculateEstateCompletionPercentage = (
   allRequiredFields.forEach((field) => {
     const value = formData[field];
 
-    console.log(field, value, "field, value");
+    // console.log(field, value, "field, value");
 
     if (field === "owners") {
       // برای مالکان، بررسی می‌کنیم که حداقل یک مالک وجود داشته باشد
@@ -756,12 +761,11 @@ export const calculateEstateCompletionPercentage = (
       if (value && value.trim().length > 0) {
         filledFieldsCount++;
       }
-    }else if (typeof value === "number") {
+    } else if (typeof value === "number") {
       if (value && value > 0) {
         filledFieldsCount++;
       }
-    }
-    else if (value !== undefined && value !== null) {
+    } else if (value !== undefined && value !== null) {
       // برای سایر انواع، بررسی می‌کنیم که تعریف شده باشند
       filledFieldsCount++;
     } else if (field === "files") {

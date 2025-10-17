@@ -359,7 +359,7 @@ export default function SessionList({
         isTimeOverlappingWithStatic={isTimeOverlappingWithStatic}
         onClose={() => setIsCustomTimeSlotModalOpen(false)}
         onConfirm={handleCreateCustomTimeSlot}
-        confirmButtonText="ایجاد ساعت سفارشی"
+        confirmButtonText="ایجاد ساعت"
       />
 
       {mutateSessionData.isOpen && mutateSessionData.startSession && (
