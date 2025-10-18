@@ -1,12 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FaInstagram } from "react-icons/fa6";
+import { FaInstagram, FaWhatsapp } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
 import {
   address,
   instagram,
   phoneNumbers,
   telegram,
+  whatsapp,
 } from "../../../../data/footer";
 
 export default function Footer() {
@@ -15,7 +16,7 @@ export default function Footer() {
       <div className="flex w-full flex-col items-center justify-center border-b pb-12">
         <Image
           src="/images/logo-footer.png"
-          alt="Azarmalek Logo"
+          alt="Azarmelk Logo"
           width={100}
           height={100}
         />
@@ -48,9 +49,20 @@ export default function Footer() {
               ),
               label: "Instagram",
             },
+            {
+              href: whatsapp,
+              icon: (
+                <FaWhatsapp
+                  size={18}
+                  className="text-gray-700 transition-colors group-hover:text-[#0058B7]"
+                />
+              ),
+              label: "Whatsapp",
+            },
           ].map(({ href, icon, label }, index) => (
             <Link
               key={index}
+              target="_blank"
               href={href}
               aria-label={label}
               className="group flex size-10 items-center justify-center rounded-full border border-[#CCCC] transition-all hover:border-[#0058B7] hover:bg-[#0058B7]">
