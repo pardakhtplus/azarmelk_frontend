@@ -85,7 +85,7 @@ export default function UserContainer() {
               <BorderedButton
                 type="button"
                 variant="green"
-                className={cn("w-full rounded-xl")}
+                className={cn("w-full rounded-xl !px-0")}
                 onClick={(event) => {
                   event.preventDefault();
                   event.stopPropagation();
