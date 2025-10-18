@@ -19,6 +19,8 @@ import { type mutateEstateSchema } from "../MutateEstate";
 import AddNewOwner from "./AddNewOwner";
 import { useUserOwnerEstateList } from "@/services/queries/client/dashboard/owner/useUserOwnerEstateList";
 import { ImageOffIcon } from "lucide-react";
+import { Permissions } from "@/permissions/permission.types";
+import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
 
 // The actual component
 export default function CheckOwnerEstates({
@@ -41,6 +43,12 @@ export default function CheckOwnerEstates({
   const [ownerPhone, setOwnerPhone] = useState("");
   const [isOpenNewOwnerModal, setIsOpenNewOwnerModal] = useState(false);
   const [isCheckingOwner, setIsCheckingOwner] = useState(false);
+  const { userInfo } = useUserInfo();
+
+  const canManageUsers =
+    userInfo?.data?.data.accessPerms.includes(Permissions.EDIT_USERS) ||
+    userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
+    userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER);
 
   // Query to check if owner exists and get their estates
   const { ownerEstateList } = useOwnerEstateList({
@@ -265,7 +273,7 @@ export default function CheckOwnerEstates({
                         onClick={handleConfirmOwner}>
                         تایید و اضافه کردن
                       </Button>
-                      {isUserPanel ? null : (
+                      {isUserPanel || !canManageUsers ? null : (
                         <BorderedButton
                           type="button"
                           className="w-full max-w-xs"
@@ -326,8 +334,8 @@ export default function CheckOwnerEstates({
         setIsOpenNewOwnerModal={setIsOpenNewOwnerModal}
         owners={owners}
         clearErrors={clearErrors}
-        isUserPanel={isUserPanel}
         existingUser={ownerData?.user}
+        isUserPanel={isUserPanel}
       />
     </>
   );

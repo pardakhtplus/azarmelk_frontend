@@ -440,9 +440,14 @@ export const api = {
       create: (data: TMutateOwner) =>
         apiService.post(API_CONFIG.endpoints.admin.owner.create, data),
       edit: (data: TMutateOwner) =>
-        apiService.put(API_CONFIG.endpoints.admin.owner.edit, {
-          ...data,
-        }),
+        apiService.put(
+          API_CONFIG.endpoints.admin.owner.edit +
+            "?" +
+            handleQueries({ id: data.id }),
+          {
+            ...data,
+          },
+        ),
       getEstateList: ({
         phoneNumber,
         categoryId,
