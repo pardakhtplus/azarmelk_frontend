@@ -2,7 +2,7 @@ import { IChevronLeft } from "@/components/Icons";
 import Input from "@/components/modules/inputs/Input";
 import useAuthMutation from "@/services/mutations/client/auth/useAuthMutation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -40,6 +40,9 @@ export default function Password({
   });
   const { login, sendOtp } = useAuthMutation();
 
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
+
   const onLoginUsingOTP = async () => {
     const res = await sendOtp.mutateAsync({
       phoneNumber: phoneNumber,
@@ -69,7 +72,8 @@ export default function Password({
         await setCookie("accessToken", res.accessToken);
         await setCookie("refreshToken", res.refreshToken);
         updateTokenCache(res.accessToken);
-        router.push("/");
+        if (callbackUrl) router.push(callbackUrl);
+        else router.push("/");
       } else {
         setIsVerified(true);
         setToken(res.token);

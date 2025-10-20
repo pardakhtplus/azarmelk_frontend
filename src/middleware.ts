@@ -58,7 +58,9 @@ export async function middleware(req: NextRequest) {
         req.nextUrl.pathname.startsWith("/dashboard") ||
         req.nextUrl.pathname.startsWith("/user-panel")
       ) {
-        return NextResponse.redirect(new URL("/auth/login", req.url));
+        return NextResponse.redirect(
+          new URL("/auth/login?callbackUrl=" + req.nextUrl.pathname, req.url),
+        );
       }
 
       return NextResponse.next();
@@ -105,7 +107,9 @@ export async function middleware(req: NextRequest) {
       req.nextUrl.pathname.startsWith("/dashboard") ||
       req.nextUrl.pathname.startsWith("/user-panel")
     ) {
-      return NextResponse.redirect(new URL("/auth/login", req.url));
+      return NextResponse.redirect(
+        new URL("/auth/login?callbackUrl=" + req.nextUrl.pathname, req.url),
+      );
     }
   }
 

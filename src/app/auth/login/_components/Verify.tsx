@@ -3,7 +3,7 @@
 import Input from "@/components/modules/inputs/Input";
 import NotificationModal from "@/components/modules/NotificationModal";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -42,6 +42,10 @@ export default function Verify({
     defaultValues: {},
   });
   const [isSuccess, setIsSuccess] = useState(false);
+
+  const searchParams = useSearchParams();
+
+  const callbackUrl = searchParams.get("callbackUrl");
 
   const { login, sendOtp } = useAuthMutation();
 
@@ -92,7 +96,8 @@ export default function Verify({
         await setCookie("accessToken", res.accessToken);
         await setCookie("refreshToken", res.refreshToken);
         updateTokenCache(res.accessToken);
-        router.push("/");
+        if (callbackUrl) router.push(callbackUrl);
+        else router.push("/");
       } else {
         setIsVerified(true);
         setToken(res.token);
