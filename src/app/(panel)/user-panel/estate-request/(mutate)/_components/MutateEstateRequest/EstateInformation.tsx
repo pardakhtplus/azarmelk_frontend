@@ -205,32 +205,7 @@ export default function EstateInformation({
           />
         </div>
       </div>
-      {/* متراژ دهنه - نمایش شرطی */}
-      <div className="w-full">
-        <label htmlFor="dahaneMetrage" className="text-sm">
-          متراژ دهنه
-        </label>
-        <BorderedInput
-          name="dahaneMetrage"
-          type="number"
-          containerClassName="mt-1"
-          register={register}
-          error={errors.dahaneMetrage}
-        />
-      </div>
-      {/* ارتفاع سقف - نمایش شرطی */}
-      <div className="w-full">
-        <label htmlFor="height" className="text-sm">
-          ارتفاع سقف
-        </label>
-        <BorderedInput
-          name="height"
-          type="number"
-          containerClassName="mt-1"
-          register={register}
-          error={errors.height}
-        />
-      </div>
+
       {selectedCategories?.[0]?.dealType === "FOR_RENT" ? (
         <>
           {/* قیمت رهن و اجاره - نمایش شرطی */}

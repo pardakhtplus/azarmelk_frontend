@@ -31,6 +31,7 @@ export default function Input({
   onChange,
   onClick,
   accept,
+  ref,
   ...props
 }: {
   accept?: string;
@@ -48,6 +49,7 @@ export default function Input({
   // hasHideShowBtn?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onClick?: () => void;
+  ref?: React.RefObject<HTMLInputElement>;
 } & React.InputHTMLAttributes<HTMLInputElement>) {
   const [isShow, setIsShow] = useState(false);
 
@@ -144,6 +146,7 @@ export default function Input({
   return (
     <div className={cn("w-full", containerClassName)}>
       <input
+        ref={ref}
         accept={accept}
         type={actualType}
         id={name}

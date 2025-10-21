@@ -1,9 +1,9 @@
-import React, { type RefObject, useEffect, useRef, useState } from "react";
-import { ChevronDownIcon } from "lucide-react";
-import { useMediaQuery, useOnClickOutside } from "usehooks-ts";
-import { type FieldError } from "react-hook-form";
 import { cn } from "@/lib/utils";
+import { ChevronDownIcon } from "lucide-react";
+import { type RefObject, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { type FieldError } from "react-hook-form";
+import { useMediaQuery, useOnClickOutside } from "usehooks-ts";
 
 export type TOption = {
   key: string;
@@ -100,6 +100,7 @@ const ComboBox = ({
                   onClick={() => setIsOpen(false)}
                 />
                 <div
+                  ref={ref}
                   className={cn(
                     "fixed bottom-0 left-0 right-0 z-50 mt-1 size-full max-h-64 w-fit overflow-auto border border-primary-border bg-white py-1 text-base shadow-lg ring-opacity-5 focus:outline-none sm:absolute sm:!inset-auto sm:z-20 sm:h-auto sm:max-h-48 sm:rounded-md sm:text-sm",
                     dropDownClassName,
@@ -117,7 +118,9 @@ const ComboBox = ({
                         option.title === value && "!bg-primary/10",
                         // !value && !option.key && "!bg-primary/10",
                       )}
-                      onClick={() => handleOptionSelect(option)}>
+                      onClick={() => {
+                        handleOptionSelect(option);
+                      }}>
                       {option.title}
                     </div>
                   ))}

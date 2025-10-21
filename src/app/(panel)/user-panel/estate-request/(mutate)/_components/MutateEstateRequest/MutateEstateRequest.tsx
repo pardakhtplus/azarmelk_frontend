@@ -33,8 +33,8 @@ export const mutateEstateRequestSchema = z.object({
   description: z.string().optional(),
   minMetrage: z.string().optional(),
   maxMetrage: z.string().optional(),
-  dahaneMetrage: z.string().optional(),
-  height: z.string().optional(),
+  // dahaneMetrage: z.string().optional(),
+  // height: z.string().optional(),
   roomCount: z.string().optional(),
   floorCount: z.string().optional(),
   floorUnitCount: z.string().optional(),
@@ -220,18 +220,6 @@ export default function MutateEstateRequest({
             ? {
                 maxMetrage:
                   userEstateRequest?.data?.data?.maxMetrage?.toString() || "",
-              }
-            : {}),
-          ...(userEstateRequest?.data?.data?.dahaneMetrage
-            ? {
-                dahaneMetrage:
-                  userEstateRequest?.data?.data?.dahaneMetrage?.toString() ||
-                  "",
-              }
-            : {}),
-          ...(userEstateRequest?.data?.data?.height
-            ? {
-                height: userEstateRequest?.data?.data?.height?.toString() || "",
               }
             : {}),
           ...(userEstateRequest?.data?.data?.roomCount
@@ -640,8 +628,8 @@ export default function MutateEstateRequest({
           description: data.description || "",
           minMetrage: Number(data.minMetrage) || undefined,
           maxMetrage: Number(data.maxMetrage) || undefined,
-          dahaneMetrage: Number(data.dahaneMetrage) || undefined,
-          height: Number(data.height) || undefined,
+          // dahaneMetrage: Number(data.dahaneMetrage) || undefined,
+          // height: Number(data.height) || undefined,
           roomCount: Number(data.roomCount) || undefined,
           floorCount: Number(data.floorCount) || undefined,
           floorUnitCount: Number(data.floorUnitCount) || undefined,
@@ -684,8 +672,8 @@ export default function MutateEstateRequest({
           description: data.description || "",
           minMetrage: Number(data.minMetrage) || undefined,
           maxMetrage: Number(data.maxMetrage) || undefined,
-          dahaneMetrage: Number(data.dahaneMetrage) || undefined,
-          height: Number(data.height) || undefined,
+          // dahaneMetrage: Number(data.dahaneMetrage) || undefined,
+          // height: Number(data.height) || undefined,
           roomCount: Number(data.roomCount) || undefined,
           floorCount: Number(data.floorCount) || undefined,
           floorUnitCount: Number(data.floorUnitCount) || undefined,
@@ -738,7 +726,7 @@ export default function MutateEstateRequest({
 
     const callbackUrl = searchParams.get("callbackUrl");
     if (callbackUrl) {
-      router.push(callbackUrl.replace("%" , "&"));
+      router.push(callbackUrl.replace("%", "&"));
     } else {
       router.push(`/user-panel/estate-request`);
     }

@@ -610,7 +610,11 @@ export default function EstateActions({
           ) : null}
 
           <Link
-            href={`/dashboard/estates/edit/${estate.id}?callbackUrl=${window.location.pathname}${window.location.search.replace("&", "%")}`}
+            href={
+              isUserPanel
+                ? `/user-panel/estates/edit/${estate.id}?callbackUrl=${window.location.pathname}${window.location.search.replace("&", "%")}`
+                : `/dashboard/estates/edit/${estate.id}?callbackUrl=${window.location.pathname}${window.location.search.replace("&", "%")}`
+            }
             className="flex w-full items-center gap-x-2 rounded-md py-2 pr-3 text-right text-sm transition-colors hover:bg-gray-100"
             onClick={() => setOpen(false)}>
             <IPencil className="size-[18px]" />

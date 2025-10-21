@@ -146,35 +146,32 @@ export default function ContactHistoryModal({
                       </div>
 
                       <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium text-gray-700">
-                            ملک:
-                          </span>
-                          <Link
-                            href={`/estates/${log.estate.id}`}
-                            className="text-sm text-primary-blue underline hover:text-primary-blue/80">
-                            {log.estate.title || `ملک ${log.estate.estateCode}`}
-                          </Link>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium text-gray-700">
-                            کد ملک:
-                          </span>
-                          <span className="text-sm text-gray-600">
-                            {log.estate.estateCode}
-                          </span>
-                        </div>
+                        {log.estate ? (
+                          <>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-medium text-gray-700">
+                                ملک:
+                              </span>
+                              <Link
+                                href={`/estates/${log.estate.id}`}
+                                className="text-sm text-primary-blue underline hover:text-primary-blue/80">
+                                {log.estate.title ||
+                                  `ملک ${log.estate.estateCode}`}
+                              </Link>
+                            </div>
 
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium text-gray-700">
-                            مشاور:
-                          </span>
-                          <span className="text-sm text-gray-600">
-                            {log.estate.adviser?.firstName}{" "}
-                            {log.estate.adviser?.lastName} /{" "}
-                            {log.estate.adviser?.phoneNumber}
-                          </span>
-                        </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-medium text-gray-700">
+                                مشاور:
+                              </span>
+                              <span className="text-sm text-gray-600">
+                                {log.estate.adviser?.firstName}{" "}
+                                {log.estate.adviser?.lastName} /{" "}
+                                {log.estate.adviser?.phoneNumber}
+                              </span>
+                            </div>
+                          </>
+                        ) : null}
 
                         <div className="flex items-center gap-2">
                           <span className="text-sm font-medium text-gray-700">

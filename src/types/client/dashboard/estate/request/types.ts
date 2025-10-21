@@ -19,8 +19,6 @@ export interface TEstateRequest {
   maxFloor?: string;
   buildYear?: number;
   location?: string[];
-  dahaneMetrage?: number;
-  height?: number;
   roomCount?: number;
   floorCount?: number;
   floorUnitCount?: number;
@@ -43,8 +41,6 @@ export interface TCreateEstateRequest {
   description?: string;
   minMetrage?: number;
   maxMetrage?: number;
-  dahaneMetrage?: number;
-  height?: number;
   roomCount?: number;
   floorCount?: number;
   floorUnitCount?: number;

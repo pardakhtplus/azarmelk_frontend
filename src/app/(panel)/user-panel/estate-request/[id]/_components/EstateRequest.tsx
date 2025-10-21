@@ -413,18 +413,6 @@ export default function EstateRequest() {
             </div>
           ) : null}
 
-          {request.data.dahaneMetrage ? (
-            <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
-              <div className="mb-2 flex items-center gap-2">
-                <CalendarIcon className="size-5 text-gray-600" />
-                <span className="font-semibold text-gray-900">متراژ دهنه</span>
-              </div>
-              <p className="text-lg font-medium text-gray-600">
-                {toPersianNumber(request.data.dahaneMetrage)} متر
-              </p>
-            </div>
-          ) : null}
-
           {request.data.floorCount ? (
             <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
               <div className="mb-2 flex items-center gap-2">
@@ -449,18 +437,6 @@ export default function EstateRequest() {
               </div>
               <p className="text-lg font-medium text-gray-600">
                 {toPersianNumber(request.data.floorUnitCount)}
-              </p>
-            </div>
-          ) : null}
-
-          {request.data.height ? (
-            <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
-              <div className="mb-2 flex items-center gap-2">
-                <CalendarIcon className="size-5 text-gray-600" />
-                <span className="font-semibold text-gray-900">ارتفاع سقف</span>
-              </div>
-              <p className="text-lg font-medium text-gray-600">
-                {toPersianNumber(request.data.height)} متر
               </p>
             </div>
           ) : null}

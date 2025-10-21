@@ -44,7 +44,7 @@ export default function ForbiddenContainer() {
 
           // Redirect back to the previous page or dashboard
           // We can't get the exact previous page that caused the 403, so redirect to dashboard
-          window.location.reload();
+          // window.location.reload();
           return;
         } else {
           throw new Error("Token refresh failed");
@@ -125,11 +125,11 @@ export default function ForbiddenContainer() {
 
         <div className="flex gap-4">
           {refreshFailed ? (
-            <Link
-              href="/auth/login"
+            <button
+              onClick={() => window.location.reload()}
               className="inline-flex items-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
-              ورود مجدد
-            </Link>
+              بررسی مجدد
+            </button>
           ) : (
             <Link
               href="/dashboard"

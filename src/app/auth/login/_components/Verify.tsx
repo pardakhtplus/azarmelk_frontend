@@ -12,6 +12,7 @@ import ResendCode from "./ResendCode";
 import useAuthMutation from "@/services/mutations/client/auth/useAuthMutation";
 import { setCookie } from "@/lib/server-utils";
 import { updateTokenCache } from "@/services/axios-client";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
   code: z.string({ message: "کد را وارد کنید!" }),
@@ -63,7 +64,13 @@ export default function Verify({
       nav.credentials
         .get({ otp: { transport: ["sms"] }, signal: abortController.signal })
         .then((cred: any) => {
+          console.log(cred);
           if (cred?.code) {
+            toast.success(cred.code);
+            toast.success(
+              "کد تایید ارسال شده به شماره “" + phoneNumber + "” را وارد کنید.",
+            );
+            toast.success(cred);
             setValue("code", cred.code, {
               shouldValidate: true,
               shouldDirty: true,
