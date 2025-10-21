@@ -62,6 +62,7 @@ export default function Verify({
     const nav: any = navigator as any;
     const isSupported =
       Boolean((window as any).OTPCredential) && nav?.credentials?.get;
+    console.log("isSupported", isSupported, typeof isSupported);
     toast.success("1" + JSON.stringify(isSupported));
     if (!isSupported) {
       toast.error("not supported");
@@ -95,10 +96,10 @@ export default function Verify({
       toast.error("4" + JSON.stringify(error));
       // No-op
     }
-
-    return () => {
-      if (abortController) abortController.abort();
-    };
+    //
+    // return () => {
+    // if (abortController) abortController.abort();
+    // };
   }, [setValue]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
