@@ -78,7 +78,8 @@ export default function Verify({
             });
           }
         })
-        .catch(() => {
+        .catch((error) => {
+          toast.error(JSON.stringify(error));
           // Ignore errors silently
         });
     } catch {
