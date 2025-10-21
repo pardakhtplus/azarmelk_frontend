@@ -54,52 +54,34 @@ export default function Verify({
 
   // WebOTP: auto-read SMS OTP codes when supported
   useEffect(() => {
-    let abortController: AbortController | null = null;
-    if (typeof window === "undefined") {
-      toast.error("window is undefined");
-      return;
-    }
-    const nav: any = navigator as any;
-    const isSupported =
-      Boolean((window as any).OTPCredential) && nav?.credentials?.get;
-    console.log("isSupported", isSupported, typeof isSupported);
-    toast.success("1" + JSON.stringify(isSupported));
-    if (!isSupported) {
-      toast.error("not supported");
-      return;
-    }
+    if ("OTPCredential" in window) {
+      toast("OTPCredential is supported");
+      const ac = new AbortController();
 
-    try {
-      abortController = new AbortController();
-      nav.credentials
-        .get({ otp: { transport: ["sms"] }, signal: abortController.signal })
-        .then((cred: any) => {
-          toast.success("2" + JSON.stringify(cred));
-
-          if (cred?.code) {
-            toast.success("5" + cred.code);
-            toast.success(
-              "کد تایید ارسال شده به شماره “" + phoneNumber + "” را وارد کنید.",
-            );
-            toast.success("6" + JSON.stringify(cred));
-            setValue("code", cred.code, {
+      (navigator as any).credentials
+        .get({
+          otp: { transport: ["sms"] },
+          signal: ac.signal,
+        })
+        .then((otp: any) => {
+          toast("otp", otp);
+          if (otp?.code) {
+            setValue("code", otp.code, {
               shouldValidate: true,
               shouldDirty: true,
             });
           }
         })
         .catch((error) => {
-          toast.error("3" + JSON.stringify(error));
-          // Ignore errors silently
+          toast("error", error);
+          // کاربر یا مرورگر پشتیبانی نکرد
         });
-    } catch (error) {
-      toast.error("4" + JSON.stringify(error));
-      // No-op
+
+      return () => {
+        toast.success("abort");
+        ac.abort();
+      };
     }
-    //
-    // return () => {
-    // if (abortController) abortController.abort();
-    // };
   }, []);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
