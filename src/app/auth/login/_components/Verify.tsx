@@ -55,11 +55,18 @@ export default function Verify({
   // WebOTP: auto-read SMS OTP codes when supported
   useEffect(() => {
     let abortController: AbortController | null = null;
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") {
+      toast.error("window is undefined");
+      return;
+    }
     const nav: any = navigator as any;
     const isSupported =
       Boolean((window as any).OTPCredential) && nav?.credentials?.get;
-    if (!isSupported) return;
+    toast.success(JSON.stringify(isSupported));
+    if (!isSupported) {
+      toast.error("not supported");
+      return;
+    }
 
     try {
       abortController = new AbortController();
