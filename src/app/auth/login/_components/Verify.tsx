@@ -62,7 +62,7 @@ export default function Verify({
     const nav: any = navigator as any;
     const isSupported =
       Boolean((window as any).OTPCredential) && nav?.credentials?.get;
-    toast.success(JSON.stringify(isSupported));
+    toast.success("1" + JSON.stringify(isSupported));
     if (!isSupported) {
       toast.error("not supported");
       return;
@@ -73,14 +73,14 @@ export default function Verify({
       nav.credentials
         .get({ otp: { transport: ["sms"] }, signal: abortController.signal })
         .then((cred: any) => {
-          toast.success(JSON.stringify(cred));
+          toast.success("2" + JSON.stringify(cred));
 
           if (cred?.code) {
-            toast.success(cred.code);
+            toast.success("5" + cred.code);
             toast.success(
               "کد تایید ارسال شده به شماره “" + phoneNumber + "” را وارد کنید.",
             );
-            toast.success(cred);
+            toast.success("6" + JSON.stringify(cred));
             setValue("code", cred.code, {
               shouldValidate: true,
               shouldDirty: true,
@@ -88,11 +88,11 @@ export default function Verify({
           }
         })
         .catch((error) => {
-          toast.error(JSON.stringify(error));
+          toast.error("3" + JSON.stringify(error));
           // Ignore errors silently
         });
     } catch (error) {
-      toast.error(JSON.stringify(error));
+      toast.error("4" + JSON.stringify(error));
       // No-op
     }
 
