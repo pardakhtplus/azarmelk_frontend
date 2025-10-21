@@ -100,7 +100,7 @@ export default function Verify({
     // return () => {
     // if (abortController) abortController.abort();
     // };
-  }, [setValue]);
+  }, []);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!values.code) return;
