@@ -50,6 +50,8 @@ export default function Verify({
 
   const { login, sendOtp } = useAuthMutation();
 
+  toast.success("test");
+
   // WebOTP: auto-read SMS OTP codes when supported
   useEffect(() => {
     let abortController: AbortController | null = null;
