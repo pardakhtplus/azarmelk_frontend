@@ -64,7 +64,8 @@ export default function Verify({
       nav.credentials
         .get({ otp: { transport: ["sms"] }, signal: abortController.signal })
         .then((cred: any) => {
-          console.log(cred);
+          toast.success(JSON.stringify(cred));
+
           if (cred?.code) {
             toast.success(cred.code);
             toast.success(
