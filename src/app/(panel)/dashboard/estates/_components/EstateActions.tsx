@@ -297,15 +297,17 @@ export default function EstateActions({
             top: menuPosition.top,
             left: menuPosition.left,
           }}>
-          {isPublish && (
-            <Link
-              href={`/estates/${estate.id}`}
-              className="flex w-full items-center gap-x-2 rounded-md py-2 pr-3 text-right text-sm text-primary-blue transition-colors hover:bg-primary-blue/5"
-              onClick={() => setOpen(false)}>
-              <IEye className="size-[18px]" />
-              <span>مشاهده</span>
-            </Link>
-          )}
+          {isEstateManager ||
+            isAdviser ||
+            (isPublish && (
+              <Link
+                href={`/estates/${estate.id}`}
+                className="flex w-full items-center gap-x-2 rounded-md py-2 pr-3 text-right text-sm text-primary-blue transition-colors hover:bg-primary-blue/5"
+                onClick={() => setOpen(false)}>
+                <IEye className="size-[18px]" />
+                <span>مشاهده</span>
+              </Link>
+            ))}
           {isDelete || isArchive || isUserPanel ? null : isEstateManager &&
             isPending ? (
             <>

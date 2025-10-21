@@ -2,6 +2,9 @@
 
 import Input from "@/components/modules/inputs/Input";
 import NotificationModal from "@/components/modules/NotificationModal";
+import { setCookie } from "@/lib/server-utils";
+import { updateTokenCache } from "@/services/axios-client";
+import useAuthMutation from "@/services/mutations/client/auth/useAuthMutation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,10 +12,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import FormCard from "../../_components/FormCard";
 import ResendCode from "./ResendCode";
-import useAuthMutation from "@/services/mutations/client/auth/useAuthMutation";
-import { setCookie } from "@/lib/server-utils";
-import { updateTokenCache } from "@/services/axios-client";
-import toast from "react-hot-toast";
 
 const formSchema = z.object({
   code: z.string({ message: "کد را وارد کنید!" }),
@@ -50,39 +49,38 @@ export default function Verify({
 
   const { login, sendOtp } = useAuthMutation();
 
-  toast.success("test");
-
   // WebOTP: auto-read SMS OTP codes when supported
   useEffect(() => {
-    if ("OTPCredential" in window) {
-      toast("OTPCredential is supported");
-      const ac = new AbortController();
+    let abortController: AbortController | null = null;
+    if (typeof window === "undefined") return;
+    const nav: any = navigator as any;
+    const isSupported =
+      Boolean((window as any).OTPCredential) && nav?.credentials?.get;
+    if (!isSupported) return;
 
-      (navigator as any).credentials
-        .get({
-          otp: { transport: ["sms"] },
-          signal: ac.signal,
-        })
-        .then((otp: any) => {
-          toast("otp", otp);
-          if (otp?.code) {
-            setValue("code", otp.code, {
+    try {
+      abortController = new AbortController();
+      nav.credentials
+        .get({ otp: { transport: ["sms"] }, signal: abortController.signal })
+        .then((cred: any) => {
+          if (cred?.code) {
+            setValue("code", cred.code, {
               shouldValidate: true,
               shouldDirty: true,
             });
           }
         })
-        .catch((error) => {
-          toast("error", error);
-          // کاربر یا مرورگر پشتیبانی نکرد
+        .catch(() => {
+          // Ignore errors silently
         });
-
-      return () => {
-        toast.success("abort");
-        ac.abort();
-      };
+    } catch {
+      // No-op
     }
-  }, []);
+
+    return () => {
+      if (abortController) abortController.abort();
+    };
+  }, [setValue]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!values.code) return;
