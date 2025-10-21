@@ -40,6 +40,12 @@ export default function EstateCardItem({
       onClick={() => {
         if (
           estate.status === ESTATE_STATUS.PUBLISH ||
+          userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER) ||
+          userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
+          userInfo?.data?.data.accessPerms.includes(
+            Permissions.MANAGE_ESTATE,
+          ) ||
+          isAdvisor ||
           estate.status === undefined
         ) {
           window.open(`/estates/${estate.id}`, "_blank");
