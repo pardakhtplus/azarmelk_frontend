@@ -84,7 +84,8 @@ export default function Verify({
           toast.error(JSON.stringify(error));
           // Ignore errors silently
         });
-    } catch {
+    } catch (error) {
+      toast.error(JSON.stringify(error));
       // No-op
     }
 
