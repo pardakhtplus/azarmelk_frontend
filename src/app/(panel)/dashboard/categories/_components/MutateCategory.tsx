@@ -62,7 +62,7 @@ export default function MutateCategory({
     if (isEdit) {
       res = await editRegion.mutateAsync({
         id: defaultValues?.id,
-        name: values.name,
+        name: values.name.trim(),
         description: values.description || "",
         parentId: categories[categories.length - 1].id,
         isRegion: true,
@@ -72,7 +72,7 @@ export default function MutateCategory({
       });
     } else {
       res = await createRegion.mutateAsync({
-        name: values.name,
+        name: values.name.trim(),
         description: values.description || "",
         parentId: categories[categories.length - 1].id,
         isRegion: true,

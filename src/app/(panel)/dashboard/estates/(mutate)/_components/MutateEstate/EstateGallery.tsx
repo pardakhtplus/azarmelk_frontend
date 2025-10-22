@@ -13,7 +13,7 @@ import MediaItem from "./MediaItem";
 import { type mutateEstateSchema } from "./MutateEstate";
 
 export default function EstateGallery({
-  control,  
+  control,
   isUserPanel,
 }: {
   control: Control<z.infer<typeof mutateEstateSchema>>;
@@ -65,7 +65,7 @@ export default function EstateGallery({
                   <input
                     type="file"
                     multiple
-                    accept="image/*,video/*"
+                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp,video/*"
                     className="hidden"
                     onChange={handleFileChange}
                   />
@@ -107,7 +107,7 @@ export default function EstateGallery({
               <input
                 type="file"
                 multiple
-                accept="image/*,video/*"
+                accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp,video/*"
                 className="hidden"
                 onChange={handleFileChange}
               />
