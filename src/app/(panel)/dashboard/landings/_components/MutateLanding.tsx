@@ -1,5 +1,6 @@
 "use client";
 
+import CustomImage from "@/components/modules/CustomImage";
 import BorderedButton from "@/components/modules/buttons/BorderedButton";
 import Button from "@/components/modules/buttons/Button";
 import {
@@ -18,7 +19,6 @@ import { useLanding } from "@/services/queries/admin/landing/useLanding";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { ImageOffIcon, XIcon } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
@@ -332,7 +332,7 @@ export default function MutateLanding({
                             propertyType:
                               estate.propertyType as PropertyTypeEnum,
                           }) ? (
-                            <Image
+                            <CustomImage
                               src={
                                 estate.posterFile?.url ||
                                 getDefaultPosterFileByCategory({

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import CustomImage from "@/components/modules/CustomImage";
 import { type TSession } from "@/types/admin/session/type";
 
 interface SessionCreatorProps {
@@ -15,7 +15,7 @@ export default function SessionCreator({ creator }: SessionCreatorProps) {
       <div className="mt-5">
         <div className="flex items-center gap-3">
           <div className="size-12 overflow-hidden rounded-full">
-            <Image
+            <CustomImage
               src="/images/profile-placeholder.jpg"
               alt="avatar"
               width={48}

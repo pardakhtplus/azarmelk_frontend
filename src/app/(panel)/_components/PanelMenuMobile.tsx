@@ -1,10 +1,10 @@
 import { IRightFromBracket } from "@/components/Icons";
+import CustomImage from "@/components/modules/CustomImage";
 import NavLink from "@/components/modules/NavLink";
 import NotificationModal from "@/components/modules/NotificationModal";
 import { cn, logout } from "@/lib/utils";
 import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
 import { XIcon } from "lucide-react";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { type MenuItem } from "./PanelMenu";
 
@@ -53,7 +53,7 @@ export default function PanelMenuMobile({
         )}>
         <div className="flex items-center justify-between">
           <div className="size-12">
-            <Image
+            <CustomImage
               src="/images/logo.png"
               alt="logo"
               width={200}
@@ -134,7 +134,7 @@ export default function PanelMenuMobile({
             }}>
             <div className="flex items-center gap-2">
               <div className="size-12 shrink-0 overflow-hidden rounded-full border-2 border-white shadow-sm">
-                <Image
+                <CustomImage
                   src={
                     userInfo?.data?.data.avatar?.url ||
                     "/images/profile-placeholder.jpg"

@@ -1,7 +1,7 @@
 import { IChevronLeft } from "@/components/Icons";
 import Button from "@/components/modules/buttons/Button";
+import CustomImage from "@/components/modules/CustomImage";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 
 export default function FormCard({
   children,
@@ -69,7 +69,7 @@ export default function FormCard({
       </form>
 
       <div className="my-auto hidden h-full max-h-[1000px] w-full overflow-hidden rounded-2xl md:col-span-5 md:block lg:col-span-6">
-        <Image
+        <CustomImage
           src="/images/auth-background-image.jpg"
           alt="auth/login"
           width={1000}

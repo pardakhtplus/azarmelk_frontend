@@ -12,8 +12,8 @@ import { Permissions } from "@/permissions/permission.types";
 import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
 import { type TEstate } from "@/types/types";
 import { ImageOffIcon } from "lucide-react";
-import Image from "next/image";
 import { toast } from "react-hot-toast";
+import CustomImage from "../CustomImage";
 
 interface Props {
   estate: TEstate;
@@ -58,7 +58,7 @@ export default function EstateCardItem({
         getDefaultPosterFileByCategory({
           propertyType: estate.category.propertyType as PropertyTypeEnum,
         }) ? (
-          <Image
+          <CustomImage
             src={
               estate.posterFile?.url ||
               getDefaultPosterFileByCategory({

@@ -1,7 +1,7 @@
-import Image from "next/image";
+import CustomImage from "@/components/modules/CustomImage";
 import Link from "next/link";
-import { FaInstagram, FaWhatsapp } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
+import { FaInstagram, FaWhatsapp } from "react-icons/fa6";
 import {
   address,
   instagram,
@@ -14,7 +14,7 @@ export default function Footer() {
   return (
     <footer className="mt-[107px] flex h-[404px] w-full flex-col items-center bg-[#FAFAFA] px-7 pt-[37px] sm:px-[50px] md:px-[90px]">
       <div className="flex w-full flex-col items-center justify-center border-b pb-12">
-        <Image
+        <CustomImage
           src="/images/logo-footer.png"
           alt="Azarmelk Logo"
           width={100}

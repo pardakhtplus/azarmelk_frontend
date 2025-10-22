@@ -1,9 +1,9 @@
 import { IEye, IStar, IStarFill, ITrash } from "@/components/Icons";
+import CustomImage from "@/components/modules/CustomImage";
 import { cn, isFile } from "@/lib/utils";
 import useUploadWatermarkedFileChunking from "@/services/mutations/admin/bucket/useUploadWatermarkedFileChunking";
 import useUserUploadWatermarkedFileChunking from "@/services/mutations/client/bucket/useUserUploadWatermarkedFileChunking";
 import { XIcon } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { type UseFieldArrayReturn } from "react-hook-form";
@@ -151,8 +151,7 @@ export default function MediaItem({
                   <XIcon className="size-7 text-red" />
                 </button>
                 {mediaItem.mimeType.toLowerCase().startsWith("image") ? (
-                  <Image
-                    unoptimized
+                  <CustomImage
                     src={mediaItem.url}
                     alt={`ملک تصویر ${index + 1}`}
                     width={1200}
@@ -189,7 +188,7 @@ export default function MediaItem({
               </button>
             </div>
             {mediaItem.file.type.startsWith("image") ? (
-              <Image
+              <CustomImage
                 unoptimized
                 src={URL.createObjectURL(mediaItem.file)}
                 alt={`ملک تصویر ${index + 1}`}
@@ -201,7 +200,7 @@ export default function MediaItem({
           </>
         ) : mediaItem.url &&
           mediaItem.mimeType.toLowerCase().startsWith("image") ? (
-          <Image
+          <CustomImage
             unoptimized
             src={mediaItem.url}
             alt={`ملک تصویر ${index + 1}`}

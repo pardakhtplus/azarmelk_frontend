@@ -7,6 +7,7 @@ import {
   IPenToSquare,
   IRightFromBracket,
 } from "@/components/Icons";
+import CustomImage from "@/components/modules/CustomImage";
 import BorderedButton from "@/components/modules/buttons/BorderedButton";
 import Button from "@/components/modules/buttons/Button";
 import Input from "@/components/modules/inputs/Input";
@@ -18,7 +19,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { Upload, XIcon } from "lucide-react";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -206,7 +206,7 @@ export default function ProfileContainer() {
           <div className="group relative">
             <div className="to-primary-300 relative size-24 shrink-0 overflow-hidden rounded-full bg-gradient-to-br from-primary/20 p-1 shadow-lg sm:size-32">
               <div className="size-full overflow-hidden rounded-full bg-white">
-                <Image
+                <CustomImage
                   src={
                     avatarFile
                       ? URL.createObjectURL(avatarFile)

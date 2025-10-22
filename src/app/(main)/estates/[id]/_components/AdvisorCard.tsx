@@ -3,11 +3,11 @@
 import { IPhoneWhite } from "@/components/Icons";
 import BorderedButton from "@/components/modules/buttons/BorderedButton";
 import Button from "@/components/modules/buttons/Button";
+import CustomImage from "@/components/modules/CustomImage";
 import Modal from "@/components/modules/Modal";
 import { cn } from "@/lib/utils";
-import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
 import usePostAdvisorContactLog from "@/services/mutations/client/estate/usePostAdvisorContactLog";
-import Image from "next/image";
+import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -65,7 +65,7 @@ export default function AdvisorCard({
         <div className="flex items-start gap-3">
           <div className="flex size-[53px] items-center justify-center overflow-hidden rounded-full bg-primary/30">
             {adviser?.avatar?.url ? (
-              <Image
+              <CustomImage
                 src={adviser.avatar.url}
                 alt={adviser.firstName + " " + adviser.lastName}
                 width={53}
@@ -110,7 +110,7 @@ export default function AdvisorCard({
             {/* Advisor Avatar */}
             <div className="flex size-24 items-center justify-center overflow-hidden rounded-full bg-primary/30">
               {adviser?.avatar?.url ? (
-                <Image
+                <CustomImage
                   src={adviser.avatar.url}
                   alt={adviser.firstName + " " + adviser.lastName}
                   width={96}

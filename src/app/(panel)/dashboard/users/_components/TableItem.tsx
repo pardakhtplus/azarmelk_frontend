@@ -33,7 +33,7 @@ export default function TableItem({
         <div className="flex items-start gap-x-3">
           {/* TODO: profile image */}
           {/* <div className="size-10 shrink-0">
-            <Image
+            <CustomImage
               className="size-full object-cover"
               src={user.files[0]?.url || "/svg/image-placeholder.svg"}
               alt=""

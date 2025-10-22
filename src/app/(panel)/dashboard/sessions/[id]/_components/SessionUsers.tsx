@@ -1,4 +1,4 @@
-import Image from "next/image";
+import CustomImage from "@/components/modules/CustomImage";
 import { cn } from "@/lib/utils";
 import { type TSession } from "@/types/admin/session/type";
 
@@ -33,7 +33,7 @@ export default function SessionUsers({ users, creatorId }: SessionUsersProps) {
                   title={`${user.firstName} ${user.lastName}${isCreator ? " (ایجاد کننده)" : ""}`}>
                   <div className="relative">
                     {user.avatar ? (
-                      <Image
+                      <CustomImage
                         src={avatarSrc}
                         alt="avatar"
                         width={48}

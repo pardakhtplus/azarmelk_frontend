@@ -1,26 +1,26 @@
 "use client";
 
+import CustomImage from "@/components/modules/CustomImage";
 import BorderedButton from "@/components/modules/buttons/BorderedButton";
 import Button from "@/components/modules/buttons/Button";
 import BorderedInput from "@/components/modules/inputs/BorderedInput";
 import Modal from "@/components/modules/Modal";
 import { cn } from "@/lib/utils";
+import { Permissions } from "@/permissions/permission.types";
 import { useOwnerEstateList } from "@/services/queries/admin/owner/useOwnerEstateList";
-import Image from "next/image";
+import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
+import { useUserOwnerEstateList } from "@/services/queries/client/dashboard/owner/useUserOwnerEstateList";
+import { ImageOffIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import {
-  type UseFormClearErrors,
   type UseFieldArrayReturn,
+  type UseFormClearErrors,
 } from "react-hook-form";
 import toast from "react-hot-toast";
 import { type z } from "zod";
 import { type mutateEstateSchema } from "../MutateEstate";
 import AddNewOwner from "./AddNewOwner";
-import { useUserOwnerEstateList } from "@/services/queries/client/dashboard/owner/useUserOwnerEstateList";
-import { ImageOffIcon } from "lucide-react";
-import { Permissions } from "@/permissions/permission.types";
-import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
 
 // The actual component
 export default function CheckOwnerEstates({
@@ -229,7 +229,7 @@ export default function CheckOwnerEstates({
                               className="flex h-36 gap-x-5 rounded-xl border border-primary-border p-3">
                               <div className="relative aspect-[16/11] h-full overflow-hidden rounded-lg">
                                 {estate.posterFile?.url ? (
-                                  <Image
+                                  <CustomImage
                                     src={estate.posterFile?.url}
                                     alt="estate-owner-check"
                                     fill
