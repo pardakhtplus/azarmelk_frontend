@@ -1,11 +1,11 @@
 "use client";
 
+import CustomImage from "@/components/modules/CustomImage";
 import Modal from "@/components/modules/Modal";
 import BorderedButton from "@/components/modules/buttons/BorderedButton";
 import { cn } from "@/lib/utils";
 import { useUserListInfinity } from "@/services/queries/admin/users/useUserListInfinity";
 import { ChevronDownIcon, SearchIcon } from "lucide-react";
-import Image from "next/image";
 import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -149,7 +149,7 @@ export default function AdvisorSelector({
                     onClick={() => handleAdvisorSelect(advisor)}>
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-200">
                       {advisor.avatar?.url ? (
-                        <Image
+                        <CustomImage
                           src={advisor.avatar.url}
                           alt={`${advisor.firstName} ${advisor.lastName}`}
                           className="h-10 w-10 rounded-full object-cover"

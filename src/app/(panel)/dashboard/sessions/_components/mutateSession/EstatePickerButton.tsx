@@ -1,9 +1,9 @@
 "use client";
 
+import CustomImage from "@/components/modules/CustomImage";
 import Button from "@/components/modules/buttons/Button";
 import { ImageOffIcon, XIcon } from "lucide-react";
-import Image from "next/image";
-import { type UseFormWatch, type FieldError } from "react-hook-form";
+import { type FieldError, type UseFormWatch } from "react-hook-form";
 import { type MutateSessionForm } from "./MutateSession";
 
 export default function EstatePickerButton({
@@ -53,7 +53,7 @@ export default function EstatePickerButton({
         <div className="mt-3 flex items-center gap-x-3">
           <div className="size-12 overflow-hidden rounded-md bg-neutral-200">
             {watch("estate.thumbnailUrl") ? (
-              <Image
+              <CustomImage
                 src={
                   watch("estate.thumbnailUrl") ||
                   "/images/image-placeholder.jpg"

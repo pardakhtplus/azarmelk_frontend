@@ -1,5 +1,6 @@
 "use client";
 
+import CustomImage from "@/components/modules/CustomImage";
 import BorderedButton from "@/components/modules/buttons/BorderedButton";
 import Button from "@/components/modules/buttons/Button";
 import Modal from "@/components/modules/Modal";
@@ -7,7 +8,6 @@ import { useEstateList } from "@/services/queries/client/estate/useEstateList";
 import { type TEstate } from "@/types/types";
 import { debounce } from "lodash";
 import { Check, ImageOffIcon, Search } from "lucide-react";
-import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -221,7 +221,7 @@ export default function EstateSelector({
                     <div className="flex items-center gap-x-3">
                       <div className="size-10 overflow-hidden rounded-md bg-neutral-200">
                         {estate.posterFile?.url ? (
-                          <Image
+                          <CustomImage
                             src={
                               estate.posterFile?.url ||
                               "/images/image-placeholder.jpg"

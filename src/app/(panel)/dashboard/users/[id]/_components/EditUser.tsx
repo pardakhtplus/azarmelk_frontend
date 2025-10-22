@@ -1,4 +1,5 @@
 import { ICheck, IPenToSquare } from "@/components/Icons";
+import CustomImage from "@/components/modules/CustomImage";
 import BorderedButton from "@/components/modules/buttons/BorderedButton";
 import Button from "@/components/modules/buttons/Button";
 import BorderedInput from "@/components/modules/inputs/BorderedInput";
@@ -12,7 +13,6 @@ import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { Upload, XIcon } from "lucide-react";
-import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -133,7 +133,7 @@ export default function EditUser() {
           <div className="group relative">
             <div className="to-primary-300 relative size-24 overflow-hidden rounded-full bg-gradient-to-br from-primary/20 p-1 shadow-lg sm:size-32">
               <div className="size-full overflow-hidden rounded-full bg-white">
-                <Image
+                <CustomImage
                   src={
                     avatarFile
                       ? URL.createObjectURL(avatarFile)

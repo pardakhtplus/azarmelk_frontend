@@ -3,17 +3,17 @@ import {
   IChevronLeft,
   IRightFromBracket,
 } from "@/components/Icons";
+import CustomImage from "@/components/modules/CustomImage";
 import NavLink from "@/components/modules/NavLink";
 import NotificationModal from "@/components/modules/NotificationModal";
 import { cn, logout } from "@/lib/utils";
 import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { type MenuItem } from "./PanelMenu";
-import NotificationCenter from "./notification/NotificationCenter";
 import NotificationButton from "./notification/NotificationButton";
+import NotificationCenter from "./notification/NotificationCenter";
 
 interface PanelMenuDesktopProps {
   menuData: MenuItem[];
@@ -80,7 +80,7 @@ export default function PanelMenuDesktop({
                 "w-[44px] shrink-0 overflow-hidden transition-all duration-300 lg:w-14",
                 isMinimized && "lg:hidden",
               )}>
-              <Image
+              <CustomImage
                 src="/images/logo.png"
                 alt="logo"
                 width={200}
@@ -104,7 +104,7 @@ export default function PanelMenuDesktop({
             <Link
               href={profileUrl}
               className="size-9 overflow-hidden rounded-full">
-              <Image
+              <CustomImage
                 src={
                   userInfo?.data?.data.avatar?.url ||
                   "/images/profile-placeholder.jpg"
@@ -242,7 +242,7 @@ export default function PanelMenuDesktop({
                 }}>
                 <div className="flex items-center gap-2">
                   <div className="size-12 shrink-0 overflow-hidden rounded-full border-2 border-white shadow-sm">
-                    <Image
+                    <CustomImage
                       src={
                         userInfo?.data?.data.avatar?.url ||
                         "/images/profile-placeholder.jpg"

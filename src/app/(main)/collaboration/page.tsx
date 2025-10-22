@@ -1,4 +1,4 @@
-import Image from "next/image";
+import CustomImage from "@/components/modules/CustomImage";
 
 export default function CollaborationPage() {
   return (
@@ -7,7 +7,7 @@ export default function CollaborationPage() {
 
       <section className="mt-[26px] flex w-full flex-col gap-[37px] px-5 md:px-[114px] xl:px-[228px]">
         <div className="relative aspect-[823/396] w-full overflow-hidden bg-[#D9D9D9]">
-          <Image
+          <CustomImage
             src="/images/elGoli.jpg"
             alt=""
             fill

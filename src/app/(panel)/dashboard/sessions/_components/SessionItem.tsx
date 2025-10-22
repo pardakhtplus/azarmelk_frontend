@@ -1,5 +1,14 @@
+import { IClockRotateLeft, INote } from "@/components/Icons";
+import CustomImage from "@/components/modules/CustomImage";
+import NotificationModal from "@/components/modules/NotificationModal";
+import ReminderListModal from "@/components/modules/reminder/ReminderListModal";
+import { REMINDER_CONTENT } from "@/components/modules/reminder/sectionUtils";
 import { cn } from "@/lib/utils";
+import useEditSessionStatus from "@/services/mutations/admin/session/useEditSessionStatus";
+import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
 import { SESSION_STATUS } from "@/types/admin/session/enum";
+import { type TSession } from "@/types/admin/session/type";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   BanIcon,
   BellIcon,
@@ -10,22 +19,13 @@ import {
   SquarePenIcon,
   XIcon,
 } from "lucide-react";
-import Image from "next/image";
+import Link from "next/link";
 import { useRef, useState } from "react";
 import type DateObject from "react-date-object";
 import { useOnClickOutside } from "usehooks-ts";
 import MutateSession from "./mutateSession/MutateSession";
-import NotificationModal from "@/components/modules/NotificationModal";
-import useEditSessionStatus from "@/services/mutations/admin/session/useEditSessionStatus";
-import { useQueryClient } from "@tanstack/react-query";
-import { type TSession } from "@/types/admin/session/type";
 import NoteListModal from "./NoteListModal";
 import SessionLogModal from "./SessionLogModal";
-import { IClockRotateLeft, INote } from "@/components/Icons";
-import Link from "next/link";
-import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
-import ReminderListModal from "@/components/modules/reminder/ReminderListModal";
-import { REMINDER_CONTENT } from "@/components/modules/reminder/sectionUtils";
 
 // Extended session type to include custom properties
 type ExtendedSession = TSession & {
@@ -358,7 +358,7 @@ export default function SessionItem({
               <div className="flex items-center gap-x-2">
                 <div className="relative size-7 overflow-hidden rounded-full bg-primary-blue">
                   {session.creator?.avatar?.url ? (
-                    <Image
+                    <CustomImage
                       className="object-cover"
                       src={session.creator.avatar?.url || ""}
                       alt={
@@ -393,7 +393,7 @@ export default function SessionItem({
                           userItem.user.firstName + " " + userItem.user.lastName
                         }>
                         {userItem.user?.avatar ? (
-                          <Image
+                          <CustomImage
                             className="object-cover"
                             src={userItem.user.avatar.url}
                             alt={

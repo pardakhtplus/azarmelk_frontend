@@ -1,7 +1,7 @@
 import { ICheck } from "@/components/Icons";
+import CustomImage from "@/components/modules/CustomImage";
 import BorderedInput from "@/components/modules/inputs/BorderedInput";
 import { useAdviserList } from "@/services/queries/admin/estate/useAdviserList";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 // Advisor Selector Component
@@ -102,7 +102,7 @@ export default function AdvisorSelector({
                 {/* Avatar */}
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
                   {advisor.avatar ? (
-                    <Image
+                    <CustomImage
                       src={
                         advisor.avatar.url || "/images/profile-placeholder.jpg"
                       }

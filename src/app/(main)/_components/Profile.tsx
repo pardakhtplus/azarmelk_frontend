@@ -1,9 +1,9 @@
 "use client";
+import CustomImage from "@/components/modules/CustomImage";
 import Modal from "@/components/modules/Modal";
 import { logout } from "@/lib/utils";
 import { Permissions } from "@/permissions/permission.types";
 import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -115,7 +115,7 @@ export default function Profile({
           aria-label="منوی پروفایل">
           <div className="flex flex-row items-center gap-2.5">
             <div className="size-12 overflow-hidden rounded-full bg-[#D9D9D9]">
-              <Image
+              <CustomImage
                 src={user.avatar?.url || "/images/profile-placeholder.jpg"}
                 alt={user.firstName + " " + user.lastName}
                 width={53}
@@ -171,7 +171,7 @@ export default function Profile({
               {/* Profile info in modal */}
               <div className="mb-6 flex flex-col items-center text-center">
                 <div className="mb-3 size-16 overflow-hidden rounded-full bg-[#D9D9D9]">
-                  <Image
+                  <CustomImage
                     src={user.avatar?.url || "/images/profile-placeholder.jpg"}
                     alt={user.firstName + " " + user.lastName}
                     width={64}

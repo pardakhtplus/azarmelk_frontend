@@ -1,4 +1,4 @@
-import Image from "next/image";
+import CustomImage from "@/components/modules/CustomImage";
 
 interface Teammate {
   name: string;
@@ -27,7 +27,7 @@ export default function Team() {
       <div className="flex w-[265px] flex-wrap justify-start gap-6 sm:w-[552px] lg:w-[823px] lg:gap-[15px] xl:w-[1101px]">
         {teammates.map((person, index) => (
           <div key={index} className="w-[264px] text-right">
-            <Image
+            <CustomImage
               src={person.imgSrc}
               width={264}
               height={280}

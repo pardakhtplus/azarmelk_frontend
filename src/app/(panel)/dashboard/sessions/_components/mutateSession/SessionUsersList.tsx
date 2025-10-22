@@ -1,8 +1,8 @@
 "use client";
 
+import CustomImage from "@/components/modules/CustomImage";
 import Button from "@/components/modules/buttons/Button";
 import { Edit2, Plus, XIcon } from "lucide-react";
-import Image from "next/image";
 import { type TSelectedUser } from "./UserSelector";
 
 interface SessionUsersListProps {
@@ -34,7 +34,7 @@ export default function SessionUsersList({
             className="flex items-center gap-x-3 rounded-full border border-primary-border p-1">
             <div className="size-7 overflow-hidden rounded-full bg-neutral-200">
               {user.avatar ? (
-                <Image
+                <CustomImage
                   src={user.avatar.url || "/images/profile-placeholder.jpg"}
                   alt="placeholder"
                   width={100}

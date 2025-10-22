@@ -1,5 +1,6 @@
 "use client";
 
+import CustomImage from "@/components/modules/CustomImage";
 import BorderedButton from "@/components/modules/buttons/BorderedButton";
 import Button from "@/components/modules/buttons/Button";
 import BorderedInput from "@/components/modules/inputs/BorderedInput";
@@ -7,7 +8,6 @@ import Modal from "@/components/modules/Modal";
 import { useAdviserList } from "@/services/queries/admin/estate/useAdviserList";
 import { debounce } from "lodash";
 import { Check, Search } from "lucide-react";
-import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import toast from "react-hot-toast";
@@ -284,7 +284,7 @@ export default function UserSelector({
                           <div className="flex items-center gap-x-3">
                             <div className="size-7 overflow-hidden rounded-full bg-neutral-200">
                               {user.avatar ? (
-                                <Image
+                                <CustomImage
                                   src={
                                     user.avatar.url ||
                                     "/images/profile-placeholder.jpg"

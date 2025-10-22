@@ -22,6 +22,7 @@ import { EffectCoverflow, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useMediaQuery } from "usehooks-ts";
 import "./EstateGalleryView.css";
+import CustomImage from "@/components/modules/CustomImage";
 
 export default function EstateGalleryView({
   files,
@@ -150,7 +151,7 @@ export default function EstateGalleryView({
                     className="group relative aspect-[16/10] w-full overflow-hidden rounded-md border border-primary/10 bg-primary/10"
                     onClick={() => openLightbox(index, file)}>
                     {file.mimeType?.toLowerCase().startsWith("image") ? (
-                      <Image
+                      <CustomImage
                         src={file.url}
                         alt={`ملک تصویر ${index + 1}`}
                         width={1200}
@@ -197,7 +198,7 @@ export default function EstateGalleryView({
                 className="group relative aspect-[16/10] w-full overflow-hidden rounded-md border border-primary/10 bg-primary/10"
                 onClick={() => openLightbox(index, file)}>
                 {file.mimeType?.toLowerCase().startsWith("image") ? (
-                  <Image
+                  <CustomImage
                     src={file.url}
                     alt={`ملک تصویر ${index + 1}`}
                     width={1000}
@@ -248,7 +249,7 @@ export default function EstateGalleryView({
                         opacity: 0.4,
                       }}>
                       {file.mimeType?.toLowerCase().startsWith("image") ? (
-                        <Image
+                        <CustomImage
                           src={file.url}
                           alt={`ملک تصویر ${MAX_DESKTOP_IMAGES + index + 1}`}
                           width={400}
@@ -320,7 +321,7 @@ export default function EstateGalleryView({
               {files[activeIndex]?.mimeType
                 ?.toLowerCase()
                 .startsWith("image") ? (
-                <Image
+                <CustomImage
                   src={files[activeIndex].url}
                   alt={`ملک تصویر ${activeIndex + 1}`}
                   width={1600}

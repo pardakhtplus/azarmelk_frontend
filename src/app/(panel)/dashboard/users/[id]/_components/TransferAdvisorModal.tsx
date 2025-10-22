@@ -1,5 +1,6 @@
 "use client";
 
+import CustomImage from "@/components/modules/CustomImage";
 import Modal from "@/components/modules/Modal";
 import BorderedButton from "@/components/modules/buttons/BorderedButton";
 import Button from "@/components/modules/buttons/Button";
@@ -7,7 +8,6 @@ import useEditAdviserEstates from "@/services/mutations/admin/estate/useEditAdvi
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import AdvisorSelector from "./AdvisorSelector";
-import Image from "next/image";
 
 type TAdvisor = {
   id: string;
@@ -93,7 +93,7 @@ export default function TransferAdvisorModal({
           <div className="flex items-center gap-3 rounded-lg bg-neutral-100/80 p-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gray-200">
               {currentAdvisor.avatar?.url ? (
-                <Image
+                <CustomImage
                   src={currentAdvisor.avatar.url}
                   alt={`${currentAdvisor.firstName} ${currentAdvisor.lastName}`}
                   className="h-12 w-12 rounded-full object-cover"

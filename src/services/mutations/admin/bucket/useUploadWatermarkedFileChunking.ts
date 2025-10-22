@@ -118,7 +118,7 @@ export default function useUploadWatermarkedFileChunking({
             return {
               url: data.data[1]?.url,
               key: key,
-              mimeType: props.file.type,
+              mimeType: data.data[1]?.mimeType,
               fileName: props.file.name,
             };
           }
