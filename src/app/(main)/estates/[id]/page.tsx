@@ -24,6 +24,7 @@ import PropertyDetailItem from "./_components/PropertyDetailItem";
 import EstateCode from "./_components/EstateCode";
 import ShareButton from "@/components/modules/buttons/ShareButton";
 import SaveButton from "@/components/modules/buttons/SaveButton";
+import { ESTATE_STATUS } from "@/enums";
 
 export async function generateMetadata({
   params,
@@ -228,10 +229,16 @@ export default async function EstatePage({
     <div className="container flex min-h-[calc(100vh-597px)] w-full flex-col-reverse gap-5 pt-8 sm:gap-10 sm:pt-12 lg:flex-row">
       <div className="w-full">
         <div className="flex flex-col gap-5">
+          {estate.data.status === ESTATE_STATUS.PENDING && (
+            <span className="w-fit rounded-full bg-orange-500/10 px-4 py-1 text-sm font-normal text-orange-500">
+              غیر فعال
+            </span>
+          )}
           <div className="flex items-center gap-2">
             <ShareButton />
             <SaveButton estateId={id} initialIsSaved={estate?.data?.isSaved} />
           </div>
+
           <h1 className="text-2xl font-semibold leading-relaxed sm:text-[32px]">
             {estate?.data?.title}
           </h1>
