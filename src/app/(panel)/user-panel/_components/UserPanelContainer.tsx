@@ -254,7 +254,7 @@ export default function ProfileContainer() {
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                  accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp,image/HEIC"
                   className="hidden"
                   onChange={(e) => {
                     const file = e.target.files?.[0];

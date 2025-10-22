@@ -65,7 +65,7 @@ export default function EstateGallery({
                   <input
                     type="file"
                     multiple
-                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp,video/*"
+                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp,video/*,image/HEIC"
                     className="hidden"
                     onChange={handleFileChange}
                   />
@@ -107,7 +107,7 @@ export default function EstateGallery({
               <input
                 type="file"
                 multiple
-                accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp,video/*"
+                accept=".jpg,.jpeg,.png,.webp,.heic,.HEIC,image/jpeg,image/png,image/webp,video/*,image/HEIC,image/heic"
                 className="hidden"
                 onChange={handleFileChange}
               />
@@ -121,6 +121,9 @@ export default function EstateGallery({
                 </p>
                 <p className="hidden text-xs text-text-300 md:block">
                   برای انتخاب تصویر اصلی روی ستاره کلیک کنید
+                </p>
+                <p className="hidden text-xs text-[#ff0000] md:block">
+                  فرمت: jpg, jpeg, png, webp, heic
                 </p>
               </div>
             </label>
