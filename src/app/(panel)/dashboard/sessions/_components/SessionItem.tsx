@@ -186,17 +186,16 @@ export default function SessionItem({
                   </button>
                 </>
               ) : null}
+              <button
+                className="flex w-full items-center gap-x-2 rounded-md px-3 py-2 text-right text-sm transition-colors hover:bg-gray-100"
+                onClick={() => {
+                  setIsRemindersOpen(true);
+                }}>
+                <BellIcon className="size-[18px]" />
+                <span>یادآورها</span>
+              </button>
               {canManageSession ? (
                 <>
-                  <button
-                    className="flex w-full items-center gap-x-2 rounded-md px-3 py-2 text-right text-sm transition-colors hover:bg-gray-100"
-                    onClick={() => {
-                      setIsRemindersOpen(true);
-                    }}>
-                    <BellIcon className="size-[18px]" />
-                    <span>یادآورها</span>
-                  </button>
-
                   <button
                     className="flex w-full items-center gap-x-2 rounded-md px-3 py-2 text-right text-sm transition-colors hover:bg-gray-100"
                     onClick={() => setIsOpenLogModal(true)}>
