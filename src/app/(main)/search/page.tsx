@@ -193,7 +193,7 @@ export default function SearchPage() {
 
   return (
     <>
-      <section className="container pt-8">
+      <section className="container py-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap items-start gap-2">
             <SelectCategories
@@ -267,8 +267,8 @@ export default function SearchPage() {
               key={estate.id}
               className="estate-item animate-fadeIn"
               style={{ animationDelay: `${idx * 60}ms` }}>
-              <Link href={`/estates/${estate.id}`}>
-                <EstateCardItem estate={estate} />
+              <Link href={`/estates/${estate.id}`} target="_blank">
+                <EstateCardItem estate={estate} isWebsite />
               </Link>
             </div>
           ))}

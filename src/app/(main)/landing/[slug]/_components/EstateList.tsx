@@ -55,8 +55,8 @@ export default function EstateList({
             key={estate.id}
             className="estate-item animate-fadeIn"
             style={{ animationDelay: `${idx * 60}ms` }}>
-            <Link href={`/estates/${estate.id}`}>
-              <EstateCardItem estate={estate} />
+            <Link href={`/estates/${estate.id}`} target="_blank">
+              <EstateCardItem estate={estate} isWebsite />
             </Link>
           </div>
         ))}

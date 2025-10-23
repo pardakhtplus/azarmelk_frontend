@@ -19,12 +19,14 @@ interface Props {
   estate: TEstate;
   children?: React.ReactNode;
   showCompletionPercentage?: boolean;
+  isWebsite?: boolean;
 }
 
 export default function EstateCardItem({
   estate,
   children,
   showCompletionPercentage,
+  isWebsite,
 }: Props) {
   const { userInfo } = useUserInfo();
   const statusInfo = getStatusInfo(estate.status, estate.archiveStatus);
@@ -39,14 +41,15 @@ export default function EstateCardItem({
       className="group relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-primary-border bg-white transition-all duration-300 hover:border-primary/20"
       onClick={() => {
         if (
-          estate.status === ESTATE_STATUS.PUBLISH ||
-          userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER) ||
-          userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
-          userInfo?.data?.data.accessPerms.includes(
-            Permissions.MANAGE_ESTATE,
-          ) ||
-          isAdvisor ||
-          estate.status === undefined
+          (estate.status === ESTATE_STATUS.PUBLISH ||
+            userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER) ||
+            userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
+            userInfo?.data?.data.accessPerms.includes(
+              Permissions.MANAGE_ESTATE,
+            ) ||
+            isAdvisor ||
+            estate.status === undefined) &&
+          !isWebsite
         ) {
           window.open(`/estates/${estate.id}`, "_blank");
         }

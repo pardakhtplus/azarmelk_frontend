@@ -124,16 +124,17 @@ export default function ForbiddenContainer() {
         </div>
 
         <div className="flex gap-4">
+          <button
+            onClick={() => window.location.reload()}
+            className="inline-flex items-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+            بررسی مجدد
+          </button>
           {refreshFailed ? (
-            <button
-              onClick={() => window.location.reload()}
-              className="inline-flex items-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
-              بررسی مجدد
-            </button>
+            <></>
           ) : (
             <Link
               href="/dashboard"
-              className="inline-flex items-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+              className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
               بازگشت به داشبورد
             </Link>
           )}
