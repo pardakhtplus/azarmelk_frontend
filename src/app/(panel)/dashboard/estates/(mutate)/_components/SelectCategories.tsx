@@ -24,11 +24,15 @@ export default function SelectCategories({
   setSelectedRegion,
   defaultCategories,
   isUserPanel,
+  isEditing,
+  editId,
 }: {
   onSelect: (region: TCategory, parentCategory: TCategory[]) => void;
   setSelectedRegion: Dispatch<SetStateAction<TCategory | null>>;
   defaultCategories: TCategory[];
   isUserPanel?: boolean;
+  isEditing?: boolean;
+  editId?: string;
 }) {
   const [selectedCategories, setSelectedCategories] =
     useState<(TCategory & { parents?: { id: string }[] })[]>(defaultCategories);
@@ -55,8 +59,12 @@ export default function SelectCategories({
       setSelectedCategories([]);
       router.replace(
         isUserPanel
-          ? "/user-panel/estates/create"
-          : "/dashboard/estates/create",
+          ? isEditing
+            ? `/user-panel/estates/edit/${editId}`
+            : "/user-panel/estates/create"
+          : isEditing
+            ? `/dashboard/estates/edit/${editId}`
+            : "/dashboard/estates/create",
       );
     }
 
@@ -112,7 +120,7 @@ export default function SelectCategories({
               setSelectedCategories([...selectedCategories.slice(0, -1)]);
               if (selectCategoryLevels[selectedCategories.length - 1]) {
                 router.replace(
-                  `${isUserPanel ? "/user-panel/estates/create" : "/dashboard/estates/create"}?selectedCategoriesLevels=${selectCategoryLevels[selectedCategories.length - 1]}`,
+                  `${isUserPanel ? (isEditing ? `/user-panel/estates/edit/${editId}` : "/user-panel/estates/create") : isEditing ? `/dashboard/estates/edit/${editId}` : "/dashboard/estates/create"}?selectedCategoriesLevels=${selectCategoryLevels[selectedCategories.length - 1]}`,
                 );
               }
             }}>

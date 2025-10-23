@@ -7,12 +7,14 @@ import SelectCategories from "@/app/(panel)/dashboard/estates/(mutate)/_componen
 import { FeatureFlag, isFeatureEnabled } from "@/config/features";
 import { type TCategory } from "@/types/admin/category/types";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { Suspense, useState } from "react";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default function EditEstateContainer() {
+  const { id } = useParams<{ id: string }>();
   const [selectedCategories, setSelectedCategories] = useState<
     TCategory[] | null
   >(null);
@@ -52,6 +54,8 @@ export default function EditEstateContainer() {
               setSelectedRegion={setSelectedRegion}
               defaultCategories={selectedCategories ?? []}
               isUserPanel
+              isEditing
+              editId={id}
             />
           </div>
         </>
