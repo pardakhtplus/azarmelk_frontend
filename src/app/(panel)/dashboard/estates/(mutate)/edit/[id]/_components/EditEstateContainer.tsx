@@ -8,11 +8,13 @@ import { Suspense, useLayoutEffect, useState } from "react";
 import MutateEstate from "../../../_components/MutateEstate/MutateEstate";
 import MutateEstateSkeleton from "../../../_components/MutateEstate/MutateEstateSkeleton";
 import SelectCategories from "../../../_components/SelectCategories";
+import { useParams } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default function EditEstateContainer() {
+  const { id } = useParams<{ id: string }>();
   const [selectedCategories, setSelectedCategories] = useState<
     TCategory[] | null
   >(null);
@@ -56,6 +58,8 @@ export default function EditEstateContainer() {
               onSelect={selectRegionHandler}
               setSelectedRegion={setSelectedRegion}
               defaultCategories={selectedCategories ?? []}
+              isEditing
+              editId={id}
             />
           </div>
         </>

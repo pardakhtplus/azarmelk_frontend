@@ -35,6 +35,8 @@ export default function EstateCardItem({
     userInfo.data?.data.phoneNumber &&
     !userInfo.data?.data.accessPerms.includes(Permissions.USER);
 
+  const isEstateAdvisor = estate.adviser?.id === userInfo?.data?.data.id;
+
   return (
     <div
       suppressHydrationWarning
@@ -47,10 +49,18 @@ export default function EstateCardItem({
             userInfo?.data?.data.accessPerms.includes(
               Permissions.MANAGE_ESTATE,
             ) ||
-            isAdvisor ||
+            isEstateAdvisor ||
             estate.status === undefined) &&
           !isWebsite
         ) {
+          console.log(
+            "estate.id",
+            estate.id,
+            estate.status,
+            userInfo?.data?.data.accessPerms,
+            isAdvisor,
+            isEstateAdvisor,
+          );
           window.open(`/estates/${estate.id}`, "_blank");
         }
       }}>
