@@ -18,12 +18,12 @@ export function isArvanHost(url: string) {
 export default function CustomImage(props: ImageProps) {
   const { src, alt, width = 100, height = 100, quality = 75, ...rest } = props;
 
-  let srcStr = (src || "") as string;
+  const srcStr = (src || "") as string;
 
-  if (isArvanHost(srcStr)) {
-    const delim = srcStr.includes("?") ? "&" : "?";
-    srcStr = `${srcStr}${delim}w=${width}&q=${quality}`;
-  }
+  // if (isArvanHost(srcStr)) {
+  //   const delim = srcStr.includes("?") ? "&" : "?";
+  //   srcStr = `${srcStr}${delim}w=${width}&q=${quality}`;
+  // }
 
   return (
     <Image
@@ -32,6 +32,7 @@ export default function CustomImage(props: ImageProps) {
       alt={alt || ""}
       width={width}
       height={height}
+      quality={quality}
       {...rest}
     />
   );
