@@ -40,6 +40,11 @@ export default function ManageCategories() {
   const isAccessToCreate =
     isHighAccess ||
     userInfo?.data?.data.accessPerms.includes(Permissions.CREATE_CAT);
+  const isAccessToDelete =
+    isHighAccess ||
+    (userInfo?.data?.data.accessPerms.includes(Permissions.CREATE_CAT) &&
+      userInfo?.data?.data.accessPerms.includes(Permissions.EDIT_CAT) &&
+      userInfo?.data?.data.accessPerms.includes(Permissions.GET_CAT));
 
   return (
     <div className="mt-10 divide-y divide-primary-border overflow-hidden rounded-xl border border-primary-border">
@@ -162,7 +167,7 @@ export default function ManageCategories() {
               </span>
             </div>
             <div className="flex items-center gap-x-2 pl-2">
-              {isHighAccess && (
+              {isAccessToDelete && (
                 <NotificationModal
                   title="حذف"
                   description="آیا از حذف این منطقه مطمئن هستید؟"
