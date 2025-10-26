@@ -125,10 +125,7 @@ export const mutateEstateSchema = z.object({
   // آدرس
   address: z.string().optional(),
   // آدرس حدودی
-  approximateAddress: z
-    .string()
-    .min(3, { message: "آدرس حدودی باید حداقل 3 کاراکتر باشد" })
-    .max(70, { message: "آدرس حدودی باید حداکثر 70 کاراکتر باشد" }),
+  approximateAddress: z.string().optional(),
   // تعداد اتاق از یک تا ده اختیاری
   roomCount: z.string().optional(),
   // موقعیت ملک
