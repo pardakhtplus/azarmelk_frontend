@@ -913,7 +913,10 @@ export default function MutateEstate({
           file_name: file.file_name,
           key: file.key,
           mimeType: file.mimeType,
-          isPoster: posterIsSelected ? index === 0 : file.isPoster,
+          isPoster:
+            !posterIsSelected && file.mimeType.includes("image")
+              ? index === 0
+              : file.isPoster,
         }));
       }
     }
@@ -1087,7 +1090,10 @@ export default function MutateEstate({
             file_name: file.file_name,
             key: file.key,
             mimeType: file.mimeType,
-            isPoster: posterIsSelected ? index === 0 : file.isPoster,
+            isPoster:
+              !posterIsSelected && file.mimeType.includes("image")
+                ? index === 0
+                : file.isPoster,
           })),
           owners:
             data.owners?.map((owner) => ({
@@ -1164,7 +1170,10 @@ export default function MutateEstate({
             file_name: file.file_name,
             key: file.key,
             mimeType: file.mimeType,
-            isPoster: posterIsSelected ? index === 0 : file.isPoster,
+            isPoster:
+              !posterIsSelected && file.mimeType.includes("image")
+                ? index === 0
+                : file.isPoster,
           })),
           owners:
             data.owners?.map((owner) => ({
