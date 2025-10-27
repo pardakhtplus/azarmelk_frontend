@@ -262,14 +262,15 @@ export default function MutateEstate({
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
 
+  const isEstateAdvisor =
+    isEditing && estate?.data?.data?.adviser?.id === userInfo?.data?.data.id;
+
   // Permission checks
   const canDirectEdit =
     userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
     userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER) ||
-    userInfo?.data?.data.accessPerms.includes(Permissions.MANAGE_ESTATE);
-
-  const isEstateAdvisor =
-    isEditing && estate?.data?.data?.adviser?.id === userInfo?.data?.data.id;
+    userInfo?.data?.data.accessPerms.includes(Permissions.MANAGE_ESTATE) ||
+    isEstateAdvisor;
 
   const canViewOwners =
     userInfo?.data?.data.accessPerms.includes(Permissions.GET_ESTATE_OWNERS) ||
