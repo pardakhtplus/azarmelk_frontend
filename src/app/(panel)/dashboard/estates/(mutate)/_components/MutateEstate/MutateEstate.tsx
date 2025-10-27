@@ -743,7 +743,7 @@ export default function MutateEstate({
     }
 
     if (formData.approximateAddress !== originalData.approximateAddress) {
-      changes.approximateAddress = formData.approximateAddress;
+      changes.approximateAddress = formData.approximateAddress || "";
     }
 
     // Price comparisons
@@ -1125,7 +1125,7 @@ export default function MutateEstate({
           ...(data.findBy && { findBy: data.findBy }),
           ...(data.address && { address: data.address }),
           ...(data.approximateAddress && {
-            approximateAddress: data.approximateAddress,
+            approximateAddress: data.approximateAddress || "",
           }),
           ...(data.roomCount && { roomCount: Number(data.roomCount) }),
           ...(data.location && { location: data.location }),
@@ -1218,7 +1218,7 @@ export default function MutateEstate({
           ...(data.findBy && { findBy: data.findBy }),
           ...(data.address && { address: data.address }),
           ...(data.approximateAddress && {
-            approximateAddress: data.approximateAddress,
+            approximateAddress: data.approximateAddress || "",
           }),
           ...(data.roomCount && { roomCount: Number(data.roomCount) }),
           ...(data.location && { location: data.location }),
