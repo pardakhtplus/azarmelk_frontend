@@ -905,13 +905,15 @@ export default function MutateEstate({
       const originalFileKeys = originalFiles.map((file) => file.key).sort();
       const newFileKeys = newFiles.map((file) => file.key).sort();
 
+      const posterIsSelected = formData.files.some((file) => file.isPoster);
+
       if (JSON.stringify(originalFileKeys) !== JSON.stringify(newFileKeys)) {
-        changes.files = newFiles.map((file) => ({
+        changes.files = newFiles.map((file, index) => ({
           url: file.url,
           file_name: file.file_name,
           key: file.key,
           mimeType: file.mimeType,
-          isPoster: file.isPoster,
+          isPoster: posterIsSelected ? index === 0 : file.isPoster,
         }));
       }
     }
@@ -1025,6 +1027,8 @@ export default function MutateEstate({
       propertyType: selectedCategories?.[2]?.propertyType as PropertyType,
     });
 
+    const posterIsSelected = data.files.some((file) => file.isPoster);
+
     let res;
 
     if (isEditing && !canDirectEdit) {
@@ -1078,12 +1082,12 @@ export default function MutateEstate({
         id: id as string,
         data: {
           estateId: id as string,
-          files: data.files.map((file) => ({
+          files: data.files.map((file, index) => ({
             url: file.url,
             file_name: file.file_name,
             key: file.key,
             mimeType: file.mimeType,
-            isPoster: file.isPoster,
+            isPoster: posterIsSelected ? index === 0 : file.isPoster,
           })),
           owners:
             data.owners?.map((owner) => ({
@@ -1155,12 +1159,12 @@ export default function MutateEstate({
     } else {
       res = await mutateEstate.mutateAsync({
         data: {
-          files: data.files.map((file) => ({
+          files: data.files.map((file, index) => ({
             url: file.url,
             file_name: file.file_name,
             key: file.key,
             mimeType: file.mimeType,
-            isPoster: file.isPoster,
+            isPoster: posterIsSelected ? index === 0 : file.isPoster,
           })),
           owners:
             data.owners?.map((owner) => ({
