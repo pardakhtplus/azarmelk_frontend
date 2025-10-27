@@ -125,10 +125,7 @@ export const mutateEstateSchema = z.object({
   // آدرس
   address: z.string().optional(),
   // آدرس حدودی
-  approximateAddress: z
-    .string()
-    .min(3, { message: "آدرس حدودی باید حداقل 3 کاراکتر باشد" })
-    .max(70, { message: "آدرس حدودی باید حداکثر 70 کاراکتر باشد" }),
+  approximateAddress: z.string().optional(),
   // تعداد اتاق از یک تا ده اختیاری
   roomCount: z.string().optional(),
   // موقعیت ملک
@@ -746,7 +743,7 @@ export default function MutateEstate({
     }
 
     if (formData.approximateAddress !== originalData.approximateAddress) {
-      changes.approximateAddress = formData.approximateAddress;
+      changes.approximateAddress = formData.approximateAddress || "";
     }
 
     // Price comparisons
@@ -1128,7 +1125,7 @@ export default function MutateEstate({
           ...(data.findBy && { findBy: data.findBy }),
           ...(data.address && { address: data.address }),
           ...(data.approximateAddress && {
-            approximateAddress: data.approximateAddress,
+            approximateAddress: data.approximateAddress || "",
           }),
           ...(data.roomCount && { roomCount: Number(data.roomCount) }),
           ...(data.location && { location: data.location }),
@@ -1221,7 +1218,7 @@ export default function MutateEstate({
           ...(data.findBy && { findBy: data.findBy }),
           ...(data.address && { address: data.address }),
           ...(data.approximateAddress && {
-            approximateAddress: data.approximateAddress,
+            approximateAddress: data.approximateAddress || "",
           }),
           ...(data.roomCount && { roomCount: Number(data.roomCount) }),
           ...(data.location && { location: data.location }),

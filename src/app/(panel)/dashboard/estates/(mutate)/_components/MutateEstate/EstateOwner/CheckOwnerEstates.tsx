@@ -21,6 +21,7 @@ import toast from "react-hot-toast";
 import { type z } from "zod";
 import { type mutateEstateSchema } from "../MutateEstate";
 import AddNewOwner from "./AddNewOwner";
+import Link from "next/link";
 
 // The actual component
 export default function CheckOwnerEstates({
@@ -224,7 +225,9 @@ export default function CheckOwnerEstates({
                         </p>
                         <div className="flex flex-col gap-y-4">
                           {ownerData.estates.map((estate) => (
-                            <div
+                            <Link
+                              href={`/estates/${estate.id}`}
+                              target="_blank"
                               key={estate.id}
                               className="flex h-36 gap-x-5 rounded-xl border border-primary-border p-3">
                               <div className="relative aspect-[16/11] h-full overflow-hidden rounded-lg">
@@ -253,7 +256,7 @@ export default function CheckOwnerEstates({
                                   ).toLocaleDateString("fa-IR")}
                                 </p>
                               </div>
-                            </div>
+                            </Link>
                           ))}
                         </div>
                         <p className="mt-4 text-center text-sm text-amber-600">

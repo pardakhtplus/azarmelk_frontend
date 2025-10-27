@@ -29,7 +29,6 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { z } from "zod";
 import ApplicantInfoForm from "./ApplicantInfoForm";
 import EstatePickerButton from "./EstatePickerButton";
@@ -314,15 +313,6 @@ export default function MutateSession({
 
   async function onSubmit() {
     const values = getValues();
-    // Check if total percentage is exactly 100%
-    const totalPercent = selectedUsers.reduce(
-      (sum, user) => sum + user.percent,
-      0,
-    );
-    if (totalPercent > 100) {
-      toast.error("مجموع درصد سود مشاوران نمی‌تواند بیشتر از ۱۰۰ درصد باشد");
-      return;
-    }
 
     // Use the updated sessionDate instead of startSession
     const updatedSessionDate = new DateObject(sessionDate);
