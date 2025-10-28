@@ -104,7 +104,8 @@ export const mutateEstateSchema = z.object({
     .string({
       message: "قیمت اجاره باید حداقل 1 باشد",
     })
-    .optional(),
+    .optional()
+    .nullable(),
   // قیمت کل
   totalPrice: z
     .string({
@@ -278,6 +279,8 @@ export default function MutateEstate({
     userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER) ||
     userInfo?.data?.data.accessPerms.includes(Permissions.MANAGE_ESTATE) ||
     isEstateAdvisor;
+
+  console.log("canViewOwners", canViewOwners);
 
   const canViewAddress =
     userInfo?.data?.data.accessPerms.includes(Permissions.GET_ESTATE_ADDRESS) ||
@@ -577,7 +580,7 @@ export default function MutateEstate({
             : undefined,
           ejarePrice: estate?.data?.data?.ejarePrice
             ? formatNumber(estate?.data?.data?.ejarePrice.toString())
-            : undefined,
+            : "0",
           totalPrice: estate?.data?.data?.totalPrice
             ? formatNumber(estate?.data?.data?.totalPrice.toString())
             : undefined,
@@ -778,7 +781,7 @@ export default function MutateEstate({
       Number(unFormatNumber(formData.ejarePrice)) !== originalData.ejarePrice &&
       selectedCategories?.[0]?.dealType === DealTypeEnum.FOR_RENT
     ) {
-      changes.ejarePrice = Number(unFormatNumber(formData.ejarePrice));
+      changes.ejarePrice = Number(unFormatNumber(formData.ejarePrice || "0"));
     }
 
     // Numeric field comparisons
@@ -941,13 +944,13 @@ export default function MutateEstate({
 
   const handleFormSubmit = async (data: z.infer<typeof mutateEstateSchema>) => {
     // Check owners validation first
-    if (!data.owners?.length && canViewOwners) {
+    if (!data.owners?.length && (canViewOwners || !isEditing)) {
       toast.error("مالک ملک را مشخص کنید!");
       setError("owners", { message: "مالک ملک را مشخص کنید!" });
       return;
     }
 
-    if (!data.address && canViewAddress) {
+    if (!data.address && (canViewAddress || !isEditing)) {
       toast.error("آدرس ملک را مشخص کنید!");
       setError("address", { message: "آدرس ملک را مشخص کنید!" });
       return;
@@ -961,15 +964,7 @@ export default function MutateEstate({
       } else {
         clearErrors("rahnPrice");
       }
-      if (!data.ejarePrice) {
-        toast.error("قیمت اجاره را مشخص کنید!");
-        setError("ejarePrice", { message: "قیمت رهن را مشخص کنید!" });
-        return;
-      } else {
-        clearErrors("ejarePrice");
-      }
     } else {
-      clearErrors("ejarePrice");
       clearErrors("rahnPrice");
     }
 
@@ -1118,7 +1113,7 @@ export default function MutateEstate({
           ...(data.ejarePrice &&
           selectedCategories?.[0]?.dealType === DealTypeEnum.FOR_RENT
             ? {
-                ejarePrice: Number(unFormatNumber(data.ejarePrice)),
+                ejarePrice: Number(unFormatNumber(data.ejarePrice || "0")),
               }
             : { ejarePrice: 0 }),
           ...(data.totalPrice &&
@@ -1220,7 +1215,7 @@ export default function MutateEstate({
           data.ejarePrice &&
           selectedCategories?.[0]?.dealType === DealTypeEnum.FOR_RENT
             ? {
-                ejarePrice: Number(unFormatNumber(data.ejarePrice)),
+                ejarePrice: Number(unFormatNumber(data.ejarePrice || "0")),
               }
             : { ejarePrice: 0 }),
           ...(data.buildYear && { buildYear: Number(data.buildYear) }),

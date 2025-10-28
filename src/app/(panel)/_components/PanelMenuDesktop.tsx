@@ -214,7 +214,7 @@ export default function PanelMenuDesktop({
           <div
             className={cn(
               "absolute bottom-0 left-0 right-0 hidden h-fit w-full flex-col gap-2 overflow-hidden p-3 !pt-2 transition-all lg:flex",
-              isMinimized && "!p-0",
+              isMinimized && "!gap-0 !p-0",
             )}>
             <div className="group relative">
               <NotificationButton

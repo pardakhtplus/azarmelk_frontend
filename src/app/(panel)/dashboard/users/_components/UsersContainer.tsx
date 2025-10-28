@@ -25,7 +25,7 @@ export default function UsersContainer() {
   const currentSearchTerm = searchParams.get("search") || "";
 
   const handleSearch = (searchTerm: string) => {
-    searchQuery(["search"], [searchTerm]);
+    searchQuery(["search", "page"], [searchTerm, "1"]);
   };
 
   if (!isFeatureEnabled(FeatureFlag.USERS)) {
@@ -64,17 +64,17 @@ export default function UsersContainer() {
             </div>
             <button
               className={`h-[50px] w-24 rounded-full transition-colors ${activeTab === "users" ? "text-white" : "text-primary-300"}`}
-              onClick={() => searchQuery(["type"], ["users"])}>
+              onClick={() => searchQuery(["type", "page"], ["users", "1"])}>
               کاربران
             </button>
             <button
               className={`h-[50px] w-24 rounded-full transition-colors ${activeTab === "personnel" ? "text-white" : "text-primary-300"}`}
-              onClick={() => searchQuery(["type"], ["personnel"])}>
+              onClick={() => searchQuery(["type", "page"], ["personnel", "1"])}>
               پرسنل
             </button>
             <button
               className={`h-[50px] w-24 rounded-full transition-colors ${activeTab === "owners" ? "text-white" : "text-primary-300"}`}
-              onClick={() => searchQuery(["type"], ["owners"])}>
+              onClick={() => searchQuery(["type", "page"], ["owners", "1"])}>
               مالک ها
             </button>
           </div>
