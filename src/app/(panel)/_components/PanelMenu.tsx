@@ -2,7 +2,11 @@
 
 import { type FeatureFlag } from "@/config/features";
 import { canPerform } from "@/permissions/hasPermission";
-import { Action, type Subject } from "@/permissions/permission.types";
+import {
+  Action,
+  Permissions,
+  type Subject,
+} from "@/permissions/permission.types";
 import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
 import { usePanelMenuStore } from "@/stores/panelMenuStore";
 import { useEffect, useState } from "react";
@@ -24,6 +28,7 @@ export interface MenuItem {
   startsWith?: boolean;
   subject?: Subject;
   action?: Action;
+  hideForAdmins?: boolean;
 }
 
 export default function PanelMenu({
@@ -37,19 +42,28 @@ export default function PanelMenu({
   const [openedMenuTitle, setOpenedMenuTitle] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
-
   const { isMinimized, setIsMinimized, toggleMinimized } = usePanelMenuStore();
 
+  const canCreateEstate =
+    userInfo.data?.data.accessPerms.includes(Permissions.CREATE_ESTATE) ||
+    userInfo.data?.data.accessPerms.includes(Permissions.MANAGE_ESTATE) ||
+    userInfo.data?.data.accessPerms.includes(Permissions.SUPER_USER) ||
+    userInfo.data?.data.accessPerms.includes(Permissions.OWNER);
+
   const menuItemsByPermission = menuData
-    .filter(
-      (item) =>
+    .filter((item) => {
+      if (item.hideForAdmins) {
+        return !canCreateEstate;
+      }
+      return (
         !item.subject ||
         canPerform(
           item.subject,
           item.action ?? Action.READ,
           userInfo?.data?.data.accessPerms ?? [],
-        ),
-    )
+        )
+      );
+    })
     .map((item) => {
       if (item.subItems) {
         return {

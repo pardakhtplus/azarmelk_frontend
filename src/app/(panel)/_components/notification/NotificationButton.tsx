@@ -35,7 +35,7 @@ const NotificationButton = React.forwardRef<
       className={cn(
         "flex size-12 items-center justify-between rounded-lg border border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 transition-all duration-200 hover:border-blue-200 hover:from-blue-100 hover:to-indigo-100 lg:h-12 lg:w-full lg:gap-x-2 lg:px-4",
         isMinimized &&
-          "items-center justify-center gap-x-0 border-none bg-transparent !px-0",
+          "items-center justify-center !gap-x-0 border-none bg-transparent !px-0",
         isOpen && !isMinimized && "ring-2 ring-blue-300 ring-offset-2",
         className,
       )}

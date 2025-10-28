@@ -1,5 +1,10 @@
 import { isFeatureEnabled } from "@/config/features";
-import { FolderInputIcon, FolderOpenIcon, UserRoundIcon } from "lucide-react";
+import {
+  BookmarkIcon,
+  FolderInputIcon,
+  FolderOpenIcon,
+  UserRoundIcon,
+} from "lucide-react";
 import { type MenuItem } from "../../_components/PanelMenu";
 
 // Define all menu items with their associated feature flags
@@ -22,14 +27,16 @@ const allMenuItems: MenuItem[] = [
         href: "/user-panel/estates/archive",
       },
       {
-        title: "فایل های ذخیره شده",
-        href: "/user-panel/estates/saved",
-      },
-      {
         title: "ایجاد فایل",
         href: "/user-panel/estates/create",
       },
     ],
+    hideForAdmins: true,
+  },
+  {
+    title: "فایل های ذخیره شده",
+    icon: <BookmarkIcon className="size-5 shrink-0" />,
+    href: "/user-panel/estates/saved",
   },
   {
     title: "درخواست ملک",

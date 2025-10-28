@@ -68,6 +68,7 @@ export default function EstateInformation({
   defaultEstate?: TEstate;
   isUserPanel?: boolean;
 }) {
+  console.log("canViewOwners", canViewOwners);
   const [isNegotiable, setIsNegotiable] = useState(
     watch("note") ? true : false,
   );
@@ -528,7 +529,7 @@ export default function EstateInformation({
                   قیمت اجاره
                 </label>
                 <BorderedInput
-                  defaultValue={watch("ejarePrice")}
+                  defaultValue={watch("ejarePrice") || ""}
                   name="ejarePrice"
                   type="text"
                   containerClassName="mt-1"
@@ -805,7 +806,10 @@ export default function EstateInformation({
       {isUserPanel
         ? null
         : (userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER) ||
-            userInfo?.data?.data.accessPerms.includes(Permissions.OWNER)) && (
+            userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
+            userInfo?.data?.data.accessPerms.includes(
+              Permissions.MANAGE_ESTATE,
+            )) && (
             <div className="mt-4 w-full">
               <label htmlFor="adviserId" className="text-sm">
                 مشاور
