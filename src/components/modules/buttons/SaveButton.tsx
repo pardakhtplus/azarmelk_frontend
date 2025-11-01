@@ -2,8 +2,10 @@
 
 import { cn } from "@/lib/utils";
 import useToggleEstateSave from "@/services/mutations/client/dashboard/estate/useToggleEstateSave";
+import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
 import { BookmarkCheckIcon, BookmarkIcon, Loader2Icon } from "lucide-react";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 interface SaveButtonProps {
   className?: string;
@@ -18,8 +20,13 @@ export default function SaveButton({
 }: SaveButtonProps) {
   const { toggleEstateSave } = useToggleEstateSave();
   const [isSaved, setIsSaved] = useState(initialIsSaved);
+  const { userInfo } = useUserInfo();
 
   const handleSave = async () => {
+    if (!userInfo?.data?.data.id) {
+      toast.error("لطفا به حساب کاربری خود وارد شوید");
+      return;
+    }
     const res = await toggleEstateSave.mutateAsync(estateId);
 
     if (!res) return;

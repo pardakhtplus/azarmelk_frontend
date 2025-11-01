@@ -235,7 +235,8 @@ export default function CheckOwnerEstates({
                                   <CustomImage
                                     src={estate.posterFile?.url}
                                     alt="estate-owner-check"
-                                    fill
+                                    width={400}
+                                    height={300}
                                     className="size-full object-cover"
                                   />
                                 ) : (

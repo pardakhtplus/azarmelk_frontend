@@ -18,9 +18,7 @@ import { type mutateEstateSchema } from "../MutateEstate";
 import useUserMutateOwner from "@/services/mutations/client/dashboard/owner/useUserMutateOwner";
 
 const formSchema = z.object({
-  firstName: z
-    .string({ message: "نام را وارد کنید!" })
-    .min(1, { message: "نام را وارد کنید!" }),
+  firstName: z.string({ message: "نام را وارد کنید!" }).optional(),
   lastName: z
     .string({ message: "نام خانوادگی را وارد کنید!" })
     .min(1, { message: "نام خانوادگی را وارد کنید!" }),
@@ -100,7 +98,7 @@ export default function AddNewOwner({
     const res = await mutateOwner.mutateAsync({
       id: existingUser?.id, // Pass ID for edit mode
       data: {
-        firstName: data.firstName,
+        firstName: data.firstName || "",
         lastName: data.lastName,
         phoneNumber: data.phoneNumber,
         position: data.position || "مالک",

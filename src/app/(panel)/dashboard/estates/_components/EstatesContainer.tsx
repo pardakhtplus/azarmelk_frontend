@@ -171,6 +171,7 @@ export default function EstatesContainer({
     userInfo?.data?.data.accessPerms.includes(Permissions.GET_ESTATE_OWNERS) ||
     userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
     userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER);
+
   const accessToAddress =
     userInfo?.data?.data.accessPerms.includes(Permissions.GET_ESTATE_ADDRESS) ||
     userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
@@ -696,7 +697,7 @@ export default function EstatesContainer({
                         currentFilters.completionStatus === "incomplete"
                       }>
                       <div className="absolute left-2 top-2 z-[2] flex items-center gap-x-2">
-                        {accessToOwners && !isUserPanel && (
+                        {estate.owners && estate.owners.length > 0 && (
                           <button
                             className={cn(
                               "flex size-8 shrink-0 items-center justify-center rounded-full bg-white/60 p-1 text-primary-blue shadow-md backdrop-blur-sm transition-all hover:bg-white/80",

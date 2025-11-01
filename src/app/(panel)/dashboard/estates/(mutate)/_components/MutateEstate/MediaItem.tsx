@@ -41,14 +41,14 @@ export default function MediaItem({
     uploadingProgress,
     uploadWatermarkedFileChunking,
     isUploading,
-    cancelUpload,
+    // cancelUpload,
   } = isUserPanel
     ? {
         uploadingProgress: clientUpload.uploadingProgress,
         uploadWatermarkedFileChunking:
           clientUpload.uploadWatermarkedFileChunkingUser,
         isUploading: clientUpload.isUploading,
-        cancelUpload: clientUpload.cancelUpload,
+        // cancelUpload: clientUpload.cancelUpload,
       }
     : {
         ...adminUpload,
@@ -178,14 +178,14 @@ export default function MediaItem({
           <>
             <div className="absolute inset-0 z-10 m-auto flex flex-col items-center justify-center gap-y-2">
               <CircleUploader progress={uploadingProgress} size={70} />
-              <button
+              {/* <button
                 onClick={async () => {
                   await cancelUpload();
                   medias.remove(index);
                 }}
                 className="rounded-md bg-red-500 px-3 py-1 text-xs font-medium text-white transition-colors hover:bg-red-600">
                 لغو آپلود
-              </button>
+              </button> */}
             </div>
             {mediaItem.file.type.startsWith("image") ? (
               <CustomImage
