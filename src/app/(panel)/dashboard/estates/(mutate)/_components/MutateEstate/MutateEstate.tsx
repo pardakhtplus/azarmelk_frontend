@@ -1251,6 +1251,9 @@ export default function MutateEstate({
           }),
           ...(data.ayanMetrage && { ayanMetrage: Number(data.ayanMetrage) }),
           percentage: percentage.toString(),
+          ...(data.adviserId && {
+            adviserId: data.adviserId || userInfo?.data?.data.id,
+          }),
         },
       });
     }

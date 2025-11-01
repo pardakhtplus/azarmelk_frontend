@@ -64,7 +64,7 @@ export default async function EstatePage({
     notFound();
   }
 
-  console.log(estate.data);
+  console.log(estate.data.archiveStatus, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa");
 
   const estateDetails = [
     {
@@ -236,7 +236,12 @@ export default async function EstatePage({
           )}
           <div className="flex items-center gap-2">
             <ShareButton />
-            <SaveButton estateId={id} initialIsSaved={estate?.data?.isSaved} />
+            {estate.data.status === ESTATE_STATUS.PUBLISH && (
+              <SaveButton
+                estateId={id}
+                initialIsSaved={estate?.data?.isSaved}
+              />
+            )}
           </div>
 
           <h1 className="text-2xl font-semibold leading-relaxed sm:text-[32px]">
