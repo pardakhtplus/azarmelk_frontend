@@ -68,7 +68,6 @@ export default function EstateInformation({
   defaultEstate?: TEstate;
   isUserPanel?: boolean;
 }) {
-  console.log("canViewOwners", canViewOwners);
   const [isNegotiable, setIsNegotiable] = useState(
     watch("note") ? true : false,
   );
@@ -169,6 +168,27 @@ export default function EstateInformation({
                   Number(event.currentTarget.value),
                 ),
               );
+              if (unFormatNumber(watch("metragePrice") || "0")) {
+                setValue(
+                  "totalPrice",
+                  formatNumber(
+                    (
+                      Number(unFormatNumber(event.currentTarget.value)) *
+                      Number(unFormatNumber(watch("metragePrice") || "0"))
+                    )
+                      .toFixed(0)
+                      .toString(),
+                  ),
+                );
+                setTotalPrice(
+                  (
+                    Number(unFormatNumber(event.currentTarget.value)) *
+                    Number(unFormatNumber(watch("metragePrice") || "0"))
+                  )
+                    .toFixed(0)
+                    .toString(),
+                );
+              }
             }}
           />
         </div>
@@ -625,6 +645,16 @@ export default function EstateInformation({
                     if (watch("metrage")) {
                       setValue(
                         "metragePrice",
+                        formatNumber(
+                          (
+                            Number(unFormatNumber(event.target.value)) /
+                            Number(watch("metrage"))
+                          )
+                            .toFixed(0)
+                            .toString(),
+                        ),
+                      );
+                      setMetragePrice(
                         formatNumber(
                           (
                             Number(unFormatNumber(event.target.value)) /
