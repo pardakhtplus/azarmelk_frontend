@@ -141,6 +141,7 @@ export enum AllCreateFileFields {
   AYAN_METRAGE = "ayanMetrage", // متراژ اعیان
   ARCHIVE_STATUS = "archiveStatus", // وضعیت آرشیو
   OWNERS = "owners", // مالک ها
+  BALCONY_METRAGE = "balconyMetrage", // متراژ بالکونی
 }
 
 // ============================================================================
@@ -189,6 +190,7 @@ const commercialShopFields = [
   AllCreateFileFields.HEIGHT,
   AllCreateFileFields.INVENTORY,
   AllCreateFileFields.PARKING_COUNT,
+  AllCreateFileFields.BALCONY_METRAGE,
   ...priceFields,
 ];
 

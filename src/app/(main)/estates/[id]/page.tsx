@@ -120,6 +120,12 @@ export default async function EstatePage({
       icon: <IExpand className="size-6" />,
     },
     {
+      label: "متراژ بالکن",
+      value: estate?.data?.balconyMetrage?.toString() || "",
+      isVisible: !!estate?.data?.balconyMetrage,
+      icon: <IExpand className="size-6" />,
+    },
+    {
       label: "عرض ملک",
       value: estate?.data?.arzMelk?.toString() || "",
       isVisible: !!estate?.data?.arzMelk,

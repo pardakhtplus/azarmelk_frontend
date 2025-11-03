@@ -38,6 +38,7 @@ export interface TOwnerEstateListResponse {
         lastName: string;
         phoneNumber: string;
         position?: string;
+        fixPhoneNumber?: string;
       }[];
       posterFile: {
         url: string;
