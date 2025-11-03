@@ -348,18 +348,18 @@ export default function EstateInformation({
 
       {/* متراژ بالکون - نمایش شرطی */}
       <ConditionalField
-        field={AllCreateFileFields.BALCONY_METRAGE}
+        field={AllCreateFileFields.BALKON_METRAGE}
         selectedCategories={selectedCategories}>
         <div className="w-full">
-          <label htmlFor="balconyMetrage" className="text-sm">
+          <label htmlFor="balkonMetrage" className="text-sm">
             متراژ بالکن
           </label>
           <BorderedInput
-            name="balconyMetrage"
+            name="balkonMetrage"
             type="number"
             containerClassName="mt-1"
             register={register}
-            error={errors.balconyMetrage}
+            error={errors.balkonMetrage}
           />
         </div>
       </ConditionalField>

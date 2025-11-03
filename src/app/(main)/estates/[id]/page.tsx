@@ -121,8 +121,8 @@ export default async function EstatePage({
     },
     {
       label: "متراژ بالکن",
-      value: estate?.data?.balconyMetrage?.toString() || "",
-      isVisible: !!estate?.data?.balconyMetrage,
+      value: estate?.data?.balkonMetrage?.toString() || "",
+      isVisible: !!estate?.data?.balkonMetrage,
       icon: <IExpand className="size-6" />,
     },
     {

@@ -70,7 +70,7 @@ export interface TMutateEstate {
   arzGozar?: number;
   tolMelk?: number;
   banaMetrage?: number;
-  balconyMetrage?: number;
+  balkonMetrage?: number;
   ayanMetrage?: number;
   unitCount?: number;
   floorCount?: number;

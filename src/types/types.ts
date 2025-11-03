@@ -82,7 +82,7 @@ export interface TEstate {
   ayanMetrage: number;
   floorMetrage: number;
   dahaneMetrage: number;
-  balconyMetrage: number;
+  balkonMetrage: number;
   banaMetrage: number;
   arzMelk: number;
   arzGozar: number;

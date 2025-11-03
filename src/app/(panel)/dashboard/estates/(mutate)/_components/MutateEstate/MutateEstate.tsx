@@ -159,7 +159,7 @@ export const mutateEstateSchema = z.object({
   // متراژ سوله
   soleMetrage: z.string().optional(),
   // متراژ بالکونی
-  balconyMetrage: z.string().optional(),
+  balkonMetrage: z.string().optional(),
   // دسته بندی
   categoryId: z.string().optional(),
   // تعداد پارکینگ
@@ -412,8 +412,8 @@ export default function MutateEstate({
           soleMetrage: estate?.data?.data?.soleMetrage
             ? estate?.data?.data?.soleMetrage.toString()
             : undefined,
-          balconyMetrage: estate?.data?.data?.balconyMetrage
-            ? estate?.data?.data?.balconyMetrage.toString()
+          balkonMetrage: estate?.data?.data?.balkonMetrage
+            ? estate?.data?.data?.balkonMetrage.toString()
             : undefined,
           categoryId: estate?.data?.data?.categoryId || undefined,
           parkingCount: estate?.data?.data?.parkingCount
@@ -857,10 +857,10 @@ export default function MutateEstate({
     }
 
     if (
-      formData.balconyMetrage &&
-      Number(formData.balconyMetrage) !== originalData.balconyMetrage
+      formData.balkonMetrage &&
+      Number(formData.balkonMetrage) !== originalData.balkonMetrage
     ) {
-      changes.balconyMetrage = Number(formData.balconyMetrage);
+      changes.balkonMetrage = Number(formData.balkonMetrage);
     }
 
     if (
@@ -1175,8 +1175,8 @@ export default function MutateEstate({
           ...(data.dahaneMetrage && {
             dahaneMetrage: Number(data.dahaneMetrage),
           }),
-          ...(data.balconyMetrage && {
-            balconyMetrage: Number(data.balconyMetrage),
+          ...(data.balkonMetrage && {
+            balkonMetrage: Number(data.balkonMetrage),
           }),
           ...(data.height && { height: Number(data.height) }),
           ...(data.inventory && { inventory: Number(data.inventory) }),
@@ -1274,8 +1274,8 @@ export default function MutateEstate({
           ...(data.dahaneMetrage && {
             dahaneMetrage: Number(data.dahaneMetrage),
           }),
-          ...(data.balconyMetrage && {
-            balconyMetrage: Number(data.balconyMetrage),
+          ...(data.balkonMetrage && {
+            balkonMetrage: Number(data.balkonMetrage),
           }),
           ...(data.height && { height: Number(data.height) }),
           ...(data.inventory && { inventory: Number(data.inventory) }),
