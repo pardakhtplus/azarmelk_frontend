@@ -37,6 +37,8 @@ export default function EstateCardItem({
 
   const isEstateAdvisor = estate.adviser?.id === userInfo?.data?.data.id;
 
+  const estateAddress = `${estate.categoryTree?.[3]?.name || ""}${estate.categoryTree?.[4]?.name ? " / " + estate.categoryTree?.[4]?.name : ""}`;
+
   return (
     <div
       suppressHydrationWarning
@@ -128,7 +130,7 @@ export default function EstateCardItem({
           <div className="flex items-center justify-between gap-3 text-xs text-gray-600 sm:text-sm">
             <div className="flex items-center gap-1 text-sm text-gray-600">
               <ILocationDotLight className="size-[18px] shrink-0" />
-              <span className="line-clamp-1">{estate.approximateAddress}</span>
+              <span className="line-clamp-1">{estateAddress}</span>
             </div>
             <div className="flex shrink-0 items-center gap-1">
               <IBuildingLight className="size-[17px] shrink-0" />

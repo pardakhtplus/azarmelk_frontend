@@ -206,7 +206,7 @@ export default function EstatesContainer({
       ? parseInt(searchParams.get("completionPercentage")!)
       : 50,
     regionName: searchParams.get("regionName") || "",
-    hasFile: searchParams.get("hasFile") === "true",
+    hasFile: searchParams.get("hasFile") === "false",
   };
 
   // Check if any filters are active

@@ -101,19 +101,8 @@ export interface TEstate {
   percentage?: string;
   createdAt: string;
   updatedAt: string;
-  category: {
-    id: string;
-    dealType: string;
-    mainCategory: string;
-    propertyType: string;
-    name: string;
-    description: string;
-    parentId: string;
-    isRegion: boolean;
-    allChildren: string[];
-    createdAt: string;
-    updatedAt: string;
-  };
+  category: TEstateCategory;
+  categoryTree: TEstateCategory[];
   posterFile?: TFile;
   owners?: {
     id: string;
@@ -138,6 +127,19 @@ export interface TEstate {
   properties: TEstateProperties;
 }
 
+export interface TEstateCategory {
+  id: string;
+  dealType: string;
+  mainCategory: string;
+  propertyType: string;
+  name: string;
+  description: string;
+  parentId: string;
+  isRegion: boolean;
+  allChildren: string[];
+  createdAt: string;
+  updatedAt: string;
+}
 export interface TEstateProperties {
   // مشخصه ملک
   architectureStyle?: { title: string; mainTitle: string; values: string[] };
