@@ -133,7 +133,6 @@ export default function FilterModal({
     return value !== "" && value !== null && value !== false;
   });
 
-
   // Validation functions
   const validatePriceRange = () => {
     const minPrice = filters.priceMin ? parseInt(filters.priceMin) : null;
@@ -207,7 +206,7 @@ export default function FilterModal({
               <BorderedInput
                 name="search"
                 type="text"
-                placeholder="جستجو در عنوان، آدرس و..."
+                placeholder="جستجو در عنوان"
                 value={filters.search}
                 onChange={(e) => handleInputChange("search", e.target.value)}
                 className="pr-14"
