@@ -346,6 +346,24 @@ export default function EstateInformation({
         </div>
       </ConditionalField>
 
+      {/* متراژ بالکون - نمایش شرطی */}
+      <ConditionalField
+        field={AllCreateFileFields.BALCONY_METRAGE}
+        selectedCategories={selectedCategories}>
+        <div className="w-full">
+          <label htmlFor="balconyMetrage" className="text-sm">
+            متراژ بالکن
+          </label>
+          <BorderedInput
+            name="balconyMetrage"
+            type="number"
+            containerClassName="mt-1"
+            register={register}
+            error={errors.balconyMetrage}
+          />
+        </div>
+      </ConditionalField>
+
       {/* متراژ دهنه - نمایش شرطی */}
       <ConditionalField
         field={AllCreateFileFields.DAHANE_METRAGE}

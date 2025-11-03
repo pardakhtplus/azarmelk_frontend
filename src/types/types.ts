@@ -82,6 +82,7 @@ export interface TEstate {
   ayanMetrage: number;
   floorMetrage: number;
   dahaneMetrage: number;
+  balconyMetrage: number;
   banaMetrage: number;
   arzMelk: number;
   arzGozar: number;
@@ -110,6 +111,7 @@ export interface TEstate {
     lastName: string;
     phoneNumber: string;
     position: string;
+    fixPhoneNumber: string;
   }[];
   adviser?: {
     id: string;

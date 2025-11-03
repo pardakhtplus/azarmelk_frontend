@@ -438,7 +438,10 @@ export const api = {
       get: (id: string) =>
         apiService.get(API_CONFIG.endpoints.admin.owner.get, { id }),
       create: (data: TMutateOwner) =>
-        apiService.post(API_CONFIG.endpoints.admin.owner.create, data),
+        apiService.post(API_CONFIG.endpoints.admin.owner.create, {
+          ...data,
+          fixPhoneNumebr: data.fixPhoneNumber || undefined,
+        }),
       edit: (data: TMutateOwner) =>
         apiService.put(
           API_CONFIG.endpoints.admin.owner.edit +
@@ -446,6 +449,7 @@ export const api = {
             handleQueries({ id: data.id }),
           {
             ...data,
+            fixPhoneNumebr: data.fixPhoneNumber || undefined,
           },
         ),
       getEstateList: ({
@@ -995,13 +999,14 @@ export const api = {
             id,
           }),
         create: (data: TMutateOwner) =>
-          apiService.post(
-            API_CONFIG.endpoints.client.dashboard.owner.create,
-            data,
-          ),
+          apiService.post(API_CONFIG.endpoints.client.dashboard.owner.create, {
+            ...data,
+            fixPhoneNumebr: data.fixPhoneNumber || undefined,
+          }),
         edit: (data: TMutateOwner) =>
           apiService.put(API_CONFIG.endpoints.client.dashboard.owner.edit, {
             ...data,
+            fixPhoneNumebr: data.fixPhoneNumber || undefined,
           }),
         getEstateList: ({
           phoneNumber,

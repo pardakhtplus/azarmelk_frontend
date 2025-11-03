@@ -158,6 +158,8 @@ export const mutateEstateSchema = z.object({
   banaPrice: z.string().optional(),
   // متراژ سوله
   soleMetrage: z.string().optional(),
+  // متراژ بالکونی
+  balconyMetrage: z.string().optional(),
   // دسته بندی
   categoryId: z.string().optional(),
   // تعداد پارکینگ
@@ -376,6 +378,7 @@ export default function MutateEstate({
               firstName: owner.firstName,
               lastName: owner.lastName,
               phoneNumber: owner.phoneNumber,
+              fixPhoneNumber: owner.fixPhoneNumber,
             })) || [],
           files: estate?.data?.data?.files || [],
           metrage: estate?.data?.data?.metrage.toString() || "",
@@ -408,6 +411,9 @@ export default function MutateEstate({
             : undefined,
           soleMetrage: estate?.data?.data?.soleMetrage
             ? estate?.data?.data?.soleMetrage.toString()
+            : undefined,
+          balconyMetrage: estate?.data?.data?.balconyMetrage
+            ? estate?.data?.data?.balconyMetrage.toString()
             : undefined,
           categoryId: estate?.data?.data?.categoryId || undefined,
           parkingCount: estate?.data?.data?.parkingCount
@@ -851,6 +857,13 @@ export default function MutateEstate({
     }
 
     if (
+      formData.balconyMetrage &&
+      Number(formData.balconyMetrage) !== originalData.balconyMetrage
+    ) {
+      changes.balconyMetrage = Number(formData.balconyMetrage);
+    }
+
+    if (
       formData.parkingCount &&
       Number(formData.parkingCount) !== originalData.parkingCount
     ) {
@@ -1162,6 +1175,9 @@ export default function MutateEstate({
           ...(data.dahaneMetrage && {
             dahaneMetrage: Number(data.dahaneMetrage),
           }),
+          ...(data.balconyMetrage && {
+            balconyMetrage: Number(data.balconyMetrage),
+          }),
           ...(data.height && { height: Number(data.height) }),
           ...(data.inventory && { inventory: Number(data.inventory) }),
           ...(data.arzMelk && { arzMelk: Number(data.arzMelk) }),
@@ -1258,6 +1274,9 @@ export default function MutateEstate({
           ...(data.dahaneMetrage && {
             dahaneMetrage: Number(data.dahaneMetrage),
           }),
+          ...(data.balconyMetrage && {
+            balconyMetrage: Number(data.balconyMetrage),
+          }),
           ...(data.height && { height: Number(data.height) }),
           ...(data.inventory && { inventory: Number(data.inventory) }),
           ...(data.arzMelk && { arzMelk: Number(data.arzMelk) }),
@@ -1308,6 +1327,8 @@ export default function MutateEstate({
       }
     }
   };
+
+  console.log(watch("owners"), "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 
   if (isEditing && estate.isLoading) {
     return <MutateEstateSkeleton />;
