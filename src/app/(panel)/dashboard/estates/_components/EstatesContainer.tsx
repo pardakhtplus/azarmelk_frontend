@@ -21,10 +21,11 @@ import {
   getEnglishPropertyType,
 } from "@/lib/categories";
 import { cn } from "@/lib/utils";
-import { Permissions } from "@/permissions/permission.types";
 import { useCreatedEstateList } from "@/services/queries/admin/estate/useCreatedEstateList";
 import { useEstateList } from "@/services/queries/admin/estate/useEstateList";
 import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
+import { useSavedEstateList } from "@/services/queries/client/dashboard/estate/useSavedEstateList";
+import { useUserEstateList } from "@/services/queries/client/dashboard/estate/useUserEstateList";
 import { usePanelMenuStore } from "@/stores/panelMenuStore";
 import { type TCategory } from "@/types/admin/category/types";
 import {
@@ -41,11 +42,9 @@ import EstateActions from "./EstateActions";
 import EstatesTable from "./EstatesTable";
 import EstatesTableSkeleton from "./EstatesTableSkeleton";
 import FilterModal, { type FilterState } from "./FilterModal";
+import OwnersModal from "./OwnersModal";
 import SelectCategories from "./SelectCategories";
 import TableFieldsModal from "./TableFieldsModal";
-import OwnersModal from "./OwnersModal";
-import { useUserEstateList } from "@/services/queries/client/dashboard/estate/useUserEstateList";
-import { useSavedEstateList } from "@/services/queries/client/dashboard/estate/useSavedEstateList";
 
 const LIMIT_PER_PAGE = 12;
 
@@ -167,15 +166,15 @@ export default function EstatesContainer({
   const searchQueries = useSearchQueries();
   const { userInfo } = useUserInfo();
 
-  const accessToOwners =
-    userInfo?.data?.data.accessPerms.includes(Permissions.GET_ESTATE_OWNERS) ||
-    userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
-    userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER);
+  // const accessToOwners =
+  //   userInfo?.data?.data.accessPerms.includes(Permissions.GET_ESTATE_OWNERS) ||
+  //   userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
+  //   userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER);
 
-  const accessToAddress =
-    userInfo?.data?.data.accessPerms.includes(Permissions.GET_ESTATE_ADDRESS) ||
-    userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
-    userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER);
+  // const accessToAddress =
+  //   userInfo?.data?.data.accessPerms.includes(Permissions.GET_ESTATE_ADDRESS) ||
+  //   userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
+  //   userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER);
 
   // Read filters from URL
   const currentFilters: FilterState = {
@@ -408,20 +407,16 @@ export default function EstatesContainer({
               order: preservedSettings.get("status")?.order ?? 0,
               isEditable: true,
             },
-            ...(accessToOwners && !isUserPanel
-              ? [
-                  {
-                    field: "owners",
-                    fieldName: "مالک ها",
-                    className: getFieldBasisClass("owners"),
-                    isVisible: accessToOwners
-                      ? (preservedSettings.get("owners")?.isVisible ?? true)
-                      : false,
-                    order: preservedSettings.get("owners")?.order ?? 0,
-                    isEditable: true,
-                  },
-                ]
-              : []),
+
+            {
+              field: "owners",
+              fieldName: "مالک ها",
+              className: getFieldBasisClass("owners"),
+              isVisible: preservedSettings.get("owners")?.isVisible ?? true,
+              order: preservedSettings.get("owners")?.order ?? 0,
+              isEditable: true,
+            },
+
             ...availableFields
               .filter((field) => allowFields.includes(field))
               .filter((field) => {
@@ -442,7 +437,7 @@ export default function EstatesContainer({
                 return true;
               })
               .filter((field) => {
-                if (field === AllCreateFileFields.ADDRESS && !accessToOwners) {
+                if (field === AllCreateFileFields.ADDRESS) {
                   return false;
                 }
                 return true;
@@ -450,14 +445,12 @@ export default function EstatesContainer({
               .map((field, index) => {
                 const preserved = preservedSettings.get(field);
 
-                if (field === AllCreateFileFields.ADDRESS && accessToAddress) {
+                if (field === AllCreateFileFields.ADDRESS) {
                   return {
                     field: field,
                     fieldName: getFieldPersianName(field),
                     className: getFieldBasisClass(field),
-                    isVisible: accessToAddress
-                      ? (preserved?.isVisible ?? true)
-                      : false,
+                    isVisible: preserved?.isVisible ?? true,
                     order: preserved?.order ?? index + 1,
                     isEditable: true,
                   };

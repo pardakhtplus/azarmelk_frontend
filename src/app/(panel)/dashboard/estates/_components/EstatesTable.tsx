@@ -15,6 +15,9 @@ import EstateActions from "./EstateActions";
 import { type ITableField } from "./EstatesContainer";
 import TruncatedTableCell from "./TruncatedTableCell";
 import OwnersModal from "./OwnersModal";
+import Link from "next/link";
+import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
+import { Permissions } from "@/permissions/permission.types";
 
 export default function EstatesTable({
   visibleTableFields,
@@ -23,6 +26,13 @@ export default function EstatesTable({
   visibleTableFields: ITableField[];
   data?: TGetEstateList | null;
 }) {
+  const { userInfo } = useUserInfo();
+
+  const isEstateManager =
+    userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER) ||
+    userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
+    userInfo?.data?.data.accessPerms.includes(Permissions.MANAGE_ESTATE);
+
   return (
     <>
       <style type="text/css">
@@ -212,6 +222,23 @@ export default function EstatesTable({
                               className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium ${archiveStatus?.bgColor} ${archiveStatus?.textColor}`}>
                               {archiveStatus?.label}
                             </span>
+                          </td>
+                        );
+                      }
+
+                      if (
+                        field.field === "title" &&
+                        (isEstateManager ||
+                          item.adviser?.id === userInfo?.data?.data.id)
+                      ) {
+                        return (
+                          <td key={field.field}>
+                            <Link
+                              target="_blank"
+                              href={`/estates/${item.id}`}
+                              className="max-w-[300px]">
+                              {item[field.field] || "__"}
+                            </Link>
                           </td>
                         );
                       }
