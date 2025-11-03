@@ -454,6 +454,18 @@ export const filteredCreateFileFields = [
     fields: landFields,
   },
 
+  {
+    dealType: [DealType.FOR_SALE, DealType.FOR_RENT, DealType.PARTICIPATION],
+    mainCategory: [
+      MainCategory.RESIDENTIAL,
+      MainCategory.SERVICE,
+      MainCategory.COMMERCIAL,
+      MainCategory.INDUSTRIAL,
+    ],
+    propertyType: [PropertyType.REAL_ESTATE, PropertyType.REAL_ESTATE_LAND],
+    fields: [...realEstateLandFields, AllCreateFileFields.FLOOR],
+  },
+
   // 3. فروش ٬ اجاره و مشارکت مسکونی و خدماتی و تجاری و صنعتی و باغ/ویلا (مستغلات/زمین/زمین ویلایی)
   {
     dealType: [DealType.FOR_SALE, DealType.FOR_RENT, DealType.PARTICIPATION],

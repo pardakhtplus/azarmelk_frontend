@@ -20,9 +20,7 @@ import { z } from "zod";
 import BirthDatePicker from "./BirthDatePicker";
 
 const userFormSchema = z.object({
-  firstName: z
-    .string({ message: "نام را وارد کنید!" })
-    .min(2, { message: "نام را وارد کنید!" }),
+  firstName: z.string({ message: "نام را وارد کنید!" }).optional(),
   lastName: z
     .string({ message: "نام خانوادگی را وارد کنید!" })
     .min(2, { message: "نام خانوادگی را وارد کنید!" }),
@@ -104,6 +102,8 @@ export default function EditUser() {
       id: id as string,
       data: {
         ...data,
+        firstName: data.firstName || "",
+        lastName: data.lastName || "",
         userId: user.data?.data.id || "",
         birthDate: data.birthDate || "",
         avatar: undefined,

@@ -928,6 +928,29 @@ export default function MutateEstate({
   };
 
   useEffect(() => {
+    if (
+      selectedRegion?.id !== estate.data?.data?.category?.id &&
+      estate.data?.data?.metrage &&
+      selectedCategories?.length
+    ) {
+      setValue(
+        "title",
+        createEstateNameByCategories(
+          [...(selectedCategories || []), selectedRegion || { name: "" }],
+          Number(estate?.data?.data?.metrage?.toString() || "0"),
+        ),
+      );
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    estate.data?.data,
+    selectedRegion?.id,
+    selectedCategories,
+    selectedRegion,
+  ]);
+
+  useEffect(() => {
     if (isEditing && estate.data && firstRender) {
       const defaultCategories = [...estate.data.allParents].reverse();
       setSelectedCategories?.([

@@ -64,8 +64,6 @@ export default async function EstatePage({
     notFound();
   }
 
-  console.log(estate.data.archiveStatus, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa");
-
   const estateDetails = [
     {
       label: "متراژ",
