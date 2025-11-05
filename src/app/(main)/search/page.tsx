@@ -286,6 +286,7 @@ export default function SearchPage() {
         isOpen={isFilterModalOpen}
         onClose={() => setIsFilterModalOpen(false)}
         currentFilters={currentFilters}
+        selectedCategories={selectedCategories}
       />
     </>
   );

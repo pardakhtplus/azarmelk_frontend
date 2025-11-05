@@ -777,6 +777,7 @@ export default function EstatesContainer({
         isOpen={isFilterModalOpen}
         onClose={() => setIsFilterModalOpen(false)}
         currentFilters={currentFilters}
+        selectedCategories={selectedCategories}
       />
 
       {isOpenOwnersModal && (

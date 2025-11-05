@@ -380,6 +380,7 @@ export default function AddEstate({
           currentFilters={currentFilters}
           onApplyFilters={(filters) => setCurrentFilters(filters)}
           onClearFilters={handleClearAllFilters}
+          selectedCategories={selectedCategories}
         />,
         document.body,
       )}
