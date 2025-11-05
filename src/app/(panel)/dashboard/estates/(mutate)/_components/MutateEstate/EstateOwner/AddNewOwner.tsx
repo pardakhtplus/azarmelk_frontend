@@ -111,7 +111,7 @@ export default function AddNewOwner({
     }
 
     owners.append({
-      ownerId: res.id,
+      ownerId: existingUser?.id,
       firstName: data.firstName,
       lastName: data.lastName,
       phoneNumber: data.phoneNumber,
