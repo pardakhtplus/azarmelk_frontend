@@ -35,6 +35,7 @@ import {
   TableOfContentsIcon,
   UsersIcon,
 } from "lucide-react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
@@ -683,43 +684,52 @@ export default function EstatesContainer({
                     isMinimized && "md:grid-cols-3 xl:grid-cols-4",
                   )}>
                   {estateListData?.data?.map((estate) => (
-                    <EstateCardItem
-                      key={estate.id}
-                      estate={estate}
-                      showCompletionPercentage={
-                        currentFilters.completionStatus === "incomplete"
-                      }>
-                      <div className="absolute left-2 top-2 z-[2] flex items-center gap-x-2">
-                        {estate.owners && estate.owners.length > 0 && (
-                          <button
-                            className={cn(
-                              "flex size-8 shrink-0 items-center justify-center rounded-full bg-white/60 p-1 text-primary-blue shadow-md backdrop-blur-sm transition-all hover:bg-white/80",
-                            )}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              e.preventDefault();
+                    <Link
+                      href={`/estates/${estate.id}`}
+                      target="_blank"
+                      key={estate.id}>
+                      <EstateCardItem
+                        estate={estate}
+                        showCompletionPercentage={
+                          currentFilters.completionStatus === "incomplete"
+                        }>
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                          }}
+                          className="absolute left-2 top-2 z-[2] flex items-center gap-x-2">
+                          {estate.owners && estate.owners.length > 0 && (
+                            <button
+                              className={cn(
+                                "flex size-8 shrink-0 items-center justify-center rounded-full bg-white/60 p-1 text-primary-blue shadow-md backdrop-blur-sm transition-all hover:bg-white/80",
+                              )}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
 
-                              setIsOpenOwnersModal(true);
-                              setOwners(estate.owners || []);
-                            }}
-                            title="اطلاعات مالک">
-                            <UsersIcon className="size-5 shrink-0" />
-                          </button>
-                        )}
-                        {filter !== "saved-estates" && (
-                          <EstateActions
-                            isTableView={false}
-                            estate={estate}
-                            archiveStatus={estate.archiveStatus}
-                            status={estate.status}
-                            title={estate.title}
-                            className="flex size-8 shrink-0 items-center justify-center rounded-full bg-white/60 text-primary-blue shadow-md backdrop-blur-sm transition-all hover:bg-white/80"
-                            menuClassName="!mt-0 absolute top-0 left-full h-fit right-auto"
-                            isUserPanel={isUserPanel}
-                          />
-                        )}
-                      </div>
-                    </EstateCardItem>
+                                setIsOpenOwnersModal(true);
+                                setOwners(estate.owners || []);
+                              }}
+                              title="اطلاعات مالک">
+                              <UsersIcon className="size-5 shrink-0" />
+                            </button>
+                          )}
+                          {filter !== "saved-estates" && (
+                            <EstateActions
+                              isTableView={false}
+                              estate={estate}
+                              archiveStatus={estate.archiveStatus}
+                              status={estate.status}
+                              title={estate.title}
+                              className="flex size-8 shrink-0 items-center justify-center rounded-full bg-white/60 text-primary-blue shadow-md backdrop-blur-sm transition-all hover:bg-white/80"
+                              menuClassName="!mt-0 absolute top-0 left-full h-fit right-auto"
+                              isUserPanel={isUserPanel}
+                            />
+                          )}
+                        </div>
+                      </EstateCardItem>
+                    </Link>
                   ))}
                 </div>
               ) : (

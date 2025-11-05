@@ -8,16 +8,14 @@ import Modal from "@/components/modules/Modal";
 import { type ESTATE_ARCHIVE_STATUS, type ESTATE_STATUS } from "@/enums";
 import { cn } from "@/lib/utils";
 import { type TGetEstateList } from "@/types/admin/estate/types";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import toast from "react-hot-toast";
 import EstateActions from "./EstateActions";
 import { type ITableField } from "./EstatesContainer";
-import TruncatedTableCell from "./TruncatedTableCell";
 import OwnersModal from "./OwnersModal";
-import Link from "next/link";
-import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
-import { Permissions } from "@/permissions/permission.types";
+import TruncatedTableCell from "./TruncatedTableCell";
 
 export default function EstatesTable({
   visibleTableFields,
@@ -26,13 +24,6 @@ export default function EstatesTable({
   visibleTableFields: ITableField[];
   data?: TGetEstateList | null;
 }) {
-  const { userInfo } = useUserInfo();
-
-  const isEstateManager =
-    userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER) ||
-    userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
-    userInfo?.data?.data.accessPerms.includes(Permissions.MANAGE_ESTATE);
-
   return (
     <>
       <style type="text/css">
@@ -226,16 +217,12 @@ export default function EstatesTable({
                         );
                       }
 
-                      if (
-                        field.field === "title" &&
-                        (isEstateManager ||
-                          item.adviser?.id === userInfo?.data?.data.id)
-                      ) {
+                      if (field.field === "title") {
                         return (
                           <td key={field.field}>
                             <Link
-                              target="_blank"
                               href={`/estates/${item.id}`}
+                              target="_blank"
                               className="max-w-[300px]">
                               {item[field.field] || "__"}
                             </Link>

@@ -5,7 +5,6 @@ import {
   getDefaultPosterFileByCategory,
   getStatusInfo,
 } from "@/components/modules/estate/EstateUtils";
-import { ESTATE_STATUS } from "@/enums";
 import { type PropertyTypeEnum } from "@/lib/categories";
 import { cn } from "@/lib/utils";
 import { Permissions } from "@/permissions/permission.types";
@@ -26,7 +25,7 @@ export default function EstateCardItem({
   estate,
   children,
   showCompletionPercentage,
-  isWebsite,
+  // isWebsite,
 }: Props) {
   const { userInfo } = useUserInfo();
   const statusInfo = getStatusInfo(estate.status, estate.archiveStatus);
@@ -35,37 +34,14 @@ export default function EstateCardItem({
     userInfo.data?.data.phoneNumber &&
     !userInfo.data?.data.accessPerms.includes(Permissions.USER);
 
-  const isEstateAdvisor = estate.adviser?.id === userInfo?.data?.data.id;
+  // const isEstateAdvisor = estate.adviser?.id === userInfo?.data?.data.id;
 
   const estateAddress = `${estate.categoryTree?.[3]?.name || ""}${estate.categoryTree?.[4]?.name ? " / " + estate.categoryTree?.[4]?.name : ""}`;
 
   return (
     <div
       suppressHydrationWarning
-      className="group relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-primary-border bg-white transition-all duration-300 hover:border-primary/20"
-      onClick={() => {
-        if (
-          (estate.status === ESTATE_STATUS.PUBLISH ||
-            userInfo?.data?.data.accessPerms.includes(Permissions.SUPER_USER) ||
-            userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
-            userInfo?.data?.data.accessPerms.includes(
-              Permissions.MANAGE_ESTATE,
-            ) ||
-            isEstateAdvisor ||
-            estate.status === undefined) &&
-          !isWebsite
-        ) {
-          console.log(
-            "estate.id",
-            estate.id,
-            estate.status,
-            userInfo?.data?.data.accessPerms,
-            isAdvisor,
-            isEstateAdvisor,
-          );
-          window.open(`/estates/${estate.id}`, "_blank");
-        }
-      }}>
+      className="group relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-primary-border bg-white transition-all duration-300 hover:border-primary/20">
       {children}
 
       <div className="relative aspect-[16/11] w-full shrink-0 overflow-hidden">
