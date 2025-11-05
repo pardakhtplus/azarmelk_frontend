@@ -10,7 +10,7 @@ import {
   shopLocation,
 } from "@/components/modules/estate/EstateUtils";
 import BorderedInput from "@/components/modules/inputs/BorderedInput";
-import { PropertyTypeEnum } from "@/lib/categories";
+import { DealTypeEnum, PropertyTypeEnum } from "@/lib/categories";
 import {
   cn,
   formatNumber,
@@ -721,7 +721,11 @@ export default function EstateInformation({
 
       {/* قابل معاوضه - همیشه نمایش داده شود */}
       <div className="flex items-center gap-x-6">
-        <p className="-mb-0.5 text-sm">قابل معاوضه</p>
+        <p className="-mb-0.5 text-sm">
+          {selectedCategories?.[0]?.dealType === DealTypeEnum.FOR_RENT
+            ? "قابل تبدیل"
+            : "قابل معاوضه"}
+        </p>
         <CustomSwitch
           onChange={() => {
             setIsNegotiable(!isNegotiable);
@@ -736,7 +740,11 @@ export default function EstateInformation({
       {isNegotiable && (
         <div className="w-full">
           <label htmlFor="note" className="text-sm">
-            <span>یادداشت قابل معاوضه </span>
+            <span>
+              {selectedCategories?.[0]?.dealType === DealTypeEnum.FOR_RENT
+                ? "یادداشت قابل تبدیل"
+                : "یادداشت قابل معاوضه"}
+            </span>
             <span className="text-text-200">(جهت اطلاع همکاران)</span>
           </label>
           <div className="w-full">
