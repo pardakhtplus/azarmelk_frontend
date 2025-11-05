@@ -1374,7 +1374,7 @@ export default function MutateEstate({
         </Button>
       </PanelBodyHeader>
       <div className="w-full pt-6 md:pt-8 lg:pt-8">
-        <div className="flex items-center justify-start gap-2">
+        <div className="flex flex-wrap items-center justify-start gap-2">
           {selectedCategories?.map((category, index) => (
             <React.Fragment key={category.id}>
               {index > 0 && <span className="text-sm text-gray-500">/</span>}
