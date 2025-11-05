@@ -273,6 +273,7 @@ export default function EstateActions({
           )}
           onClick={(e) => {
             e.stopPropagation();
+            e.preventDefault();
             handleToggleMenu();
           }}
           title="گزینه‌های بیشتر">

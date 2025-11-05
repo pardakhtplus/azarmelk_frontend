@@ -693,7 +693,12 @@ export default function EstatesContainer({
                         showCompletionPercentage={
                           currentFilters.completionStatus === "incomplete"
                         }>
-                        <div className="absolute left-2 top-2 z-[2] flex items-center gap-x-2">
+                        <div
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                          }}
+                          className="absolute left-2 top-2 z-[2] flex items-center gap-x-2">
                           {estate.owners && estate.owners.length > 0 && (
                             <button
                               className={cn(
