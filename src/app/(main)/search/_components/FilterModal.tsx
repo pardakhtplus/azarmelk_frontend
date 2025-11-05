@@ -18,11 +18,14 @@ import toast from "react-hot-toast";
 import RangeSlider from "./RangeSlider";
 import ComboBox from "@/components/modules/ComboBox";
 import RegionSearchInput from "./RegionSearchInput";
+import { type TCategory } from "@/types/admin/category/types";
+import { DealTypeEnum } from "@/lib/categories";
 
 interface FilterModalProps {
   isOpen: boolean;
   onClose: () => void;
   currentFilters: FilterState;
+  selectedCategories: (Partial<TCategory> & { parents?: { id?: string }[] })[];
 }
 
 export interface FilterState {
@@ -47,6 +50,7 @@ export default function FilterModal({
   isOpen,
   onClose,
   currentFilters,
+  selectedCategories,
 }: FilterModalProps) {
   const setSearchQuery = useSearchQueries();
   const [filters, setFilters] = useState<FilterState>({
@@ -412,32 +416,6 @@ export default function FilterModal({
               />
             </div>
 
-            {/* Location */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-text-300">
-                موقعیت ملک
-              </label>
-              <ComboBox
-                options={[
-                  {
-                    key: "",
-                    title: "همه",
-                  },
-                  ...directionOptions.map((direction) => ({
-                    key: direction,
-                    title: direction,
-                  })),
-                ]}
-                value={filters.location}
-                onChange={(value) => {
-                  handleInputChange("location", value.key as string);
-                }}
-                className="w-full"
-                containerClassName="w-full"
-                dropDownClassName="w-full"
-              />
-            </div>
-
             {/* Room Count */}
             <div>
               <label className="mb-2 block text-sm font-medium text-text-300">
@@ -485,11 +463,29 @@ export default function FilterModal({
             </div>
 
             {/* Exchangeable Property */}
-            <div>
+            <div
+              className={cn(
+                selectedCategories?.[0]?.dealType ||
+                  "cursor-not-allowed opacity-80",
+              )}
+              onClick={() => {
+                if (!selectedCategories?.[0]?.dealType) {
+                  toast.error("لطفا نوع معامله را انتخاب کنید");
+                  return;
+                }
+              }}>
               <label className="mb-2 block text-sm font-medium text-text-300">
-                قابل معاوضه
+                {selectedCategories?.[0]?.dealType === DealTypeEnum.FOR_RENT
+                  ? "قابل تبدیل"
+                  : selectedCategories?.[0]?.dealType
+                    ? "قابل معاوضه"
+                    : "قابل تبدیل یا معاوضه"}
               </label>
-              <div className="flex items-center gap-3">
+              <div
+                className={cn(
+                  "flex items-center gap-3",
+                  selectedCategories?.[0]?.dealType || "pointer-events-none",
+                )}>
                 <div className="cntr">
                   <input
                     type="checkbox"
@@ -509,7 +505,12 @@ export default function FilterModal({
                 <label
                   htmlFor="isExchangeable"
                   className="text-sm text-text-300">
-                  فقط ملک‌های قابل معاوضه
+                  فقط ملک‌های{" "}
+                  {selectedCategories?.[0]?.dealType === DealTypeEnum.FOR_RENT
+                    ? "قابل تبدیل"
+                    : selectedCategories?.[0]?.dealType
+                      ? "قابل معاوضه"
+                      : "قابل تبدیل یا معاوضه"}
                 </label>
               </div>
             </div>
