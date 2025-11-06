@@ -282,8 +282,6 @@ export default function MutateEstate({
     userInfo?.data?.data.accessPerms.includes(Permissions.MANAGE_ESTATE) ||
     isEstateAdvisor;
 
-  console.log("canViewOwners", canViewOwners);
-
   const canViewAddress =
     userInfo?.data?.data.accessPerms.includes(Permissions.GET_ESTATE_ADDRESS) ||
     userInfo?.data?.data.accessPerms.includes(Permissions.OWNER) ||
@@ -612,6 +610,18 @@ export default function MutateEstate({
         }
       : undefined,
   });
+
+  const [isNegotiable, setIsNegotiable] = useState(
+    watch("note") ? true : false,
+  );
+
+  const note = watch("note");
+
+  useEffect(() => {
+    if (note) {
+      setIsNegotiable(true);
+    }
+  }, [note]);
 
   // Helper function to transform form properties to backend structure
   const transformPropertiesToBackend = (formProperties: any) => {
@@ -979,6 +989,19 @@ export default function MutateEstate({
   }, [isEditing, estate.data, setFirstRender, firstRender]);
 
   const handleFormSubmit = async (data: z.infer<typeof mutateEstateSchema>) => {
+    if (isNegotiable) {
+      if (!data.note) {
+        toast.error(
+          `${selectedCategories?.[0]?.dealType === DealTypeEnum.FOR_RENT ? "یادداشت قابل تبدیل" : "یادداشت قابل معاوضه"} را مشخص کنید!`,
+        );
+        setError("note", {
+          message: `${selectedCategories?.[0]?.dealType === DealTypeEnum.FOR_RENT ? "یادداشت قابل تبدیل" : "یادداشت قابل معاوضه"} را مشخص کنید!`,
+        });
+        return;
+      }
+    } else {
+      clearErrors("note");
+    }
     // Check owners validation first
     if (!data.owners?.length && (canViewOwners || !isEditing)) {
       toast.error("مالک ملک را مشخص کنید!");
@@ -1317,7 +1340,6 @@ export default function MutateEstate({
     setPendingFormData(null);
     const callbackUrl = searchParams.get("callbackUrl");
     if (callbackUrl) {
-      console.log("callbackUrl", callbackUrl.replace("%", "&"));
       router.push(callbackUrl.replace("%", "&"));
     } else {
       if (isUserPanel) {
@@ -1327,8 +1349,6 @@ export default function MutateEstate({
       }
     }
   };
-
-  console.log(watch("owners"), "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 
   if (isEditing && estate.isLoading) {
     return <MutateEstateSkeleton />;
@@ -1388,6 +1408,8 @@ export default function MutateEstate({
 
         <div className="flex flex-col-reverse items-start gap-6 pt-3 md:gap-8 md:pt-4 lg:gap-10 lg:pt-5 xl:flex-row">
           <EstateInformation
+            isNegotiable={isNegotiable}
+            setIsNegotiable={setIsNegotiable}
             selectedCategories={selectedCategories ?? []}
             register={register}
             errors={errors}
