@@ -416,6 +416,32 @@ export default function FilterModal({
               />
             </div>
 
+            {/* Location */}
+            <div>
+              <label className="mb-2 block text-sm font-medium text-text-300">
+                موقعیت ملک
+              </label>
+              <ComboBox
+                options={[
+                  {
+                    key: "",
+                    title: "همه",
+                  },
+                  ...directionOptions.map((direction) => ({
+                    key: direction,
+                    title: direction,
+                  })),
+                ]}
+                value={filters.location}
+                onChange={(value) => {
+                  handleInputChange("location", value.key as string);
+                }}
+                className="w-full"
+                containerClassName="w-full"
+                dropDownClassName="w-full"
+              />
+            </div>
+
             {/* Room Count */}
             <div>
               <label className="mb-2 block text-sm font-medium text-text-300">

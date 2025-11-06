@@ -22,7 +22,7 @@ import { useUserInfo } from "@/services/queries/client/auth/useUserInfo";
 import { type TCategory } from "@/types/admin/category/types";
 import { type TEstate } from "@/types/types";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type {
   Control,
   FieldErrors,
@@ -51,6 +51,8 @@ export default function EstateInformation({
   isEditing,
   canViewOwners = true,
   canViewAddress = true,
+  isNegotiable,
+  setIsNegotiable,
   defaultEstate,
   isUserPanel,
 }: {
@@ -67,10 +69,9 @@ export default function EstateInformation({
   canViewAddress?: boolean;
   defaultEstate?: TEstate;
   isUserPanel?: boolean;
+  isNegotiable?: boolean;
+  setIsNegotiable?: (isNegotiable: boolean) => void;
 }) {
-  const [isNegotiable, setIsNegotiable] = useState(
-    watch("note") ? true : false,
-  );
   const { userInfo } = useUserInfo();
   const { id } = useParams<{ id: string }>();
   const [rahnPrice, setRahnPrice] = useState<string | null>(
@@ -85,14 +86,6 @@ export default function EstateInformation({
   const [totalPrice, setTotalPrice] = useState<string | null>(
     defaultEstate?.totalPrice?.toString() || null,
   );
-
-  const note = watch("note");
-
-  useEffect(() => {
-    if (note) {
-      setIsNegotiable(true);
-    }
-  }, [note]);
 
   return (
     <div className="flex w-full flex-col gap-y-5">
@@ -728,12 +721,12 @@ export default function EstateInformation({
         </p>
         <CustomSwitch
           onChange={() => {
-            setIsNegotiable(!isNegotiable);
-            if (isNegotiable) {
+            setIsNegotiable?.(!isNegotiable);
+            if (isNegotiable ?? false) {
               setValue("note", "");
             }
           }}
-          checked={isNegotiable}
+          checked={isNegotiable ?? false}
           className="h-5 w-9"
         />
       </div>
