@@ -92,7 +92,7 @@ export interface TUserInfoResponse {
     firstName: string;
     lastName: string;
     address: string;
-    approximateAddress: string;
+    // approximateAddress: string;
     fixPhoneNumber: string;
     education: string;
     birthdate: string;

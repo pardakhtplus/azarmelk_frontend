@@ -69,7 +69,7 @@ const FIELD_NAMES: Record<string, string> = {
   floorUnitCount: "تعداد واحد در طبقه",
   findBy: "فایل یابی از طریق",
   address: "آدرس",
-  approximateAddress: "آدرس تقریبی",
+  // approximateAddress: "آدرس تقریبی",
   roomCount: "تعداد اتاق",
   location: "موقعیت ملک",
   floorMetrage: "متراژ کف",

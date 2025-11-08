@@ -290,7 +290,7 @@ export default function EstateInformation({
           </div>
         </div>
       )}
-      <div className="w-full">
+      {/* <div className="w-full">
         <label htmlFor="approximateAddress" className="text-sm">
           آدرس حدودی <span className="text-text-200">(جهت اطلاع مشتریان)</span>
         </label>
@@ -301,7 +301,7 @@ export default function EstateInformation({
           register={register}
           error={errors.approximateAddress}
         />
-      </div>
+      </div> */}
 
       {/* تعداد واحد در طبقه - نمایش شرطی */}
       <ConditionalField

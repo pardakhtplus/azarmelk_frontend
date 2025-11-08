@@ -52,7 +52,7 @@ export interface TMutateEstate {
   note?: string;
   findBy?: string;
   address?: string;
-  approximateAddress?: string;
+  // approximateAddress?: string;
   buildYear?: number;
   landingId?: string;
   roomCount?: number;

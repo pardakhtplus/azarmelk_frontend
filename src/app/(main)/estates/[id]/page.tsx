@@ -289,14 +289,14 @@ export default async function EstatePage({
 
         <EstateCode estateCode={estate?.data?.estateCode?.toString() || ""} />
 
-        {estate?.data?.approximateAddress && (
+        {/* {estate?.data?.approximateAddress && (
           <div className="mt-5 flex items-start gap-x-1">
             <p className="text-sm font-normal">آدرس حدودی: </p>
             <p className="text-sm font-normal text-text-200">
               {estate?.data?.approximateAddress}
             </p>
           </div>
-        )}
+        )} */}
 
         {/* Property Details */}
         <div className="mt-10 grid grid-cols-3 gap-y-6 min-[430px]:grid-cols-4 xs:grid-cols-5 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">

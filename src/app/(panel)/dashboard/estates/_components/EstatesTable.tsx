@@ -15,7 +15,6 @@ import toast from "react-hot-toast";
 import EstateActions from "./EstateActions";
 import { type ITableField } from "./EstatesContainer";
 import OwnersModal from "./OwnersModal";
-import TruncatedTableCell from "./TruncatedTableCell";
 
 export default function EstatesTable({
   visibleTableFields,
@@ -144,18 +143,18 @@ export default function EstatesTable({
                         );
                       }
 
-                      if (
-                        field.field === AllCreateFileFields.APPROXIMATE_ADDRESS
-                      ) {
-                        return (
-                          <td key={field.field}>
-                            <TruncatedTableCell
-                              text={item[field.field] || "__"}
-                              maxLength={5}
-                            />
-                          </td>
-                        );
-                      }
+                      // if (
+                      //   field.field === AllCreateFileFields.APPROXIMATE_ADDRESS
+                      // ) {
+                      //   return (
+                      //     <td key={field.field}>
+                      //       <TruncatedTableCell
+                      //         text={item[field.field] || "__"}
+                      //         maxLength={5}
+                      //       />
+                      //     </td>
+                      //   );
+                      // }
 
                       if (
                         field.field === AllCreateFileFields.TOTAL_PRICE ||
