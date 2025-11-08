@@ -7,7 +7,7 @@ export interface TMutateUser {
   phoneNumber: string;
   fixPhoneNumber?: string;
   address?: string;
-  approximateAddress?: string;
+  // approximateAddress?: string;
   education?: string;
   email?: string;
   birthDate?: string;

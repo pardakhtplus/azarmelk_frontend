@@ -126,7 +126,7 @@ export const mutateEstateSchema = z.object({
   // آدرس
   address: z.string().optional(),
   // آدرس حدودی
-  approximateAddress: z.string().optional(),
+  // approximateAddress: z.string().optional(),
   // تعداد اتاق از یک تا ده اختیاری
   roomCount: z.string().optional(),
   // موقعیت ملک
@@ -381,7 +381,7 @@ export default function MutateEstate({
           files: estate?.data?.data?.files || [],
           metrage: estate?.data?.data?.metrage.toString() || "",
           address: estate?.data?.data?.address || "",
-          approximateAddress: estate?.data?.data?.approximateAddress || "",
+          // approximateAddress: estate?.data?.data?.approximateAddress || "",
           location: estate?.data?.data?.location || [],
           floorMetrage: estate?.data?.data?.floorMetrage
             ? estate?.data?.data?.floorMetrage.toString()
@@ -762,9 +762,9 @@ export default function MutateEstate({
       changes.address = formData.address;
     }
 
-    if (formData.approximateAddress !== originalData.approximateAddress) {
-      changes.approximateAddress = formData.approximateAddress || "";
-    }
+    // if (formData.approximateAddress !== originalData.approximateAddress) {
+    //   changes.approximateAddress = formData.approximateAddress || "";
+    // }
 
     // Price comparisons
     if (
@@ -1189,9 +1189,9 @@ export default function MutateEstate({
           }),
           ...(data.findBy && { findBy: data.findBy }),
           ...(data.address && { address: data.address }),
-          ...(data.approximateAddress && {
-            approximateAddress: data.approximateAddress || "",
-          }),
+          // ...(data.approximateAddress && {
+          //   approximateAddress: data.approximateAddress || "",
+          // }),
           ...(data.roomCount && { roomCount: Number(data.roomCount) }),
           ...(data.location && { location: data.location }),
           ...(data.floorMetrage && { floorMetrage: Number(data.floorMetrage) }),
@@ -1288,9 +1288,9 @@ export default function MutateEstate({
           }),
           ...(data.findBy && { findBy: data.findBy }),
           ...(data.address && { address: data.address }),
-          ...(data.approximateAddress && {
-            approximateAddress: data.approximateAddress || "",
-          }),
+          // ...(data.approximateAddress && {
+          //   approximateAddress: data.approximateAddress || "",
+          // }),
           ...(data.roomCount && { roomCount: Number(data.roomCount) }),
           ...(data.location && { location: data.location }),
           ...(data.floorMetrage && { floorMetrage: Number(data.floorMetrage) }),

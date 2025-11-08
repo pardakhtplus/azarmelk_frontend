@@ -1,6 +1,6 @@
 "use client";
 
-import { IBuildingLight, ILocationDotLight, IToman } from "@/components/Icons";
+import { IExpand, ILocationDotLight, IToman } from "@/components/Icons";
 import {
   getDefaultPosterFileByCategory,
   getStatusInfo,
@@ -108,9 +108,12 @@ export default function EstateCardItem({
               <ILocationDotLight className="size-[18px] shrink-0" />
               <span className="line-clamp-1">{estateAddress}</span>
             </div>
-            <div className="flex shrink-0 items-center gap-1">
-              <IBuildingLight className="size-[17px] shrink-0" />
-              <span>{estate.metrage || 0} متر</span>
+            <div className="flex shrink-0 items-center gap-1.5">
+              <IExpand className="size-[16px] shrink-0" />
+              <p className="-mb-px flex items-center gap-0.5">
+                <span>{estate.metrage || 0}</span>
+                <span>متر</span>
+              </p>
             </div>
           </div>
           {/* Price section */}

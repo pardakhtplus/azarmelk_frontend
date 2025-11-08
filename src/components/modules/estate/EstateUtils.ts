@@ -107,7 +107,7 @@ export enum AllCreateFileFields {
   FLOOR_UNIT_COUNT = "floorUnitCount", // تعداد واحد در طبقه
   FIND_BY = "findBy", // فایل یابی از طریق
   ADDRESS = "address", // آدرس
-  APPROXIMATE_ADDRESS = "approximateAddress", // آدرس تقریبی
+  // APPROXIMATE_ADDRESS = "approximateAddress", // آدرس تقریبی
   ROOM_COUNT = "roomCount", // تعداد اتاق
   LOCATION = "location", // موقعیت ملک
   FLOOR_METRAGE = "floorMetrage", // متراژ کف
@@ -151,7 +151,7 @@ export enum AllCreateFileFields {
 // فیلدهای مشترک که در همه دسته‌بندی‌ها نمایش داده می‌شوند
 const commonFields = [
   AllCreateFileFields.ADDRESS,
-  AllCreateFileFields.APPROXIMATE_ADDRESS,
+  // AllCreateFileFields.APPROXIMATE_ADDRESS,
 ];
 
 // فیلدهای قیمت که در همه دسته‌بندی‌ها باید باشند
@@ -544,7 +544,7 @@ const coreFields = [
   "files",
   AllCreateFileFields.METRAGE,
   AllCreateFileFields.ADDRESS,
-  AllCreateFileFields.APPROXIMATE_ADDRESS,
+  // AllCreateFileFields.APPROXIMATE_ADDRESS,
   AllCreateFileFields.LOCATION,
   AllCreateFileFields.BUILD_YEAR,
   AllCreateFileFields.FLOOR_COUNT,
@@ -625,7 +625,7 @@ export const getIncompleteFields = (
   }
 
   // اضافه کردن فیلدهای اجباری
-  const mandatoryFields = ["title", "metrage", "approximateAddress", "files"];
+  const mandatoryFields = ["title", "metrage", "files"];
 
   // ترکیب فیلدهای مورد نیاز و اجباری
   const allRequiredFields = [
@@ -741,7 +741,7 @@ export const calculateEstateCompletionPercentage = (
   }
 
   // اضافه کردن فیلدهای اجباری
-  const mandatoryFields = ["title", "metrage", "approximateAddress", "files"];
+  const mandatoryFields = ["title", "metrage", "files"];
 
   // ترکیب فیلدهای مورد نیاز و اجباری
   const allRequiredFields = [

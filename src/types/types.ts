@@ -65,7 +65,7 @@ export interface TEstate {
   note: string;
   findBy: string;
   address?: string;
-  approximateAddress: string;
+  // approximateAddress: string;
   buildYear: number;
   floor: string;
   categoryId: string;

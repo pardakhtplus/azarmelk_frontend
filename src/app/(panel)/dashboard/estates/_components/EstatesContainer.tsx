@@ -61,7 +61,7 @@ const allowFields = [
   "location", // موقعیت ملک
   "roomCount", // تعداد خواب
   "address", // آدرس دقیق
-  "approximateAddress", // آدرس تقریبی
+  // "approximateAddress", // آدرس تقریبی
   "arzMelk", // عرض ملک
   "arzGozar", // عرض گذر
   "dahaneMetrage", // متراژ دهنه
@@ -96,7 +96,7 @@ const getFieldBasisClass = (field: string) => {
     "title",
     "location",
     "dahaneMetrage",
-    "approximateAddress",
+    // "approximateAddress",
   ];
 
   if (percent6Fields.includes(field)) {
