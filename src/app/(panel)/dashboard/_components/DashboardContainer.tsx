@@ -533,7 +533,7 @@ export default function DashboardContainer() {
 
           {canManageUsers ? (
             <Link
-              href="/dashboard/users"
+              href="/dashboard/users?type=users"
               className={cn(
                 "group rounded-xl border-2 border-dashed border-gray-300 bg-white p-5 sm:p-6",
                 "transition-all hover:border-purple-500 hover:bg-purple-50",
