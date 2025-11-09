@@ -16,8 +16,9 @@ import {
   CalendarClock,
   BellRing,
   XCircleIcon,
+  UsersIcon,
 } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useDashboardStats } from "@/services/queries/admin/dashboard/useDashboardStats";
 import EstateCardItem from "@/components/modules/estate/EstateCardItem";
 import { cn, dateType } from "@/lib/utils";
@@ -32,8 +33,21 @@ import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
+import EstateActions from "../estates/_components/EstateActions";
+import OwnersModal from "../estates/_components/OwnersModal";
 
 export default function DashboardContainer() {
+  const [isOpenOwnersModal, setIsOpenOwnersModal] = useState(false);
+  const [owners, setOwners] = useState<
+    {
+      id: string;
+      position?: string;
+      phoneNumber: string;
+      firstName: string;
+      lastName: string;
+    }[]
+  >([]);
+
   const { userInfo } = useUserInfo();
   const accessPerms = userInfo.data?.data.accessPerms ?? [];
 
@@ -442,7 +456,46 @@ export default function DashboardContainer() {
               stats.data.recentEstates.length > 0 ? (
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {stats.data.recentEstates.slice(0, 6).map((estate) => (
-                  <EstateCardItem key={estate.id} estate={estate} />
+                  <Link
+                    href={`/estates/${estate.id}`}
+                    target="_blank"
+                    key={estate.id}>
+                    <EstateCardItem estate={estate}>
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                        }}
+                        className="absolute left-2 top-2 z-[2] flex items-center gap-x-2">
+                        {estate.owners && estate.owners.length > 0 && (
+                          <button
+                            className={cn(
+                              "flex size-8 shrink-0 items-center justify-center rounded-full bg-white/60 p-1 text-primary-blue shadow-md backdrop-blur-sm transition-all hover:bg-white/80",
+                            )}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+
+                              setIsOpenOwnersModal(true);
+                              setOwners(estate.owners || []);
+                            }}
+                            title="اطلاعات مالک">
+                            <UsersIcon className="size-5 shrink-0" />
+                          </button>
+                        )}
+                        <EstateActions
+                          isTableView={false}
+                          estate={estate}
+                          archiveStatus={estate.archiveStatus}
+                          status={estate.status}
+                          title={estate.title}
+                          className="flex size-8 shrink-0 items-center justify-center rounded-full bg-white/60 text-primary-blue shadow-md backdrop-blur-sm transition-all hover:bg-white/80"
+                          menuClassName="!mt-0 absolute top-0 left-full h-fit right-auto"
+                          isUserPanel={false}
+                        />
+                      </div>
+                    </EstateCardItem>
+                  </Link>
                 ))}
               </div>
             ) : (
@@ -551,6 +604,13 @@ export default function DashboardContainer() {
           ) : null}
         </div>
       </div>
+      {isOpenOwnersModal && (
+        <OwnersModal
+          isOpenModal={isOpenOwnersModal}
+          setIsOpenModal={setIsOpenOwnersModal}
+          owners={owners}
+        />
+      )}
     </>
   );
 }
