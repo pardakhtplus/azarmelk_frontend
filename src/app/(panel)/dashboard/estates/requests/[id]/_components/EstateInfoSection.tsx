@@ -1,6 +1,5 @@
 "use client";
 
-import { ESTATE_STATUS } from "@/enums";
 import { type TEstate } from "@/types/types";
 import { Building, MapPin } from "lucide-react";
 import Link from "next/link";

@@ -1,14 +1,8 @@
-import { IInfoCircle } from "@/components/Icons";
 import { cn } from "@/lib/utils";
 import { CalendarIcon, Clock, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { type DateObject } from "react-multi-date-picker";
-import {
-  isCurrentMonth,
-  isFutureDate,
-  isHoliday,
-  isToday,
-} from "./calendarUtils";
+import { isCurrentMonth, isFutureDate, isToday } from "./calendarUtils";
 import SessionList from "./SessionList";
 
 interface DayCellProps {
@@ -36,7 +30,6 @@ export default function DayCell({
 }: DayCellProps) {
   const dayIsToday = isToday(day);
   const dayIsCurrentMonth = isCurrentMonth(day, currentDate);
-  const holidayInfo = isHoliday(day);
   const [isOpenModal, setIsOpenModal] = useState(false);
   // Add a flag for past days in the current month
   const dayIsPast = dayIsCurrentMonth && !isFutureDate(day) && !dayIsToday;
@@ -48,7 +41,7 @@ export default function DayCell({
           "relative flex aspect-square w-full cursor-pointer items-center justify-center border-b border-l border-primary-border sm:aspect-[10/8]",
           !dayIsCurrentMonth && "cursor-not-allowed bg-neutral-100",
           dayIsPast && "bg-neutral-100/70",
-          holidayInfo.isHoliday && dayIsCurrentMonth && "bg-red-50",
+          // holidayInfo.isHoliday && dayIsCurrentMonth && "bg-red-50",
           dayIsToday && "border border-primary-blue",
         )}
         style={
@@ -69,9 +62,7 @@ export default function DayCell({
             "absolute bottom-1 right-1.5 text-xs sm:bottom-1 sm:right-2 sm:text-sm md:bottom-1.5 md:right-2 md:text-base",
             dayIsToday
               ? "flex size-7 items-center justify-center rounded-full bg-primary-blue/90 font-medium text-white"
-              : holidayInfo.isHoliday && dayIsCurrentMonth
-                ? "font-medium text-red-500"
-                : "text-primary-border",
+              : "text-primary-border",
             dayIsPast && "text-neutral-400",
             !dayIsCurrentMonth && "opacity-80",
           )}>
@@ -112,7 +103,7 @@ export default function DayCell({
                 </div>
               )}
           </div>
-          {holidayInfo.isHoliday && dayIsCurrentMonth && (
+          {/* {holidayInfo.isHoliday && dayIsCurrentMonth && (
             <div
               className={cn(
                 "group size-fit text-primary-red/90 sm:left-2 sm:top-2",
@@ -126,7 +117,7 @@ export default function DayCell({
                 </div>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
       {isOpenModal ? (
