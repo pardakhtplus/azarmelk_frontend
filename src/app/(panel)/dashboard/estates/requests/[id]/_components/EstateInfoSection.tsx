@@ -25,11 +25,6 @@ export default function EstateInfoSection({ estate }: EstateInfoSectionProps) {
             عنوان ملک
           </label>
           <Link
-            onClick={(event) => {
-              if (estate.status === ESTATE_STATUS.PENDING) {
-                event.preventDefault();
-              }
-            }}
             href={`/estates/${estate.id}`}
             className="text-base font-semibold text-gray-900 transition-colors hover:text-primary sm:text-lg">
             {estate.title}
