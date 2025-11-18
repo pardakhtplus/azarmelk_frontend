@@ -1,11 +1,6 @@
-import { type DateObject } from "react-multi-date-picker";
 import { cn } from "@/lib/utils";
-import {
-  isCurrentMonth,
-  isToday,
-  isFutureDate,
-  isHoliday,
-} from "./calendarUtils";
+import { type DateObject } from "react-multi-date-picker";
+import { isCurrentMonth, isFutureDate, isToday } from "./calendarUtils";
 
 interface CalendarDayProps {
   date: DateObject;
@@ -35,7 +30,6 @@ export default function CalendarDay({
   const isPast = !isFutureDate(date);
   const isCurrentMonthDay = isCurrentMonth(date, monthRef);
   const isTodayDate = isToday(date);
-  const holiday = isHoliday(date);
 
   let dayClasses =
     "h-8 lg:h-10 w-8 lg:w-10 flex items-center z-[1] justify-center rounded-full text-sm cursor-pointer transition-colors border border-transparent ";
@@ -102,8 +96,7 @@ export default function CalendarDay({
       <button
         className={dayClasses}
         onClick={() => onClick(date)}
-        disabled={isPast || !isCurrentMonthDay}
-        title={holiday.isHoliday ? holiday.name : undefined}>
+        disabled={isPast || !isCurrentMonthDay}>
         {date.day}
       </button>
     </div>
