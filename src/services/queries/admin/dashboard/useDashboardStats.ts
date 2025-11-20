@@ -18,7 +18,7 @@ export function useDashboardStats({
     enabled: canSeeEstates,
     params: {
       page: "1",
-      limit: "10",
+      limit: "1",
     },
   });
 
@@ -54,6 +54,7 @@ export function useDashboardStats({
       pendingRequests.data?.data,
       approvedRequests.data?.data,
       estateList.data?.meta?.countByStatus,
+      estateList.data?.meta?.total,
       userList.data?.data?.pagination.total,
       pendingRequests.data?.data?.pagination.total,
       approvedRequests.data?.data?.pagination.total,
@@ -80,7 +81,7 @@ export function useDashboardStats({
         estateCountByStatus.find((item) => item.archiveStatus === "DELETE")
           ?.count || 0;
 
-      const totalEstates = publishedCount + pendingCount + archivedCount;
+      const totalEstates = estateList.data?.meta?.total || 0;
       const totalUsers = userList.data?.data.pagination.total || 0;
       const totalPendingRequests =
         pendingRequests.data?.data.pagination.total || 0;
